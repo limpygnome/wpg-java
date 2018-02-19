@@ -1,9 +1,9 @@
 package com.worldpay.sdk.wpg.xml.decorator;
 
-import com.jamesmurty.utils.XMLBuilder2;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class PaymentMethodMaskDecorator
 {
     public static void decorate(XmlBuildParams params, PaymentMethodFilter paymentMethodFilter)
     {
-        XMLBuilder2 builder = params.xmlBuilder2();
+        XmlBuilder builder = params.xmlBuilder();
 
         // fetch lists; filter can be null
         List<PaymentMethod> included;
@@ -36,7 +36,7 @@ public class PaymentMethodMaskDecorator
         if (paymentMethodFilter == null || (included.isEmpty() && excluded.isEmpty()))
         {
             builder.e("include")
-                    .attr("code","ALL")
+                    .a("code","ALL")
                     .up();
         }
         else
@@ -58,15 +58,15 @@ public class PaymentMethodMaskDecorator
         }
 
         // reset
-        builder.up(3);
+        builder.reset();
     }
 
-    private static void appendList(XMLBuilder2 builder, String elementName, List<PaymentMethod> list)
+    private static void appendList(XmlBuilder builder, String elementName, List<PaymentMethod> list)
     {
         for (PaymentMethod paymentMethod : list)
         {
             String mask = getLegacyPaymentMethodMask(paymentMethod);
-            builder.e(elementName).attr("code", mask).up();
+            builder.e(elementName, true).a("code", mask).up();
         }
     }
 

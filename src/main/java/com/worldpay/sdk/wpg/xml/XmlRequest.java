@@ -1,6 +1,5 @@
 package com.worldpay.sdk.wpg.xml;
 
-import com.jamesmurty.utils.XMLBuilder2;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.SessionContext;
 import com.worldpay.sdk.wpg.connection.factory.ConnectionFactory;
@@ -8,7 +7,6 @@ import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.Request;
 import com.worldpay.sdk.wpg.response.Response;
-import com.worldpay.sdk.wpg.xml.XmlResponseRecognizer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -82,10 +80,10 @@ public abstract class XmlRequest implements Request
     {
         try
         {
-            XMLBuilder2 builder = XMLBuilder2.create("paymentService");
+            XmlBuilder builder = new XmlBuilder("paymentService");
             XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder);
             build(params);
-            String xml = builder.asString();
+            String xml = builder.toString();
             byte[] payload = xml.getBytes("UTF-8");
             byte[] headers = buildHeaders(gatewayContext, sessionContext, payload.length);
 

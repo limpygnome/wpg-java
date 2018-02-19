@@ -1,14 +1,14 @@
 package com.worldpay.sdk.wpg.xml.decorator;
 
-import com.jamesmurty.utils.XMLBuilder2;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
 public class AddressDecorator
 {
     public static void decorate(XmlBuildParams params, Address billingAddress, Address shippingAddress)
     {
-        XMLBuilder2 builder = params.xmlBuilder2();
+        XmlBuilder builder = params.xmlBuilder();
         builder.e("submit")
                 .e("order");
 
@@ -16,10 +16,10 @@ public class AddressDecorator
         decorateAddress("billingAddress", builder, billingAddress);
 
         // Reset
-        builder.up(2);
+        builder.reset();
     }
 
-    private static void decorateAddress(String elementName, XMLBuilder2 builder, Address address)
+    private static void decorateAddress(String elementName, XmlBuilder builder, Address address)
     {
         builder.e(elementName)
                 .e("address");
@@ -39,38 +39,38 @@ public class AddressDecorator
 
         if (address.getFirstName() != null)
         {
-            builder.e("firstName").cdata(address.getFirstName()).up(1);
+            builder.e("firstName").cdata(address.getFirstName()).up();
         }
         if (address.getLastName() != null)
         {
-            builder.e("lastName").cdata(address.getLastName()).up(1);
+            builder.e("lastName").cdata(address.getLastName()).up();
         }
-        builder.e("address1").cdata(address.getAddress1()).up(1);
+        builder.e("address1").cdata(address.getAddress1()).up();
         if (address.getAddress2() != null)
         {
-            builder.e("address2").cdata(address.getAddress2()).up(1);
+            builder.e("address2").cdata(address.getAddress2()).up();
         }
         if (address.getAddress3() != null)
         {
-            builder.e("address3").cdata(address.getAddress3()).up(1);
+            builder.e("address3").cdata(address.getAddress3()).up();
         }
-        builder.e("postalCode").cdata(address.getPostalCode()).up(1);
+        builder.e("postalCode").cdata(address.getPostalCode()).up();
         if (address.getCity() != null)
         {
-            builder.e("city").cdata(address.getCity()).up(1);
+            builder.e("city").cdata(address.getCity()).up();
         }
         if (address.getState() != null)
         {
-            builder.e("state").cdata(address.getState()).up(1);
+            builder.e("state").cdata(address.getState()).up();
         }
-        builder.e("countryCode").cdata(address.getCountryCode().ISO3166_1_ALPHA_2_COUNTRY_CODE).up(1);
+        builder.e("countryCode").cdata(address.getCountryCode().ISO3166_1_ALPHA_2_COUNTRY_CODE).up();
         if (address.getTelephoneNumber() != null)
         {
-            builder.e("telephoneNumber").cdata(address.getTelephoneNumber()).up(1);
+            builder.e("telephoneNumber").cdata(address.getTelephoneNumber()).up();
         }
 
-        // Reset
-        builder.up(2);
+        builder.up()
+                .up();
     }
 
 }

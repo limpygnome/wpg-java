@@ -1,15 +1,15 @@
 package com.worldpay.sdk.wpg.xml.decorator;
 
-import com.jamesmurty.utils.XMLBuilder2;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
 public class ShopperDecorator
 {
     public static void decorate(XmlBuildParams params, Shopper shopper)
     {
-        XMLBuilder2 builder = params.xmlBuilder2();
+        XmlBuilder builder = params.xmlBuilder();
 
         // Get to shopper element
         builder.e("submit")
@@ -37,10 +37,10 @@ public class ShopperDecorator
         }
 
         // Reset
-        builder.up(3);
+        builder.reset();
     }
 
-    private static void decorateBrowser(XMLBuilder2 builder, ShopperBrowser browser)
+    private static void decorateBrowser(XmlBuilder builder, ShopperBrowser browser)
     {
         // TODO later
     }

@@ -28,7 +28,7 @@ public class OrderDetails
 
         if (orderCode == null)
         {
-            this.orderCode = UUID.randomUUID().toString()
+            this.orderCode = UUID.randomUUID().toString();
         }
     }
 

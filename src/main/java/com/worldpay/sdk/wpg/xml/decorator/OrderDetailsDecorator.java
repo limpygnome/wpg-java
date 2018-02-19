@@ -1,27 +1,27 @@
 package com.worldpay.sdk.wpg.xml.decorator;
 
-import com.jamesmurty.utils.XMLBuilder2;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
 public class OrderDetailsDecorator
 {
     public static void decorate(XmlBuildParams params, OrderDetails orderDetails)
     {
         UserPassAuth auth = (UserPassAuth) params.gatewayContext().getAuth();
-        XMLBuilder2 builder = params.xmlBuilder2();
+        XmlBuilder builder = params.xmlBuilder();
 
         // build order element
         builder = builder
                 .e("submit")
                 .e("order")
-                    .attr("orderCode", orderDetails.getOrderCode());
+                    .a("orderCode", orderDetails.getOrderCode());
 
         if (auth.getInstallationId() != null)
         {
-            builder.attr("installationId", String.valueOf(auth.getInstallationId()));
+            builder.a("installationId", String.valueOf(auth.getInstallationId()));
         }
 
         // append description
@@ -36,9 +36,9 @@ public class OrderDetailsDecorator
         }
 
         builder.e("amount")
-                    .attr("currencyCode", amount.getCurrency().ISO4217_CURRENCY_CODE)
-                    .attr("exponent", String.valueOf(amount.getExponent()))
-                    .attr("value", String.valueOf(amount.getValue()));
+                    .a("currencyCode", amount.getCurrency().ISO4217_CURRENCY_CODE)
+                    .a("exponent", String.valueOf(amount.getExponent()))
+                    .a("value", String.valueOf(amount.getValue()));
     }
 
 }
