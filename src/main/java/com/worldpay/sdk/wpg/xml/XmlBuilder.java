@@ -1,9 +1,14 @@
 package com.worldpay.sdk.wpg.xml;
 
+import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,12 +18,16 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 public class XmlBuilder
 {
     private Document document;
     private Element current;
+
+    private XmlBuilder() { }
 
     public XmlBuilder(String rootTagName)
     {
@@ -40,6 +49,26 @@ public class XmlBuilder
     {
         current.setAttribute(key, value);
         return this;
+    }
+
+    public String a(String key)
+    {
+        String value = current.getAttribute(key);
+        return value;
+    }
+
+    public long aToLong(String key) throws WpgRequestException
+    {
+        String value = a(key);
+        try
+        {
+            long longValue = Long.parseLong(value);
+            return longValue;
+        }
+        catch (NumberFormatException e)
+        {
+            throw new WpgRequestException("Failed to read attribute '" + key + "' at " + getPath());
+        }
     }
 
     public XmlBuilder e(String name)
@@ -67,11 +96,37 @@ public class XmlBuilder
         return this;
     }
 
+    public boolean hasE(String name)
+    {
+        NodeList list = current.getElementsByTagName(name);
+        boolean present = list.getLength() > 0;
+
+        if (present)
+        {
+            current = (Element) list.item(0);
+        }
+
+        return present;
+    }
+
     public XmlBuilder cdata(String value)
     {
         Text text = document.createTextNode(value);
         current.appendChild(text);
         return this;
+    }
+
+    public String cdata()
+    {
+        String result = null;
+        Node firstChild = current.getFirstChild();
+
+        if (firstChild instanceof CharacterData)
+        {
+            CharacterData data = (CharacterData) firstChild;
+            result = data.getData();
+        }
+        return result;
     }
 
     public XmlBuilder up()
@@ -108,6 +163,42 @@ public class XmlBuilder
         {
             throw new RuntimeException("Failed to convert xml to text", e);
         }
+    }
+
+    public static XmlBuilder parse(String text)
+    {
+        try
+        {
+            XmlBuilder xmlBuilder = new XmlBuilder();
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            InputSource inputSource = new InputSource(new StringReader(text));
+            xmlBuilder.document = builder.parse(inputSource);
+            xmlBuilder.reset();
+
+            return xmlBuilder;
+        }
+        catch (ParserConfigurationException | SAXException | IOException e)
+        {
+            throw new RuntimeException("Failed to parse response XML", e);
+        }
+    }
+
+    public String getPath()
+    {
+        String path = "";
+        Node parent = current;
+
+        do
+        {
+            path = parent.getNodeName() + (path.length() > 0 ? "/" : "");
+            parent = parent.getParentNode();
+        }
+        while (parent != null);
+
+        return path.toString();
     }
 
 }

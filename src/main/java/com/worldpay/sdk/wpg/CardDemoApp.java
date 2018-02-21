@@ -1,22 +1,5 @@
 package com.worldpay.sdk.wpg;
 
-import com.worldpay.sdk.wpg.connection.Environment;
-import com.worldpay.sdk.wpg.connection.GatewayContext;
-import com.worldpay.sdk.wpg.connection.SessionContext;
-import com.worldpay.sdk.wpg.connection.auth.Auth;
-import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
-import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.exception.WpgConnectionException;
-import com.worldpay.sdk.wpg.exception.WpgRequestException;
-import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
-import com.worldpay.sdk.wpg.response.Response;
-import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
-import com.worldpay.sdk.wpg.response.error.ErrorResponse;
-import com.worldpay.sdk.wpg.response.order.OrderStatusResponse;
-import com.worldpay.sdk.wpg.response.threeds.ThreeDsResponse;
-
 public class CardDemoApp
 {
 

@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.xml.decorator;
+package com.worldpay.sdk.wpg.xml.serializer;
 
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
@@ -7,7 +7,7 @@ import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
 import java.util.List;
 
-public class PaymentMethodMaskDecorator
+public class PaymentMethodMaskSerializer
 {
     public static void decorate(XmlBuildParams params, PaymentMethodFilter paymentMethodFilter)
     {

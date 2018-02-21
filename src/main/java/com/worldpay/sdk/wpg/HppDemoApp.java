@@ -22,10 +22,10 @@ public class HppDemoApp
     public static void main(String[] args)
     {
         // setup sharable gateway
-        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", null);
+        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", 100875L);
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
 
-        // build payment
+        // build payment details
         Amount amount = new Amount(Currency.GBP, 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails(amount);
 

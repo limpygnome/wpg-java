@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.xml.decorator;
+package com.worldpay.sdk.wpg.xml.serializer;
 
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
@@ -6,7 +6,7 @@ import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
-public class OrderDetailsDecorator
+public class OrderDetailsSerializer
 {
     public static void decorate(XmlBuildParams params, OrderDetails orderDetails)
     {

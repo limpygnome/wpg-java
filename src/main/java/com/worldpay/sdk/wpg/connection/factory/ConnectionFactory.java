@@ -8,7 +8,7 @@ import java.net.Socket;
 public interface ConnectionFactory
 {
 
-    Socket get(GatewayContext connection) throws IOException;
+    Socket get(GatewayContext connection, String hostName, int port) throws IOException;
 
     void release(Socket socket);
 

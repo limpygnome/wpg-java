@@ -1,10 +1,10 @@
-package com.worldpay.sdk.wpg.xml.decorator;
+package com.worldpay.sdk.wpg.xml.serializer;
 
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
-public class AddressDecorator
+public class AddressSerializer
 {
     public static void decorate(XmlBuildParams params, Address billingAddress, Address shippingAddress)
     {

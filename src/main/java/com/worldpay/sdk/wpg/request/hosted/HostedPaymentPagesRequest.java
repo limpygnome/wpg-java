@@ -6,10 +6,10 @@ import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlRequest;
-import com.worldpay.sdk.wpg.xml.decorator.AddressDecorator;
-import com.worldpay.sdk.wpg.xml.decorator.OrderDetailsDecorator;
-import com.worldpay.sdk.wpg.xml.decorator.PaymentMethodMaskDecorator;
-import com.worldpay.sdk.wpg.xml.decorator.ShopperDecorator;
+import com.worldpay.sdk.wpg.xml.serializer.AddressSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.OrderDetailsSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.PaymentMethodMaskSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.ShopperSerializer;
 
 public class HostedPaymentPagesRequest extends XmlRequest
 {
@@ -45,10 +45,10 @@ public class HostedPaymentPagesRequest extends XmlRequest
     @Override
     protected void build(XmlBuildParams params)
     {
-        OrderDetailsDecorator.decorate(params, orderDetails);
-        ShopperDecorator.decorate(params, shopper);
-        AddressDecorator.decorate(params, billingAddress, shippingAddress);
-        PaymentMethodMaskDecorator.decorate(params, paymentMethodFilter);
+        OrderDetailsSerializer.decorate(params, orderDetails);
+        ShopperSerializer.decorate(params, shopper);
+        AddressSerializer.decorate(params, billingAddress, shippingAddress);
+        PaymentMethodMaskSerializer.decorate(params, paymentMethodFilter);
     }
 
     public HostedPaymentPagesRequest orderDetails(OrderDetails orderDetails)

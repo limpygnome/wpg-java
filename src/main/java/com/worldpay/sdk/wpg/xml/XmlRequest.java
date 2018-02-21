@@ -2,23 +2,23 @@ package com.worldpay.sdk.wpg.xml;
 
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.SessionContext;
+import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.connection.factory.ConnectionFactory;
+import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.Request;
 import com.worldpay.sdk.wpg.response.Response;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Base64;
 import java.util.Map;
 
 public abstract class XmlRequest implements Request
@@ -46,11 +46,21 @@ public abstract class XmlRequest implements Request
 
         try
         {
+            URL url = getUrl(gatewayContext);
+
             // build request
-            byte[] request = buildRequest(gatewayContext, sessionContext);
+            byte[] request = buildRequest(url, gatewayContext, sessionContext);
 
             // open connection
-            socket = connectionFactory.get(gatewayContext);
+            String hostName = url.getHost();
+            int port = url.getPort();
+
+            if (port < 1)
+            {
+                port = 443;
+            }
+
+            socket = connectionFactory.get(gatewayContext, hostName, port);
 
             // write payload
             OutputStream os = socket.getOutputStream();
@@ -58,25 +68,24 @@ public abstract class XmlRequest implements Request
             os.flush();
 
             // handle response
-            Response response = readResponse(socket, sessionContext);
+            Response response = readResponse(connectionFactory, socket, sessionContext);
             return response;
         }
         catch (IOException e)
         {
-            throw new WpgConnectionException();
-        }
-        finally
-        {
+            // Unexpected problem, release the socket prematurely
             if (socket != null)
             {
                 connectionFactory.release(socket);
             }
+
+            throw new WpgConnectionException(e);
         }
     }
 
     protected abstract void build(XmlBuildParams params);
 
-    private byte[] buildRequest(GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException
+    private byte[] buildRequest(URL url, GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException
     {
         try
         {
@@ -85,11 +94,16 @@ public abstract class XmlRequest implements Request
             build(params);
             String xml = builder.toString();
             byte[] payload = xml.getBytes("UTF-8");
-            byte[] headers = buildHeaders(gatewayContext, sessionContext, payload.length);
+            byte[] headers = buildHeaders(url, gatewayContext, sessionContext, payload.length);
 
             byte[] request = new byte[headers.length + payload.length];
             System.arraycopy(headers, 0, request, 0, headers.length);
             System.arraycopy(payload, 0, request, headers.length, payload.length);
+
+            // TODO drop after dev
+            String text = new String(request, "UTF-8");
+            System.out.println(text);
+
             return request;
         }
         catch (UnsupportedEncodingException e)
@@ -98,15 +112,18 @@ public abstract class XmlRequest implements Request
         }
     }
 
-    private byte[] buildHeaders(GatewayContext gatewayContext, SessionContext sessionContext, long payloadSize) throws WpgRequestException
+    private byte[] buildHeaders(URL url, GatewayContext gatewayContext, SessionContext sessionContext, long payloadSize) throws WpgRequestException
     {
         try
         {
-            URL url = getUrl(gatewayContext);
+            UserPassAuth auth = (UserPassAuth) gatewayContext.getAuth();
+            String authHeaderValue = authHeader(auth.getUser() + ":" + auth.getPass());
 
             StringBuilder buff = new StringBuilder();
             buff.append("POST ").append(url.getPath()).append(" HTTP/1.1").append("\r\n");
             buff.append("Host: ").append(url.getHost()).append("\r\n");
+            buff.append("Content-Type: text/xml; charset=utf-8\r\n");
+            buff.append("Authorization: Basic " + authHeaderValue).append("\r\n");
 
             // append headers
             for (Map.Entry<String, String> header : sessionContext.getHeaders().entrySet())
@@ -115,7 +132,7 @@ public abstract class XmlRequest implements Request
             }
 
             // append content/payload length
-            buff.append("Length: ").append(payloadSize).append("\r\n");
+            buff.append("Content-Length: ").append(payloadSize).append("\r\n");
             buff.append("\r\n");
 
             byte[] headers = buff.toString().getBytes("UTF-8");
@@ -124,6 +141,19 @@ public abstract class XmlRequest implements Request
         catch (UnsupportedEncodingException e)
         {
             throw new WpgRequestException("Failed to prepare request", e);
+        }
+    }
+
+    private String authHeader(String value)
+    {
+        try
+        {
+            String encoded = Base64.getEncoder().encodeToString(value.getBytes("UTF-8"));
+            return encoded;
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new RuntimeException("UTF-8 charset not available", e);
         }
     }
 
@@ -140,32 +170,38 @@ public abstract class XmlRequest implements Request
         }
     }
 
-    private Response readResponse(Socket socket, SessionContext sessionContext) throws IOException
+    private Response readResponse(ConnectionFactory connectionFactory, Socket socket, SessionContext sessionContext) throws IOException, WpgRequestException
     {
         // read raw response
-        StringBuilder rawResponseBuilder = new StringBuilder();
         InputStream is = socket.getInputStream();
-        InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 
-        try (Reader reader = new BufferedReader(isr))
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+        int maxBytes = -1;
+        int totalBytes = 0;
+        while ((maxBytes == -1 || totalBytes < maxBytes) && (bytesRead = is.read(buffer)) > 0)
         {
-            // TODO need to check this, seems dodgy for utf-8 chars...
-            int c = reader.read();
-            if (c > 0)
+            baos.write(buffer, 0, bytesRead);
+            totalBytes += bytesRead;
+
+            // check whether response has content-length yet
+            if (maxBytes == -1)
             {
-                rawResponseBuilder.append((char) c);
+                maxBytes = readMaxLength(baos.toByteArray());
             }
         }
 
-        // split by headers/text
-        String rawResponse = rawResponseBuilder.toString();
-        int headerSplit = rawResponse.indexOf("\r\n\r\n");
-        String rawHeader = headerSplit > 0 ? rawResponse.substring(0, headerSplit) : "";
-        String body = headerSplit > 0 && rawResponse.length() - (headerSplit+4) > 0 ? rawResponse.substring(headerSplit + 4) : "";
-        Map<String, String> headers = readHeaders(rawHeader);
+        byte[] rawResponse = baos.toByteArray();
+
+        // release socket early as possible
+        connectionFactory.release(socket);
+
+        // read http request parts
+        HttpResponse httpResponse = new HttpResponse(rawResponse);
 
         // copy cookies to session
-        String cookies = headers.get("Set-Cookie");
+        String cookies = httpResponse.getHeader("Set-Cookie");
         if (cookies != null)
         {
             sessionContext.addHeader("Cookies", cookies);
@@ -173,25 +209,15 @@ public abstract class XmlRequest implements Request
 
         // deserialize
         XmlResponseRecognizer recognizer = new XmlResponseRecognizer();
-        Response response = recognizer.match(headers, body);
+        Response response = recognizer.match(httpResponse);
         return response;
     }
 
-    private Map<String, String> readHeaders(String headers)
+    private int readMaxLength(byte[] data)
     {
-        Map<String, String> result = new HashMap<>();
-        String[] lines = headers.split("\r\n");
-        for (String line : lines)
-        {
-            int sep = line.indexOf(":");
-            if (sep > 0 && sep < line.length()+1)
-            {
-                String key = line.substring(0, sep);
-                String value = line.substring(sep + 1);
-                result.put(key, value);
-            }
-        }
-        return result;
+        HttpResponse httpResponse = new HttpResponse(data);
+        Long length = httpResponse.getHeaderAsLong("Content-Length");
+        return length != null ? length.intValue() : -1;
     }
 
 }

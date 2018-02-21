@@ -1,16 +1,14 @@
 package com.worldpay.sdk.wpg.response;
 
+import com.worldpay.sdk.wpg.connection.http.HttpResponse;
+
 import java.util.Map;
 
-public interface Response
+public interface Response<T>
 {
 
-    Map<String, String> getHeaders();
+    HttpResponse getHttpResponse();
 
-    String getText();
-
-    Object getObject();
-
-    void parse(Object response);
+    T getObject();
 
 }

@@ -1,11 +1,11 @@
-package com.worldpay.sdk.wpg.xml.decorator;
+package com.worldpay.sdk.wpg.xml.serializer;
 
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
-public class ShopperDecorator
+public class ShopperSerializer
 {
     public static void decorate(XmlBuildParams params, Shopper shopper)
     {
