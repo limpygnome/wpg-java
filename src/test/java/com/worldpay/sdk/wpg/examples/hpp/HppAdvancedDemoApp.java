@@ -1,8 +1,7 @@
-package com.worldpay.sdk.wpg.demo;
+package com.worldpay.sdk.wpg.examples.hpp;
 
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
-import com.worldpay.sdk.wpg.connection.SessionContext;
 import com.worldpay.sdk.wpg.connection.auth.Auth;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
@@ -12,6 +11,7 @@ import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
@@ -19,7 +19,7 @@ import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
 
 import java.util.Locale;
 
-public class HppDemoApp
+public class HppAdvancedDemoApp
 {
 
     public static void main(String[] args)
@@ -36,14 +36,19 @@ public class HppDemoApp
         Address shippingAddress = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
         Shopper shopper = new Shopper("test@test.com");
 
+        // filter payment methods available
+        PaymentMethodFilter filter = new PaymentMethodFilter();
+        filter.include(PaymentMethod.VISA, PaymentMethod.PAYPAL);
+
         try
         {
-            // create's order
+            // create order
             RedirectUrlResponse response = (RedirectUrlResponse) new HostedPaymentPagesRequest()
                     .orderDetails(orderDetails)
                     .billingAddress(billingAddress)
                     .shippingAddress(shippingAddress)
                     .shopper(shopper)
+                    .filter(filter)
                     .send(gatewayContext);
 
             // decorates url with additional parameters

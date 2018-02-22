@@ -1,4 +1,4 @@
 - strict validation everywhere.
-- xmlbuilder2 might not be good, better to catch anything proactively
 - enforce final on classes, people will otherwise try to override parts of classes with hacks
 - proxy support for connections
+- whether java 1.7 should be supported
