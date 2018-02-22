@@ -2,7 +2,9 @@ package com.worldpay.sdk.wpg.xml;
 
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import org.w3c.dom.CharacterData;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -13,6 +15,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -96,6 +99,11 @@ public class XmlBuilder
         return this;
     }
 
+    public boolean isCurrentTag(String tagName)
+    {
+        return current.getTagName().equals(tagName);
+    }
+
     public boolean hasE(String name)
     {
         NodeList list = current.getElementsByTagName(name);
@@ -152,6 +160,16 @@ public class XmlBuilder
         {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+
+            DOMImplementation domImplementation = document.getImplementation();
+            DocumentType docType = domImplementation.createDocumentType(
+                    "doctype", "-//Worldpay//DTD Worldpay PaymentService v1//EN", "http://dtd.worldpay.com/paymentService_v1.dtd"
+            );
+
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, docType.getPublicId());
+            transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, docType.getSystemId());
+
             DOMSource domSource = new DOMSource(document);
             StringWriter writer = new StringWriter(4096);
             StreamResult streamResult = new StreamResult(writer);

@@ -39,6 +39,11 @@ public abstract class XmlRequest implements Request
         }
     }
 
+    public Response send(GatewayContext gatewayContext) throws WpgRequestException, WpgConnectionException
+    {
+        return send(gatewayContext, new SessionContext());
+    }
+
     public Response send(GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException, WpgConnectionException
     {
         ConnectionFactory connectionFactory = gatewayContext.getConnectionFactory();
@@ -90,8 +95,11 @@ public abstract class XmlRequest implements Request
         try
         {
             XmlBuilder builder = new XmlBuilder("paymentService");
+            builder.a("version", "1.4");
+
             XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder);
             build(params);
+
             String xml = builder.toString();
             byte[] payload = xml.getBytes("UTF-8");
             byte[] headers = buildHeaders(url, gatewayContext, sessionContext, payload.length);
@@ -178,27 +186,26 @@ public abstract class XmlRequest implements Request
         ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
         byte[] buffer = new byte[4096];
         int bytesRead;
-        int maxBytes = -1;
-        int totalBytes = 0;
-        while ((maxBytes == -1 || totalBytes < maxBytes) && (bytesRead = is.read(buffer)) > 0)
+        boolean complete = false;
+        HttpResponse httpResponse = null;
+
+        while (!complete && (bytesRead = is.read(buffer)) > 0)
         {
+            // write latest data read
             baos.write(buffer, 0, bytesRead);
-            totalBytes += bytesRead;
 
-            // check whether response has content-length yet
-            if (maxBytes == -1)
-            {
-                maxBytes = readMaxLength(baos.toByteArray());
-            }
+            // parse as response and check whether full response received yet
+            httpResponse = new HttpResponse(baos.toByteArray());
+            complete = httpResponse.isComplete();
         }
-
-        byte[] rawResponse = baos.toByteArray();
 
         // release socket early as possible
         connectionFactory.release(socket);
 
-        // read http request parts
-        HttpResponse httpResponse = new HttpResponse(rawResponse);
+        if (httpResponse == null || !httpResponse.isComplete())
+        {
+            throw new WpgRequestException("Incomplete response from gateway");
+        }
 
         // copy cookies to session
         String cookies = httpResponse.getHeader("Set-Cookie");
@@ -211,13 +218,6 @@ public abstract class XmlRequest implements Request
         XmlResponseRecognizer recognizer = new XmlResponseRecognizer();
         Response response = recognizer.match(httpResponse);
         return response;
-    }
-
-    private int readMaxLength(byte[] data)
-    {
-        HttpResponse httpResponse = new HttpResponse(data);
-        Long length = httpResponse.getHeaderAsLong("Content-Length");
-        return length != null ? length.intValue() : -1;
     }
 
 }

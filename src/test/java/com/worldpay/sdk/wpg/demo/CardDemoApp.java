@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg;
+package com.worldpay.sdk.wpg.demo;
 
 public class CardDemoApp
 {

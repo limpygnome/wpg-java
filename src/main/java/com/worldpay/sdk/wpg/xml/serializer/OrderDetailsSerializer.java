@@ -21,7 +21,7 @@ public class OrderDetailsSerializer
 
         if (auth.getInstallationId() != null)
         {
-            builder.a("installationId", String.valueOf(auth.getInstallationId()));
+            builder.a("installationId", auth.getInstallationId());
         }
 
         // append description
@@ -39,6 +39,9 @@ public class OrderDetailsSerializer
                     .a("currencyCode", amount.getCurrency().ISO4217_CURRENCY_CODE)
                     .a("exponent", String.valueOf(amount.getExponent()))
                     .a("value", String.valueOf(amount.getValue()));
+
+        // reset
+        builder.reset();
     }
 
 }

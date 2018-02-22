@@ -11,6 +11,8 @@ import java.util.Map;
 public class HttpResponse
 {
     private final Map<String, String> headers;
+    private final long contentLength;
+    private final boolean complete;
     private final String body;
 
     public HttpResponse(byte[] data)
@@ -29,6 +31,12 @@ public class HttpResponse
 
             // read body
             body = headerSplit > 0 && fullText.length() - (headerSplit + 4) > 0 ? fullText.substring(headerSplit + 4) : "";
+
+            // check whether full request has been read
+            contentLength = getHeaderAsLong("Content-Length");
+
+            // TODO doesn't work for UTF-8 chars?
+            complete = (body.length() == contentLength);
         }
         catch (UnsupportedEncodingException e)
         {
@@ -81,6 +89,16 @@ public class HttpResponse
         }
 
         return result;
+    }
+
+    public long getContentLength()
+    {
+        return contentLength;
+    }
+
+    public boolean isComplete()
+    {
+        return complete;
     }
 
     public String getBody()

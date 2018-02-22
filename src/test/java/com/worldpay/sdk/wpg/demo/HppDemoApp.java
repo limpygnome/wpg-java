@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg;
+package com.worldpay.sdk.wpg.demo;
 
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
@@ -11,39 +11,54 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
 import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
+
+import java.util.Locale;
 
 public class HppDemoApp
 {
 
     public static void main(String[] args)
     {
-        // setup sharable gateway
-        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", 100875L);
+        // setup gateway details
+        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", "1008775");
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
 
-        // build payment details
+        // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1000L);
-        OrderDetails orderDetails = new OrderDetails(amount);
+        OrderDetails orderDetails = new OrderDetails("test order", amount);
 
-        Address billingAddress = new Address("123 test address", "1234", CountryCode.GREAT_BRITAIN);
-        Address shippingAddress = new Address("123 test address", "1234", CountryCode.GREAT_BRITAIN);
+        Address billingAddress = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
+        Address shippingAddress = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
         Shopper shopper = new Shopper("test@test.com");
 
-        // send payment(s)
         try
         {
+            // create's order
             RedirectUrlResponse response = (RedirectUrlResponse) new HostedPaymentPagesRequest()
                     .orderDetails(orderDetails)
                     .billingAddress(billingAddress)
                     .shippingAddress(shippingAddress)
                     .shopper(shopper)
-                    .send(gatewayContext, new SessionContext());
+                    .send(gatewayContext);
 
-            System.out.println(response.getUrl());
+            // decorates url with additional parameters
+            String url = response
+                    .append()
+                    .cancelUrl("http://merchant.com/result/cancel")
+                    .errorUrl("http://merchant.com/result/error")
+                    .failureUrl("http://merchant.com/result/error")
+                    .pendingUrl("http://merchant.com/result/pending")
+                    .successUrl("http://merchant.com/result/success")
+                    .languageAndCountry(Locale.CANADA_FRENCH)
+                    .preferredPaymentMethod(PaymentMethod.VISA)
+                    .build();
+
+            System.out.println(url);
         }
         catch (WpgConnectionException e)
         {

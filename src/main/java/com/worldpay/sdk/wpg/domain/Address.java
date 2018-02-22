@@ -15,9 +15,10 @@ public class Address
     private CountryCode countryCode;
     private String telephoneNumber;
 
-    public Address(String address1, String postalCode, CountryCode countryCode)
+    public Address(String address1, String city, String postalCode, CountryCode countryCode)
     {
         this.address1 = address1;
+        this.city = city;
         this.postalCode = postalCode;
         this.countryCode = countryCode;
     }

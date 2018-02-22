@@ -5,9 +5,9 @@ public class UserPassAuth implements Auth
     private String user;
     private String pass;
     private String merchantCode;
-    private Long installationId;
+    private String installationId;
 
-    public UserPassAuth(String user, String pass, String merchantCode, Long installationId)
+    public UserPassAuth(String user, String pass, String merchantCode, String installationId)
     {
         this.user = user;
         this.pass = pass;
@@ -32,7 +32,7 @@ public class UserPassAuth implements Auth
         return merchantCode;
     }
 
-    public Long getInstallationId()
+    public String getInstallationId()
     {
         return installationId;
     }

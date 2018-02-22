@@ -24,6 +24,7 @@ public class AddressSerializer
         builder.e(elementName)
                 .e("address");
 
+        // TODO need to determine what is actually mandatory
         if (address.getAddress1() == null)
         {
             throw new IllegalArgumentException("Address 1 is mandatory for " + elementName);

@@ -14,7 +14,7 @@ public class RedirectUrlResponse extends XmlResponse
     public RedirectUrlResponse(HttpResponse httpResponse, XmlBuilder builder)
     {
         super(httpResponse, builder);
-        this.url = builder.e("paymentService").e("reply").e("orderStatus").e("reference").cdata();
+        this.url = builder.reset().e("reply").e("orderStatus").e("reference").cdata();
         Assert.notNull(url, "Failed to read redirect reply");
     }
 
@@ -25,7 +25,7 @@ public class RedirectUrlResponse extends XmlResponse
 
     public RedirectBuilder append()
     {
-        return new RedirectBuilder();
+        return new RedirectBuilder(url);
     }
 
 }

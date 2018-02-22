@@ -20,7 +20,7 @@ public class XmlResponseRecognizer
 
         Response response = null;
 
-        if (builder.hasE("paymentService"))
+        if (builder.isCurrentTag("paymentService"))
         {
             if (builder.hasE("reply"))
             {
@@ -33,7 +33,7 @@ public class XmlResponseRecognizer
 
         if (response == null)
         {
-            throw new WpgRequestException("Unable to handle server response: \n" + httpResponse);
+            throw new WpgRequestException("Unable to handle server response: \n" + httpResponse.getBody());
         }
 
         return response;

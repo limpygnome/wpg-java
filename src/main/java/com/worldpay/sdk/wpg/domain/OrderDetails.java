@@ -10,11 +10,6 @@ public class OrderDetails
     private String description;
     private Amount amount;
 
-    public OrderDetails(Amount amount)
-    {
-        this(null, null, amount);
-    }
-
     public OrderDetails(String description, Amount amount)
     {
         this(null, description, amount);

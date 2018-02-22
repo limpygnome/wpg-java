@@ -46,9 +46,9 @@ public class HostedPaymentPagesRequest extends XmlRequest
     protected void build(XmlBuildParams params)
     {
         OrderDetailsSerializer.decorate(params, orderDetails);
+        PaymentMethodMaskSerializer.decorate(params, paymentMethodFilter);
         ShopperSerializer.decorate(params, shopper);
         AddressSerializer.decorate(params, billingAddress, shippingAddress);
-        PaymentMethodMaskSerializer.decorate(params, paymentMethodFilter);
     }
 
     public HostedPaymentPagesRequest orderDetails(OrderDetails orderDetails)
