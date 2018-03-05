@@ -4,12 +4,92 @@ import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Session;
+import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.xml.XmlRequest;
+import com.worldpay.sdk.wpg.xml.serializer.AddressSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.CardDetailsSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.OrderDetailsSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.SessionSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.ShopperSerializer;
 
-public class CardPaymentRequest// extends XmlRequest implements BatchableRequest
+public class CardPaymentRequest extends XmlRequest
 {
-    private OrderDetails details;
+    // Mandatory
+    private OrderDetails orderDetails;
+    private CardDetails cardDetails;
+    private Shopper shopper;
+
+    // Optional
     private Address billingAddress;
     private Address shippingAddress;
-    private CardDetails cardDetails;
     private Session session;
+
+    public CardPaymentRequest() { }
+
+    // TODO merge session with shopper
+    public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Session session, Shopper shopper)
+    {
+        this.orderDetails = orderDetails;
+        this.cardDetails = cardDetails;
+        this.session = session;
+        this.shopper = shopper;
+    }
+
+    public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Session session, Shopper shopper, Address billingAddress, Address shippingAddress)
+    {
+        this.orderDetails = orderDetails;
+        this.cardDetails = cardDetails;
+        this.session = session;
+        this.shopper = shopper;
+        this.billingAddress = billingAddress;
+        this.shippingAddress = shippingAddress;
+    }
+
+    @Override
+    protected void build(XmlBuildParams params)
+    {
+        OrderDetailsSerializer.decorate(params, orderDetails);
+        CardDetailsSerializer.decorate(params, cardDetails);
+        SessionSerializer.decorate(params, session);
+        ShopperSerializer.decorate(params, shopper);
+        AddressSerializer.decorate(params, billingAddress, shippingAddress);
+    }
+
+    public CardPaymentRequest orderDetails(OrderDetails orderDetails)
+    {
+        this.orderDetails = orderDetails;
+        return this;
+    }
+
+    public CardPaymentRequest cardDetails(CardDetails cardDetails)
+    {
+        this.cardDetails = cardDetails;
+        return this;
+    }
+
+    public CardPaymentRequest shopper(Shopper shopper)
+    {
+        this.shopper = shopper;
+        return this;
+    }
+
+    public CardPaymentRequest billingAddress(Address billingAddress)
+    {
+        this.billingAddress = billingAddress;
+        return this;
+    }
+
+    public CardPaymentRequest shippingAddress(Address shippingAddress)
+    {
+        this.shippingAddress = shippingAddress;
+        return this;
+    }
+
+    public CardPaymentRequest session(Session session)
+    {
+        this.session = session;
+        return this;
+    }
+
 }

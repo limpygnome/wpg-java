@@ -220,4 +220,11 @@ public abstract class XmlRequest implements Request
         return response;
     }
 
+    private int readMaxLength(byte[] data)
+    {
+        HttpResponse httpResponse = new HttpResponse(data);
+        Long length = httpResponse.getHeaderAsLong("Content-Length");
+        return length != null ? length.intValue() : -1;
+    }
+
 }

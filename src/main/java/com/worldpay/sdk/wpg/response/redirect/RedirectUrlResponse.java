@@ -1,6 +1,7 @@
 package com.worldpay.sdk.wpg.response.redirect;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
+import com.worldpay.sdk.wpg.response.ResponseType;
 import com.worldpay.sdk.wpg.validation.Assert;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.xml.XmlResponse;
@@ -26,6 +27,12 @@ public class RedirectUrlResponse extends XmlResponse
     public RedirectBuilder append()
     {
         return new RedirectBuilder(url);
+    }
+
+    @Override
+    public ResponseType getResponseType()
+    {
+        return ResponseType.REDIRECT;
     }
 
 }

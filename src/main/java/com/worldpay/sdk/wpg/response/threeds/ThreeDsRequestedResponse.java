@@ -1,17 +1,16 @@
 package com.worldpay.sdk.wpg.response.threeds;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
+import com.worldpay.sdk.wpg.response.ResponseType;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.xml.XmlResponse;
 
-import java.util.Map;
-
-public class RequestThreeDsResponse extends XmlResponse
+public class ThreeDsRequestedResponse extends XmlResponse
 {
     private final String issuerURL;
     private final String paRequest;
 
-    public RequestThreeDsResponse(HttpResponse httpResponse, XmlBuilder builder)
+    public ThreeDsRequestedResponse(HttpResponse httpResponse, XmlBuilder builder)
     {
         super(httpResponse, builder);
 
@@ -30,6 +29,12 @@ public class RequestThreeDsResponse extends XmlResponse
     public String getPaRequest()
     {
         return paRequest;
+    }
+
+    @Override
+    public ResponseType getResponseType()
+    {
+        return ResponseType.THREEDS_REQUESTED;
     }
 
 }

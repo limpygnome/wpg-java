@@ -15,6 +15,7 @@ public class OrderDetailsSerializer
 
         // build order element
         builder = builder
+                .a("merchantCode", auth.getUser())
                 .e("submit")
                 .e("order")
                     .a("orderCode", orderDetails.getOrderCode());

@@ -19,10 +19,23 @@ public class AddressSerializer
         builder.reset();
     }
 
+    public static void decorateCurrentElement(XmlBuildParams params, Address address)
+    {
+        if (address != null)
+        {
+            XmlBuilder builder = params.xmlBuilder();
+            decorateAddress(null, builder, address);
+        }
+    }
+
     private static void decorateAddress(String elementName, XmlBuilder builder, Address address)
     {
-        builder.e(elementName)
-                .e("address");
+        if (elementName != null)
+        {
+            builder.e(elementName);
+        }
+
+        builder.e("address");
 
         // TODO need to determine what is actually mandatory
         if (address.getAddress1() == null)

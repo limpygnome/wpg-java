@@ -5,8 +5,9 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
 import com.worldpay.sdk.wpg.response.error.ErrorResponse;
+import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
-import com.worldpay.sdk.wpg.response.threeds.RequestThreeDsResponse;
+import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 
 /**
  * Takes XML response and delegates it to the correct response handler class based on matching certain elements.
@@ -51,7 +52,7 @@ public class XmlResponseRecognizer
         {
             if (builder.hasE("request3DSecure"))
             {
-                response = new RequestThreeDsResponse(httpResponse, builder);
+                response = new ThreeDsRequestedResponse(httpResponse, builder);
             }
         }
         else if (builder.hasE("fxApprovalRequired"))
@@ -60,7 +61,7 @@ public class XmlResponseRecognizer
         }
         else if (builder.hasE("payment"))
         {
-            // TODO payment
+            response = new PaymentResponse(httpResponse, builder);
         }
         else if (builder.hasE("reference"))
         {

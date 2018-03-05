@@ -2,7 +2,8 @@ package com.worldpay.sdk.wpg.domain.payment;
 
 public enum Currency
 {
-    GBP("GBP");
+    GBP("GBP"),
+    BOB("BOB");
 
     public final String ISO4217_CURRENCY_CODE;
 

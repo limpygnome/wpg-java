@@ -9,40 +9,45 @@ public class ShopperSerializer
 {
     public static void decorate(XmlBuildParams params, Shopper shopper)
     {
-        XmlBuilder builder = params.xmlBuilder();
-
-        // Get to shopper element
-        builder.e("submit")
-                .e("order")
-                .e("shopper");
-
-        // Append details
-        if (shopper.getEmail() == null)
+        if (shopper != null)
         {
-            throw new IllegalArgumentException("Shopper e-mail address is mandatory");
-        }
+            XmlBuilder builder = params.xmlBuilder();
 
-        builder.e("shopperEmailAddress").cdata(shopper.getEmail()).up();
+            // Get to shopper element
+            builder.e("submit")
+                    .e("order")
+                    .e("shopper");
 
-        if (shopper.getShopperId() != null)
-        {
-            builder.e("authenticatedShopperID").cdata(shopper.getShopperId()).up();
-        }
+            // Append details
+            if (shopper.getEmail() == null)
+            {
+                throw new IllegalArgumentException("Shopper e-mail address is mandatory");
+            }
 
-        ShopperBrowser browser = shopper.getBrowser();
+            builder.e("shopperEmailAddress").cdata(shopper.getEmail()).up();
 
-        if (browser != null)
-        {
+            if (shopper.getShopperId() != null)
+            {
+                builder.e("authenticatedShopperID").cdata(shopper.getShopperId()).up();
+            }
+
+            ShopperBrowser browser = shopper.getBrowser();
             decorateBrowser(builder, browser);
-        }
 
-        // Reset
-        builder.reset();
+            // Reset
+            builder.reset();
+        }
     }
 
     private static void decorateBrowser(XmlBuilder builder, ShopperBrowser browser)
     {
-        // TODO later
+        if (browser != null)
+        {
+            builder.e("browser")
+                    .e("acceptHeader").cdata(browser.getAcceptHeader()).up()
+                    .e("userAgentHeader").cdata(browser.getUserAgentHeader()).up()
+                    .up();
+        }
     }
 
 }
