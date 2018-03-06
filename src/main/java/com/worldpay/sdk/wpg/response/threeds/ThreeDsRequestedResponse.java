@@ -31,6 +31,11 @@ public class ThreeDsRequestedResponse extends XmlResponse
         return paRequest;
     }
 
+    public ThreeDsRedirectBuilder createRedirectPage()
+    {
+        return new ThreeDsRedirectBuilder(this);
+    }
+
     @Override
     public ResponseType getResponseType()
     {

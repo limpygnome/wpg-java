@@ -8,7 +8,6 @@ import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Session;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
@@ -16,7 +15,6 @@ import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
-import com.worldpay.sdk.wpg.response.PaymentResultResponse;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
 import com.worldpay.sdk.wpg.response.error.ErrorResponse;
@@ -37,7 +35,7 @@ public class CardSimpleDemoApp
         OrderDetails orderDetails = new OrderDetails("test order", amount);
 
         Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
-        Shopper shopper = new Shopper("test@test.com");
+        Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         // build card details
         CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", 123, address);
@@ -48,7 +46,6 @@ public class CardSimpleDemoApp
             Response response = new CardPaymentRequest()
                     .orderDetails(orderDetails)
                     .cardDetails(cardDetails)
-                    .session(new Session("test-ip"))
                     .billingAddress(address)
                     .shippingAddress(address)
                     .shopper(shopper)
@@ -62,11 +59,11 @@ public class CardSimpleDemoApp
                     break;
                 case THREEDS_REQUESTED:
                     ThreeDsRequestedResponse threeDs = (ThreeDsRequestedResponse) response;
-                    // do something...
+                    System.out.println("3ds required - issuer URL:" + threeDs.getIssuerURL() + ", paRes: " + threeDs.getPaRequest());
                     break;
                 case PAYMENT_STATUS:
-                    PaymentResponse orderStatus = (PaymentResponse) response;
-                    // do something...
+                    PaymentResponse paymentResponse = (PaymentResponse) response;
+                    //System.out.println(paymentResponse.);
                     break;
                 case ERROR:
                     ErrorResponse error = (ErrorResponse) response;

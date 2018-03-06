@@ -14,8 +14,8 @@ import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
+import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.ResponseType;
-import com.worldpay.sdk.wpg.response.PaymentResultResponse;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
 import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
@@ -42,7 +42,7 @@ public class CardStateMachineDemoApp
         try
         {
             // create order
-            PaymentResultResponse response = (PaymentResultResponse) new CardPaymentRequest()
+            Response response = new CardPaymentRequest()
                     .orderDetails(orderDetails)
                     .cardDetails(cardDetails)
                     .billingAddress(address)
@@ -55,9 +55,9 @@ public class CardStateMachineDemoApp
 
             do
             {
-                result = response.getResult();
+                result = response.getResponseType();
 
-                switch (response.getResult())
+                switch (result)
                 {
                     case CURRENCY_CONVERSION_REQUESTED:
                         CurrencyConversionResponse currencyConversion = (CurrencyConversionResponse) response;
@@ -70,14 +70,14 @@ public class CardStateMachineDemoApp
                     case THREEDS_REQUESTED:
                         ThreeDsRequestedResponse threeDs = (ThreeDsRequestedResponse) response;
                         break;
-                    case ORDER_STATUS:
+                    case PAYMENT_STATUS:
                         PaymentResponse orderStatus = (PaymentResponse) response;
                         break;
                     default:
-                        throw new IllegalStateException("Unhandled response - result=" + response.getResult());
+                        throw new IllegalStateException("Unhandled response - result=" + result);
                 }
             }
-            while (continuePayment && result != ResponseType.ORDER_STATUS);
+            while (continuePayment && result != ResponseType.PAYMENT_STATUS);
         }
         catch (WpgConnectionException e)
         {

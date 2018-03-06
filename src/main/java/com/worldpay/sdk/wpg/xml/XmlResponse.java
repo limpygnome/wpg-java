@@ -6,7 +6,7 @@ import com.worldpay.sdk.wpg.response.Response;
 import java.util.Collections;
 import java.util.Map;
 
-public class XmlResponse implements Response<XmlBuilder>
+public abstract class XmlResponse implements Response<XmlBuilder>
 {
     protected final HttpResponse httpResponse;
     protected final XmlBuilder builder;

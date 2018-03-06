@@ -3,7 +3,6 @@ package com.worldpay.sdk.wpg.request.card;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Session;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlRequest;
@@ -23,24 +22,21 @@ public class CardPaymentRequest extends XmlRequest
     // Optional
     private Address billingAddress;
     private Address shippingAddress;
-    private Session session;
 
     public CardPaymentRequest() { }
 
     // TODO merge session with shopper
-    public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Session session, Shopper shopper)
+    public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Shopper shopper)
     {
         this.orderDetails = orderDetails;
         this.cardDetails = cardDetails;
-        this.session = session;
         this.shopper = shopper;
     }
 
-    public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Session session, Shopper shopper, Address billingAddress, Address shippingAddress)
+    public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Shopper shopper, Address billingAddress, Address shippingAddress)
     {
         this.orderDetails = orderDetails;
         this.cardDetails = cardDetails;
-        this.session = session;
         this.shopper = shopper;
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
@@ -51,7 +47,7 @@ public class CardPaymentRequest extends XmlRequest
     {
         OrderDetailsSerializer.decorate(params, orderDetails);
         CardDetailsSerializer.decorate(params, cardDetails);
-        SessionSerializer.decorate(params, session);
+        SessionSerializer.decorate(params, shopper);
         ShopperSerializer.decorate(params, shopper);
         AddressSerializer.decorate(params, billingAddress, shippingAddress);
     }
@@ -83,12 +79,6 @@ public class CardPaymentRequest extends XmlRequest
     public CardPaymentRequest shippingAddress(Address shippingAddress)
     {
         this.shippingAddress = shippingAddress;
-        return this;
-    }
-
-    public CardPaymentRequest session(Session session)
-    {
-        this.session = session;
         return this;
     }
 

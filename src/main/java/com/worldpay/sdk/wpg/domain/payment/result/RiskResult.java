@@ -1,6 +1,6 @@
-package com.worldpay.sdk.wpg.domain.payment;
+package com.worldpay.sdk.wpg.domain.payment.result;
 
-public class Risk
+public class RiskResult
 {
     private int value;
     private int finalScore;
