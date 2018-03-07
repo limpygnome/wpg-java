@@ -57,6 +57,10 @@ public class XmlBuilder
     public String a(String key)
     {
         String value = current.getAttribute(key);
+        if (value.length() == 0)
+        {
+            value = null;
+        }
         return value;
     }
 
@@ -70,8 +74,28 @@ public class XmlBuilder
         }
         catch (NumberFormatException e)
         {
-            throw new WpgRequestException("Failed to read attribute '" + key + "' at " + getPath());
+            throw new WpgRequestException("Failed to read attribute '" + key + "' at " + getPath() + " - value: " + value, e);
         }
+    }
+
+    public Integer aToIntegerOptional(String key) throws WpgRequestException
+    {
+        Integer result = null;
+        String value = a(key);
+
+        if (value != null)
+        {
+            try
+            {
+                result = Integer.parseInt(value);
+            }
+            catch (NumberFormatException e)
+            {
+                throw new WpgRequestException("Failed to read attribute '" + key + "' at " + getPath() + " - value: " + value, e);
+            }
+        }
+
+        return result;
     }
 
     public XmlBuilder e(String name)

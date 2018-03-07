@@ -19,6 +19,9 @@ public class PaymentMethodSerializer
             case "VISA-SSL":
                 method = PaymentMethod.VISA;
                 break;
+            case "VISA_CREDIT-SSL":
+                method = PaymentMethod.VISA_CREDIT;
+                break;
             case "ECMC-SSL":
                 method = PaymentMethod.MASTERCARD;
                 break;

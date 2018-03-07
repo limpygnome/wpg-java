@@ -4,6 +4,7 @@ import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
+import com.worldpay.sdk.wpg.domain.payment.result.Balance;
 import com.worldpay.sdk.wpg.domain.payment.result.ThreeDSecureResult;
 import com.worldpay.sdk.wpg.domain.payment.result.AvsResult;
 import com.worldpay.sdk.wpg.domain.payment.result.AvvResult;
@@ -11,16 +12,21 @@ import com.worldpay.sdk.wpg.domain.payment.result.CardResult;
 import com.worldpay.sdk.wpg.domain.payment.result.CvcResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
-import com.worldpay.sdk.wpg.domain.payment.result.RiskResult;
+import com.worldpay.sdk.wpg.domain.payment.result.RiskScoreResult;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.response.ResponseType;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.xml.XmlResponse;
 import com.worldpay.sdk.wpg.xml.serializer.AmountSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.result.AvsResultSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.result.AvvResultSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.result.BalanceSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.CardResultSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.result.CvcResultSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.ISO8583ResultSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.PaymentMethodSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.PayoutAuthorisationResultSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.result.RiskScoreResultSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.ThreeDSecureResultSerializer;
 
 /**
@@ -31,17 +37,16 @@ public class PaymentResponse extends XmlResponse
     private final PaymentMethod paymentMethod;
     private final Amount amount;
     private final PaymentStatus status;
+    private final Balance balance;
 
     private final CardResult cardResult;
     private final PayoutAuthorisationResult payoutAuthorisationResult;
     private final ISO8583Result iso8583Result;
     private final ThreeDSecureResult threeDSecureResult;
-
-    // TODO parse rest of results
-    //private final AvsResult avsResult;
-    //private final CvcResult cvcResult;
-    //private final AvvResult avvResult;
-    //private final RiskResult riskResult;
+    private final AvsResult avsResult;
+    private final CvcResult cvcResult;
+    private final AvvResult avvResult;
+    private final RiskScoreResult riskScoreResult;
 
     public PaymentResponse(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException
     {
@@ -67,7 +72,11 @@ public class PaymentResponse extends XmlResponse
         payoutAuthorisationResult = PayoutAuthorisationResultSerializer.read(builder);
         iso8583Result = ISO8583ResultSerializer.read(builder);
         threeDSecureResult = ThreeDSecureResultSerializer.read(builder);
-
+        avsResult = AvsResultSerializer.read(builder);
+        cvcResult = CvcResultSerializer.read(builder);
+        avvResult = AvvResultSerializer.read(builder);
+        balance = BalanceSerializer.read(builder);
+        riskScoreResult = RiskScoreResultSerializer.read(builder);
         builder.reset();
     }
 
@@ -130,17 +139,27 @@ public class PaymentResponse extends XmlResponse
 
     public AvsResult getAvsResult()
     {
-        return null;//avsResult;
+        return avsResult;
     }
 
     public CvcResult getCvcResult()
     {
-        return null;//cvcResult;
+        return cvcResult;
     }
 
     public AvvResult getAvvResult()
     {
-        return null;// avvResult;
+        return avvResult;
+    }
+
+    public Balance getBalance()
+    {
+        return balance;
+    }
+
+    public RiskScoreResult getRiskScoreResult()
+    {
+        return riskScoreResult;
     }
 
 }

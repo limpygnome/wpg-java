@@ -2,15 +2,25 @@ package com.worldpay.sdk.wpg.domain.payment;
 
 public class Amount
 {
-    private Currency currency;
-    private long exponent;
-    private long value;
+    private final Currency currency;
+    private final long exponent;
+    private final long value;
+    private final DebitCreditIndicator debitCreditIndicator;
 
     public Amount(Currency currency, long exponent, long value)
     {
         this.currency = currency;
         this.exponent = exponent;
         this.value = value;
+        this.debitCreditIndicator = null;
+    }
+
+    public Amount(Currency currency, long exponent, long value, DebitCreditIndicator debitCreditIndicator)
+    {
+        this.currency = currency;
+        this.exponent = exponent;
+        this.value = value;
+        this.debitCreditIndicator = debitCreditIndicator;
     }
 
     public Currency getCurrency()
@@ -18,19 +28,9 @@ public class Amount
         return currency;
     }
 
-    public void setCurrency(Currency currency)
-    {
-        this.currency = currency;
-    }
-
     public long getExponent()
     {
         return exponent;
-    }
-
-    public void setExponent(long exponent)
-    {
-        this.exponent = exponent;
     }
 
     public long getValue()
@@ -38,9 +38,9 @@ public class Amount
         return value;
     }
 
-    public void setValue(long value)
+    public DebitCreditIndicator getDebitCreditIndicator()
     {
-        this.value = value;
+        return debitCreditIndicator;
     }
 
     @Override
@@ -50,6 +50,7 @@ public class Amount
                 "currency=" + currency +
                 ", exponent=" + exponent +
                 ", value=" + value +
+                ", debitCreditIndicator=" + debitCreditIndicator +
                 '}';
     }
 
