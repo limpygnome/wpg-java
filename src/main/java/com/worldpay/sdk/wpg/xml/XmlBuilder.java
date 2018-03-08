@@ -54,6 +54,12 @@ public class XmlBuilder
         return this;
     }
 
+    public XmlBuilder a(String key, int value)
+    {
+        String text = String.valueOf(value);
+        return a(key, text);
+    }
+
     public String a(String key)
     {
         String value = current.getAttribute(key);
@@ -146,6 +152,12 @@ public class XmlBuilder
         Text text = document.createTextNode(value);
         current.appendChild(text);
         return this;
+    }
+
+    public XmlBuilder cdata(int value)
+    {
+        String text = String.valueOf(value);
+        return cdata(text);
     }
 
     public String cdata()

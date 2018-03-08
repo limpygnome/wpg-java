@@ -6,8 +6,6 @@ import com.worldpay.sdk.wpg.validation.Assert;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.xml.XmlResponse;
 
-import java.util.Map;
-
 public class RedirectUrlResponse extends XmlResponse
 {
     private final String url;
@@ -24,9 +22,9 @@ public class RedirectUrlResponse extends XmlResponse
         return url;
     }
 
-    public RedirectBuilder append()
+    public PaymentPagesRedirectBuilder paymentPages()
     {
-        return new RedirectBuilder(url);
+        return new PaymentPagesRedirectBuilder(url);
     }
 
     @Override

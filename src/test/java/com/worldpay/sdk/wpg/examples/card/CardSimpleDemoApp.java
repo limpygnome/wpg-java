@@ -33,7 +33,6 @@ public class CardSimpleDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-
         Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 

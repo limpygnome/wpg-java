@@ -32,7 +32,6 @@ public class CardStateMachineDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-
         Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
         Shopper shopper = new Shopper("test@test.com");
 

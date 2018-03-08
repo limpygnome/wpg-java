@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.examples.hpp;
+package com.worldpay.sdk.wpg.examples.apm;
 
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
@@ -10,12 +10,15 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
+import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
-import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
+import com.worldpay.sdk.wpg.request.apm.PayPalPaymentRequest;
 import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
 
-public class HppSimpleDemoApp
+import java.util.UUID;
+
+public class PayPalTokenisationDemoApp
 {
 
     public static void main(String[] args)
@@ -27,18 +30,22 @@ public class HppSimpleDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-
         Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
-        Shopper shopper = new Shopper("test@test.com");
+
+        // provide a (unique) shopper identifier, and details for token
+        Shopper shopper = new Shopper("test@test.com", "shopper123");
+        CreateTokenDetails tokenDetails = new CreateTokenDetails("TOKEN_EVENT_1234", "monthly subscription");
 
         try
         {
             // create order
-            RedirectUrlResponse response = (RedirectUrlResponse) new HostedPaymentPagesRequest()
+            RedirectUrlResponse response = (RedirectUrlResponse) new PayPalPaymentRequest()
                     .orderDetails(orderDetails)
                     .billingAddress(address)
                     .shippingAddress(address)
                     .shopper(shopper)
+                    .resultURL("https://continue")
+                    .tokeniseForReoccurringPayments(tokenDetails)
                     .send(gatewayContext);
 
             System.out.println(response.getUrl());

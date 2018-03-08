@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 import java.util.Locale;
 
 // TODO validation on setters
-public final class RedirectBuilder
+public final class PaymentPagesRedirectBuilder
 {
     private static final String ENCODING_CHARSET = "UTF-8";
 
@@ -24,7 +24,7 @@ public final class RedirectBuilder
     private String country;
     private String language;
 
-    public RedirectBuilder(String orderUrl)
+    public PaymentPagesRedirectBuilder(String orderUrl)
     {
         this.orderUrl = orderUrl;
     }
@@ -77,43 +77,43 @@ public final class RedirectBuilder
         }
     }
 
-    public RedirectBuilder successUrl(String successUrl)
+    public PaymentPagesRedirectBuilder successUrl(String successUrl)
     {
         this.successUrl = successUrl;
         return this;
     }
 
-    public RedirectBuilder successUrl(URL successUrl)
+    public PaymentPagesRedirectBuilder successUrl(URL successUrl)
     {
         successUrl(successUrl.toString());
         return this;
     }
 
-    public RedirectBuilder pendingUrl(String pendingUrl)
+    public PaymentPagesRedirectBuilder pendingUrl(String pendingUrl)
     {
         this.pendingUrl = pendingUrl;
         return this;
     }
 
-    public RedirectBuilder failureUrl(String failureUrl)
+    public PaymentPagesRedirectBuilder failureUrl(String failureUrl)
     {
         this.failureUrl = failureUrl;
         return this;
     }
 
-    public RedirectBuilder errorUrl(String errorUrl)
+    public PaymentPagesRedirectBuilder errorUrl(String errorUrl)
     {
         this.errorUrl = errorUrl;
         return this;
     }
 
-    public RedirectBuilder cancelUrl(String cancelUrl)
+    public PaymentPagesRedirectBuilder cancelUrl(String cancelUrl)
     {
         this.cancelUrl = cancelUrl;
         return this;
     }
 
-    public RedirectBuilder allUrls(String url)
+    public PaymentPagesRedirectBuilder allUrls(String url)
     {
         successUrl(url);
         pendingUrl(url);
@@ -123,25 +123,25 @@ public final class RedirectBuilder
         return this;
     }
 
-    public RedirectBuilder preferredPaymentMethod(PaymentMethod paymentMethod)
+    public PaymentPagesRedirectBuilder preferredPaymentMethod(PaymentMethod paymentMethod)
     {
         this.preferredPaymentMethod = PaymentMethodTranslator.getMask(paymentMethod);
         return this;
     }
 
-    public RedirectBuilder language(String language)
+    public PaymentPagesRedirectBuilder language(String language)
     {
         this.language = language;
         return this;
     }
 
-    public RedirectBuilder country(String country)
+    public PaymentPagesRedirectBuilder country(String country)
     {
         this.country = country;
         return this;
     }
 
-    public RedirectBuilder languageAndCountry(Locale locale)
+    public PaymentPagesRedirectBuilder languageAndCountry(Locale locale)
     {
         this.language = locale.getLanguage();
         this.country = locale.getCountry();
