@@ -13,20 +13,8 @@ public class ThreeDSecureResultSerializer
         if (builder.hasE("ThreeDSecureResult"))
         {
             String description = builder.a("description");
-            String eci = null;
-            String cavv = null;
-
-            if (builder.hasE("eci"))
-            {
-                eci = builder.cdata();
-                builder.up();
-            }
-
-            if (builder.hasE("cavv"))
-            {
-                cavv = builder.cdata();
-                builder.up();
-            }
+            String eci = builder.getCdata("eci");
+            String cavv = builder.getCdata("cavv");
 
             result = new ThreeDSecureResult(description, eci, cavv);
             builder.up();

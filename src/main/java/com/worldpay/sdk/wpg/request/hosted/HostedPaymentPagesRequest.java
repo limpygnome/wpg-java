@@ -43,6 +43,12 @@ public class HostedPaymentPagesRequest extends XmlRequest
     }
 
     @Override
+    protected void validate(XmlBuildParams params)
+    {
+        // TODO add validation
+    }
+
+    @Override
     protected void build(XmlBuildParams params)
     {
         OrderDetailsSerializer.decorate(params, orderDetails);

@@ -15,9 +15,6 @@ public class CardResultSerializer
         Long expiryMonth = null;
         Long expiryYear = null;
 
-        String issuerCountryCode = null;
-        String issuerName = null;
-        String cardHolderName = null;
         CardType type = null;
 
         // payment detail (currently cards only) (not always enabled)
@@ -44,24 +41,9 @@ public class CardResultSerializer
         }
 
         // issuer
-        if (builder.hasE("issuerCountryCode"))
-        {
-            issuerCountryCode = builder.cdata();
-            builder.up();
-        }
-
-        if (builder.hasE("issuerName"))
-        {
-            issuerName = builder.cdata();
-            builder.up();
-        }
-
-        // card holder name
-        if (builder.hasE("cardHolderName"))
-        {
-            cardHolderName = builder.cdata();
-            builder.up();
-        }
+        String issuerCountryCode = builder.getCdata("issuerCountryCode");
+        String issuerName = builder.getCdata("issuerName");
+        String cardHolderName = builder.getCdata("cardHolderName");
 
         // Check whether anything was found, otherwise return no result at all
         CardResult result;

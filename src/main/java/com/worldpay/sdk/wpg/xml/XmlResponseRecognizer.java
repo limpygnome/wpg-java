@@ -1,10 +1,10 @@
 package com.worldpay.sdk.wpg.xml;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
+import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
-import com.worldpay.sdk.wpg.response.error.ErrorResponse;
 import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
 import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
@@ -15,7 +15,7 @@ import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 public class XmlResponseRecognizer
 {
 
-    public Response match(HttpResponse httpResponse) throws WpgRequestException
+    public Response match(HttpResponse httpResponse) throws WpgRequestException, WpgErrorResponseException
     {
         XmlBuilder builder = XmlBuilder.parse(httpResponse.getBody());
 
@@ -29,6 +29,10 @@ public class XmlResponseRecognizer
                 {
                     response = handleOrderStatus(httpResponse, builder);
                 }
+                else if (builder.hasE("error"))
+                {
+                    handleError(httpResponse, builder);
+                }
             }
         }
 
@@ -40,13 +44,13 @@ public class XmlResponseRecognizer
         return response;
     }
 
-    private Response handleOrderStatus(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException
+    private Response handleOrderStatus(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
     {
         Response response = null;
 
         if (builder.hasE("error"))
         {
-            response = new ErrorResponse(httpResponse, builder);
+            handleError(httpResponse, builder);
         }
         else if (builder.hasE("requestInfo"))
         {
@@ -68,7 +72,20 @@ public class XmlResponseRecognizer
             response = new RedirectUrlResponse(httpResponse, builder);
         }
 
+        // check we have something
+        if (response == null)
+        {
+            throw new WpgErrorResponseException(0, "Unable to handle response from gateway, not recognized", httpResponse);
+        }
+
         return response;
+    }
+
+    private void handleError(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
+    {
+        long code = builder.aToLong("code");
+        String message = builder.cdata();
+        throw new WpgErrorResponseException(code, message, httpResponse);
     }
 
 }

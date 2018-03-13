@@ -9,19 +9,18 @@ import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
-import com.worldpay.sdk.wpg.exception.WpgConnectionException;
-import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
+import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 import com.worldpay.sdk.wpg.response.Response;
-import com.worldpay.sdk.wpg.response.ResponseType;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
 import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 
-public class CardStateMachineDemoApp
+public class CardTokenisationDemoApp
 {
 
     public static void main(String[] args)
@@ -34,10 +33,14 @@ public class CardStateMachineDemoApp
         Amount amount = new Amount(Currency.GBP, 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
         Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
-        Shopper shopper = new Shopper("test@test.com");
+
+        // provide a (unique) shopper identifier, and details for token
+        ShopperBrowser browser = new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36");
+        Shopper shopper = new Shopper("test@test.com", "123.123.123.123", browser, "shopper123");
+        CreateTokenDetails tokenDetails = new CreateTokenDetails("TOKEN_EVENT_1234", "monthly subscription");
 
         // build card details
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", 123);
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", 123, address);
 
         try
         {
@@ -48,46 +51,28 @@ public class CardStateMachineDemoApp
                     .billingAddress(address)
                     .shippingAddress(address)
                     .shopper(shopper)
+                    .tokeniseForReoccurringPayments(tokenDetails)
                     .send(gatewayContext);
 
-            ResponseType result;
-            boolean continuePayment = true;
-
-            do
+            switch (response.getResponseType())
             {
-                result = response.getResponseType();
-
-                switch (result)
-                {
-                    case CURRENCY_CONVERSION_REQUESTED:
-                        CurrencyConversionResponse currencyConversion = (CurrencyConversionResponse) response;
-                        Amount approvalAmount = currencyConversion.getAmount();
-
-                        // prompt to continue
-                        System.out.println("The order will need to convert the amount to " + approvalAmount.getValue() + " " + approvalAmount.getCurrency() + ", continue?");
-
-                        break;
-                    case THREEDS_REQUESTED:
-                        ThreeDsRequestedResponse threeDs = (ThreeDsRequestedResponse) response;
-                        break;
-                    case PAYMENT_STATUS:
-                        PaymentResponse orderStatus = (PaymentResponse) response;
-                        break;
-                    default:
-                        throw new IllegalStateException("Unhandled response - result=" + result);
-                }
+                case CURRENCY_CONVERSION_REQUESTED:
+                    CurrencyConversionResponse currencyConversion = (CurrencyConversionResponse) response;
+                    // do something...
+                    break;
+                case THREEDS_REQUESTED:
+                    ThreeDsRequestedResponse threeDs = (ThreeDsRequestedResponse) response;
+                    System.out.println("3ds required - issuer URL:" + threeDs.getIssuerURL() + ", paRes: " + threeDs.getPaRequest());
+                    break;
+                case PAYMENT_STATUS:
+                    PaymentResponse paymentResponse = (PaymentResponse) response;
+                    //System.out.println(paymentResponse.);
+                    break;
+                default:
+                    throw new IllegalStateException("Unhandled response - type=" + response.getResponseType());
             }
-            while (continuePayment && result != ResponseType.PAYMENT_STATUS);
         }
-        catch (WpgConnectionException e)
-        {
-            e.printStackTrace();
-        }
-        catch (WpgRequestException e)
-        {
-            e.printStackTrace();
-        }
-        catch (WpgErrorResponseException e)
+        catch (WpgException e)
         {
             e.printStackTrace();
         }

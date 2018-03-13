@@ -12,7 +12,7 @@ public class Address
     private String postalCode;
     private String city;
     private String state;
-    private CountryCode countryCode;
+    private String countryCode;
     private String telephoneNumber;
 
     public Address(String address1, String city, String postalCode, CountryCode countryCode)
@@ -20,10 +20,24 @@ public class Address
         this.address1 = address1;
         this.city = city;
         this.postalCode = postalCode;
-        this.countryCode = countryCode;
+        this.countryCode = countryCode.ISO3166_1_ALPHA_2_COUNTRY_CODE;
     }
 
     public Address(String firstName, String lastName, String address1, String address2, String address3, String postalCode, String city, String state, CountryCode countryCode, String telephoneNumber)
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.address3 = address3;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.state = state;
+        this.countryCode = countryCode.ISO3166_1_ALPHA_2_COUNTRY_CODE;
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public Address(String firstName, String lastName, String address1, String address2, String address3, String postalCode, String city, String state, String countryCode, String telephoneNumber)
     {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -117,12 +131,17 @@ public class Address
         this.state = state;
     }
 
-    public CountryCode getCountryCode()
+    public String getCountryCode()
     {
         return countryCode;
     }
 
     public void setCountryCode(CountryCode countryCode)
+    {
+        this.countryCode = countryCode.ISO3166_1_ALPHA_2_COUNTRY_CODE;
+    }
+
+    public void setCountryCode(String countryCode)
     {
         this.countryCode = countryCode;
     }

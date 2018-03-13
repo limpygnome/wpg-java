@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.exception;
 
-public class WpgRequestException extends Exception
+public class WpgRequestException extends WpgException
 {
 
     public WpgRequestException(String message)

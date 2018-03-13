@@ -104,6 +104,20 @@ public class XmlBuilder
         return result;
     }
 
+    public int aToInt(String key) throws WpgRequestException
+    {
+        String value = a(key);
+        try
+        {
+            int intValue = Integer.parseInt(value);
+            return intValue;
+        }
+        catch (NumberFormatException e)
+        {
+            throw new WpgRequestException("Failed to read attribute '" + key + "' at " + getPath() + " - value: " + value, e);
+        }
+    }
+
     public XmlBuilder e(String name)
     {
         e(name, false);
@@ -171,6 +185,42 @@ public class XmlBuilder
             result = data.getData();
         }
         return result;
+    }
+
+    public String getCdata(String elementName)
+    {
+        String result = null;
+
+        // Find node
+        NodeList list = current.getElementsByTagName(elementName);
+        Element element = (Element) list.item(0);
+
+        if (element != null)
+        {
+            Node firstChild = element.getFirstChild();
+
+            if (firstChild instanceof CharacterData)
+            {
+                CharacterData data = (CharacterData) firstChild;
+                result = data.getData();
+            }
+        }
+
+        return result;
+    }
+
+    public Long getCdataLong(String elementName) throws WpgRequestException
+    {
+        String value = getCdata(elementName);
+        try
+        {
+            long longValue = Long.parseLong(value);
+            return longValue;
+        }
+        catch (NumberFormatException e)
+        {
+            throw new WpgRequestException("Failed to read attribute '" + elementName + "' at " + getPath() + " - value: " + value, e);
+        }
     }
 
     public XmlBuilder up()

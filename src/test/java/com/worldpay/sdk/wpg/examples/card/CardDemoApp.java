@@ -12,16 +12,14 @@ import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
-import com.worldpay.sdk.wpg.exception.WpgConnectionException;
-import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
-import com.worldpay.sdk.wpg.response.error.ErrorResponse;
 import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 
-public class CardSimpleDemoApp
+public class CardDemoApp
 {
 
     public static void main(String[] args)
@@ -62,21 +60,12 @@ public class CardSimpleDemoApp
                     break;
                 case PAYMENT_STATUS:
                     PaymentResponse paymentResponse = (PaymentResponse) response;
-                    //System.out.println(paymentResponse.);
-                    break;
-                case ERROR:
-                    ErrorResponse error = (ErrorResponse) response;
-                    System.err.println("Request failed - code=" + error.getCode() + ", message=" + error.getMessage());
                     break;
                 default:
                     throw new IllegalStateException("Unhandled response - type=" + response.getResponseType());
             }
         }
-        catch (WpgConnectionException e)
-        {
-            e.printStackTrace();
-        }
-        catch (WpgRequestException e)
+        catch (WpgException e)
         {
             e.printStackTrace();
         }

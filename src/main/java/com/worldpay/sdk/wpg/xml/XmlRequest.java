@@ -6,6 +6,7 @@ import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.connection.factory.ConnectionFactory;
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
+import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.Request;
 import com.worldpay.sdk.wpg.response.Response;
@@ -39,12 +40,13 @@ public abstract class XmlRequest implements Request
         }
     }
 
-    public Response send(GatewayContext gatewayContext) throws WpgRequestException, WpgConnectionException
+    public Response send(GatewayContext gatewayContext) throws WpgRequestException, WpgConnectionException, WpgErrorResponseException
     {
         return send(gatewayContext, new SessionContext());
     }
 
-    public Response send(GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException, WpgConnectionException
+    public Response send(GatewayContext gatewayContext, SessionContext sessionContext)
+            throws WpgRequestException, WpgConnectionException, WpgErrorResponseException
     {
         ConnectionFactory connectionFactory = gatewayContext.getConnectionFactory();
         Socket socket = null;
@@ -88,6 +90,8 @@ public abstract class XmlRequest implements Request
         }
     }
 
+    protected abstract void validate(XmlBuildParams params);
+
     protected abstract void build(XmlBuildParams params);
 
     private byte[] buildRequest(URL url, GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException
@@ -98,6 +102,7 @@ public abstract class XmlRequest implements Request
             builder.a("version", "1.4");
 
             XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder);
+            validate(params);
             build(params);
 
             String xml = builder.toString();
@@ -178,7 +183,8 @@ public abstract class XmlRequest implements Request
         }
     }
 
-    private Response readResponse(ConnectionFactory connectionFactory, Socket socket, SessionContext sessionContext) throws IOException, WpgRequestException
+    private Response readResponse(ConnectionFactory connectionFactory, Socket socket, SessionContext sessionContext)
+            throws IOException, WpgRequestException, WpgErrorResponseException
     {
         // read raw response
         InputStream is = socket.getInputStream();

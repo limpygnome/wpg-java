@@ -11,6 +11,7 @@ import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
+import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
 import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
@@ -42,11 +43,7 @@ public class HppDemoApp
 
             System.out.println(response.getUrl());
         }
-        catch (WpgConnectionException e)
-        {
-            e.printStackTrace();
-        }
-        catch (WpgRequestException e)
+        catch (WpgException e)
         {
             e.printStackTrace();
         }

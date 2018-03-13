@@ -1,6 +1,7 @@
 package com.worldpay.sdk.wpg.xml.serializer;
 
 import com.worldpay.sdk.wpg.domain.Address;
+import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 
@@ -77,7 +78,7 @@ public class AddressSerializer
         {
             builder.e("state").cdata(address.getState()).up();
         }
-        builder.e("countryCode").cdata(address.getCountryCode().ISO3166_1_ALPHA_2_COUNTRY_CODE).up();
+        builder.e("countryCode").cdata(address.getCountryCode()).up();
         if (address.getTelephoneNumber() != null)
         {
             builder.e("telephoneNumber").cdata(address.getTelephoneNumber()).up();
@@ -85,6 +86,23 @@ public class AddressSerializer
 
         builder.up()
                 .up();
+    }
+
+    public static Address read(XmlBuilder builder)
+    {
+        String firstName = builder.getCdata("firstName");
+        String lastName = builder.getCdata("lastName");
+        String address1 = builder.getCdata("address1");
+        String address2 = builder.getCdata("address2");
+        String address3 = builder.getCdata("address3");
+        String postcode = builder.getCdata("postalCode");
+        String city = builder.getCdata("city");
+        String state = builder.getCdata("state");
+        String countryCode = builder.getCdata("countryCode");
+        String telephoneNumber = builder.getCdata("telephoneNumber");
+
+        Address address = new Address(firstName, lastName, address1, address2, address3, postcode, city, state, countryCode, telephoneNumber);
+        return address;
     }
 
 }

@@ -11,4 +11,12 @@ public class Assert
         }
     }
 
+    public static void notEmpty(String object, String message)
+    {
+        if (object == null || object.length() == 0)
+        {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.request.BatchableRequest;
+import com.worldpay.sdk.wpg.validation.Assert;
 import com.worldpay.sdk.wpg.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.xml.XmlRequest;
@@ -33,6 +34,15 @@ public class PayPalPaymentRequest extends XmlRequest implements BatchableRequest
     private Address shippingAddress;
     private String languageCode;
     private CreateTokenDetails createTokenDetails;
+
+    @Override
+    protected void validate(XmlBuildParams params)
+    {
+        if (this.createTokenDetails == null)
+        {
+            Assert.notEmpty(shopper.getShopperId(), "Shopper ID is required for tokenised payments");
+        }
+    }
 
     @Override
     protected void build(XmlBuildParams params)

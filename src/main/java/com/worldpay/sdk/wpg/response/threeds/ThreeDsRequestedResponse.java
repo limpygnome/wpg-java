@@ -14,11 +14,8 @@ public class ThreeDsRequestedResponse extends XmlResponse
     {
         super(httpResponse, builder);
 
-        this.issuerURL = builder.e("issuerURL").cdata();
-        builder.up();
-
-        this.paRequest = builder.e("paRequest").cdata();
-        builder.up();
+        this.issuerURL = builder.getCdata("issuerURL");
+        this.paRequest = builder.getCdata("paRequest");
     }
 
     public String getIssuerURL()

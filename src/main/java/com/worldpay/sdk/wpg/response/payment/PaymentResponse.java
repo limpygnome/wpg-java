@@ -13,6 +13,8 @@ import com.worldpay.sdk.wpg.domain.payment.result.CvcResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
 import com.worldpay.sdk.wpg.domain.payment.result.RiskScoreResult;
+import com.worldpay.sdk.wpg.domain.tokenisation.TokenDetails;
+import com.worldpay.sdk.wpg.domain.tokenisation.TokenCardDetails;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.response.ResponseType;
 import com.worldpay.sdk.wpg.xml.XmlBuilder;
@@ -28,6 +30,8 @@ import com.worldpay.sdk.wpg.xml.serializer.payment.PaymentMethodSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.PayoutAuthorisationResultSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.RiskScoreResultSerializer;
 import com.worldpay.sdk.wpg.xml.serializer.payment.result.ThreeDSecureResultSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.tokenisation.TokenCardDetailsSerializer;
+import com.worldpay.sdk.wpg.xml.serializer.payment.tokenisation.TokenDetailsSerializer;
 
 /**
  * Response from a payment attempt.
@@ -47,14 +51,15 @@ public class PaymentResponse extends XmlResponse
     private final CvcResult cvcResult;
     private final AvvResult avvResult;
     private final RiskScoreResult riskScoreResult;
+    private final TokenDetails tokenDetails;
+    private final TokenCardDetails tokenCardDetails;
 
     public PaymentResponse(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException
     {
         super(httpResponse, builder);
 
         // payment method
-        String paymentMethodMask = builder.e("paymentMethod").cdata();
-        builder.up();
+        String paymentMethodMask = builder.getCdata("paymentMethod");
         paymentMethod = PaymentMethodSerializer.convert(paymentMethodMask);
 
         // amount
@@ -63,9 +68,8 @@ public class PaymentResponse extends XmlResponse
         builder.up();
 
         // last event
-        builder.e("lastEvent");
-        status = PaymentStatus.valueOf(builder.cdata());
-        builder.up();
+        String lastEventRaw = builder.getCdata("lastEvent");
+        status = PaymentStatus.valueOf(lastEventRaw);
 
         // read results
         cardResult = CardResultSerializer.read(builder);
@@ -77,6 +81,8 @@ public class PaymentResponse extends XmlResponse
         avvResult = AvvResultSerializer.read(builder);
         balance = BalanceSerializer.read(builder);
         riskScoreResult = RiskScoreResultSerializer.read(builder);
+        tokenDetails = TokenDetailsSerializer.read(builder);
+        tokenCardDetails = TokenCardDetailsSerializer.read(builder);
         builder.reset();
     }
 
@@ -160,6 +166,16 @@ public class PaymentResponse extends XmlResponse
     public RiskScoreResult getRiskScoreResult()
     {
         return riskScoreResult;
+    }
+
+    public TokenDetails getTokenDetails()
+    {
+        return tokenDetails;
+    }
+
+    public TokenCardDetails getTokenCardDetails()
+    {
+        return tokenCardDetails;
     }
 
 }

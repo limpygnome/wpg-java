@@ -13,6 +13,7 @@ import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
+import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
 import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
@@ -69,6 +70,10 @@ public class HppAdvancedDemoApp
             e.printStackTrace();
         }
         catch (WpgRequestException e)
+        {
+            e.printStackTrace();
+        }
+        catch (WpgErrorResponseException e)
         {
             e.printStackTrace();
         }
