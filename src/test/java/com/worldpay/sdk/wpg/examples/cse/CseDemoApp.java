@@ -5,7 +5,6 @@ import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.Auth;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
@@ -13,10 +12,10 @@ import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.exception.WpgException;
-import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 import com.worldpay.sdk.wpg.request.cse.ClientsideEncryptedCardRequest;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
+import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 
@@ -71,6 +70,8 @@ public class CseDemoApp
                     break;
                 case PAYMENT_STATUS:
                     PaymentResponse paymentResponse = (PaymentResponse) response;
+                    Payment payment = paymentResponse.getPayment();
+                    System.out.println("payment - lastEvent: " + payment.getLastEvent());
                     break;
                 default:
                     throw new IllegalStateException("Unhandled response - type=" + response.getResponseType());

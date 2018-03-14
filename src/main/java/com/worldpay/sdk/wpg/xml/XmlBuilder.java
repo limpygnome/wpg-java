@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.xml;
 
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMImplementation;
@@ -269,7 +270,7 @@ public class XmlBuilder
         }
     }
 
-    public static XmlBuilder parse(String text)
+    public static XmlBuilder parse(String text) throws WpgMalformedXmlException
     {
         try
         {
@@ -286,7 +287,7 @@ public class XmlBuilder
         }
         catch (ParserConfigurationException | SAXException | IOException e)
         {
-            throw new RuntimeException("Failed to parse response XML", e);
+            throw new WpgMalformedXmlException("Failed to parse response XML", e);
         }
     }
 

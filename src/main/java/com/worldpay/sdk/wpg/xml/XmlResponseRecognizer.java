@@ -2,6 +2,7 @@ package com.worldpay.sdk.wpg.xml;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
@@ -15,7 +16,7 @@ import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 public class XmlResponseRecognizer
 {
 
-    public Response match(HttpResponse httpResponse) throws WpgRequestException, WpgErrorResponseException
+    public Response match(HttpResponse httpResponse) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
     {
         XmlBuilder builder = XmlBuilder.parse(httpResponse.getBody());
 

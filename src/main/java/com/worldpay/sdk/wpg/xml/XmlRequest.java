@@ -7,6 +7,7 @@ import com.worldpay.sdk.wpg.connection.factory.ConnectionFactory;
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.Request;
 import com.worldpay.sdk.wpg.response.Response;
@@ -221,9 +222,16 @@ public abstract class XmlRequest implements Request
         }
 
         // deserialize
-        XmlResponseRecognizer recognizer = new XmlResponseRecognizer();
-        Response response = recognizer.match(httpResponse);
-        return response;
+        try
+        {
+            XmlResponseRecognizer recognizer = new XmlResponseRecognizer();
+            Response response = recognizer.match(httpResponse);
+            return response;
+        }
+        catch (WpgMalformedXmlException e)
+        {
+            throw new WpgRequestException("Failed to parse response as XML", e);
+        }
     }
 
     private int readMaxLength(byte[] data)

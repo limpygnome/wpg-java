@@ -17,6 +17,7 @@ import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 import com.worldpay.sdk.wpg.response.Response;
 import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
+import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 
@@ -66,7 +67,8 @@ public class CardTokenisationDemoApp
                     break;
                 case PAYMENT_STATUS:
                     PaymentResponse paymentResponse = (PaymentResponse) response;
-                    //System.out.println(paymentResponse.);
+                    Payment payment = paymentResponse.getPayment();
+                    System.out.println("payment - lastEvent: " + payment.getLastEvent());
                     break;
                 default:
                     throw new IllegalStateException("Unhandled response - type=" + response.getResponseType());
