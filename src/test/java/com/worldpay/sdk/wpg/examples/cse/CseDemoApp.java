@@ -10,14 +10,13 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
+import com.worldpay.sdk.wpg.domain.payment.CardPayment;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
+import com.worldpay.sdk.wpg.domain.payment.Payment;
+import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
+import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.cse.ClientsideEncryptedCardRequest;
-import com.worldpay.sdk.wpg.response.Response;
-import com.worldpay.sdk.wpg.response.approval.CurrencyConversionResponse;
-import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.response.payment.PaymentResponse;
-import com.worldpay.sdk.wpg.response.threeds.ThreeDsRequestedResponse;
 
 public class CseDemoApp
 {
@@ -49,7 +48,7 @@ public class CseDemoApp
         try
         {
             // create order
-            Response response = new ClientsideEncryptedCardRequest()
+            CardPayment cardPayment = new ClientsideEncryptedCardRequest()
                     .orderDetails(orderDetails)
                     .encryptedData(encryptedData)
                     .cardHolderAddress(address)
@@ -58,23 +57,22 @@ public class CseDemoApp
                     .shopper(shopper)
                     .send(gatewayContext);
 
-            switch (response.getResponseType())
+            switch (cardPayment.getStatus())
             {
                 case CURRENCY_CONVERSION_REQUESTED:
-                    CurrencyConversionResponse currencyConversion = (CurrencyConversionResponse) response;
+                    CurrencyConversionRequired currencyConversion = cardPayment.getCurrencyConversionRequired();
                     // do something...
                     break;
                 case THREEDS_REQUESTED:
-                    ThreeDsRequestedResponse threeDs = (ThreeDsRequestedResponse) response;
+                    ThreeDsRequired threeDs = cardPayment.getThreeDsRequired();
                     System.out.println("3ds required - issuer URL:" + threeDs.getIssuerURL() + ", paRes: " + threeDs.getPaRequest());
                     break;
                 case PAYMENT_STATUS:
-                    PaymentResponse paymentResponse = (PaymentResponse) response;
-                    Payment payment = paymentResponse.getPayment();
+                    Payment payment = cardPayment.getPayment();
                     System.out.println("payment - lastEvent: " + payment.getLastEvent());
                     break;
                 default:
-                    throw new IllegalStateException("Unhandled response - type=" + response.getResponseType());
+                    throw new IllegalStateException("Unhandled response - type=" + cardPayment.getStatus());
             }
         }
         catch (WpgException e)

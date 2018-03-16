@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.connection;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -7,8 +8,10 @@ import java.util.UUID;
 /**
  * Holds information for a series of requests forming a session.
  */
-public class SessionContext
+public class SessionContext implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private String sessionId;
     private Map<String, String> headers;
 

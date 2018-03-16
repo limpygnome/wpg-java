@@ -4,14 +4,20 @@ import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
-import com.worldpay.sdk.wpg.xml.XmlBuildParams;
-import com.worldpay.sdk.wpg.xml.XmlRequest;
-import com.worldpay.sdk.wpg.xml.serializer.AddressSerializer;
-import com.worldpay.sdk.wpg.xml.serializer.OrderDetailsSerializer;
-import com.worldpay.sdk.wpg.xml.serializer.PaymentMethodMaskSerializer;
-import com.worldpay.sdk.wpg.xml.serializer.ShopperSerializer;
+import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
+import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
+import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.adapter.RedirectUrlXmlAdapter;
+import com.worldpay.sdk.wpg.internal.xml.serializer.AddressSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.PaymentMethodMaskSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 
-public class HostedPaymentPagesRequest extends XmlRequest
+public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
 {
     // Mandatory
     private OrderDetails orderDetails;
@@ -55,6 +61,14 @@ public class HostedPaymentPagesRequest extends XmlRequest
         PaymentMethodMaskSerializer.decorate(params, paymentMethodFilter);
         ShopperSerializer.decorate(params, shopper);
         AddressSerializer.decorate(params, billingAddress, shippingAddress);
+    }
+
+    @Override
+    protected RedirectUrl adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    {
+        RedirectUrlXmlAdapter adapter = new RedirectUrlXmlAdapter();
+        RedirectUrl redirectUrl = adapter.read(response);
+        return redirectUrl;
     }
 
     public HostedPaymentPagesRequest orderDetails(OrderDetails orderDetails)

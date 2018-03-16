@@ -10,11 +10,12 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
+import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.apm.PayPalPaymentRequest;
-import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
 
 public class PayPalAdvancedDemoApp
 {
@@ -35,7 +36,7 @@ public class PayPalAdvancedDemoApp
         try
         {
             // create order
-            RedirectUrlResponse response = (RedirectUrlResponse) new PayPalPaymentRequest()
+            RedirectUrl response = new PayPalPaymentRequest()
                     .orderDetails(orderDetails)
                     .billingAddress(address)
                     .shippingAddress(address)
@@ -53,6 +54,10 @@ public class PayPalAdvancedDemoApp
             e.printStackTrace();
         }
         catch (WpgRequestException e)
+        {
+            e.printStackTrace();
+        }
+        catch (WpgMalformedXmlException e)
         {
             e.printStackTrace();
         }

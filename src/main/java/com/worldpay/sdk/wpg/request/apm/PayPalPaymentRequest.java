@@ -3,24 +3,27 @@ package com.worldpay.sdk.wpg.request.apm;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
-import com.worldpay.sdk.wpg.request.BatchableRequest;
-import com.worldpay.sdk.wpg.validation.Assert;
-import com.worldpay.sdk.wpg.xml.XmlBuildParams;
-import com.worldpay.sdk.wpg.xml.XmlBuilder;
-import com.worldpay.sdk.wpg.xml.XmlRequest;
-import com.worldpay.sdk.wpg.xml.serializer.AddressSerializer;
-import com.worldpay.sdk.wpg.xml.serializer.OrderDetailsSerializer;
-import com.worldpay.sdk.wpg.xml.serializer.ShopperSerializer;
-import com.worldpay.sdk.wpg.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
-
-import java.util.Locale;
+import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
+import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
+import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
+import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
+import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.adapter.RedirectUrlXmlAdapter;
+import com.worldpay.sdk.wpg.internal.xml.serializer.AddressSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
 
 /**
  * Supported language codes, otherwise defaults to English:
  * http://support.worldpay.com/support/kb/gg/paypal/paypalcg.htm#languagecodes.htm%3FTocPath%3DXML%2520input%2520examples%7CTechnical%2520Integration%7C_____3
  */
-public class PayPalPaymentRequest extends XmlRequest implements BatchableRequest
+public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
 {
     // Mandatory
     private OrderDetails orderDetails;
@@ -77,6 +80,14 @@ public class PayPalPaymentRequest extends XmlRequest implements BatchableRequest
         ShopperSerializer.decorate(params, shopper);
         AddressSerializer.decorate(params, billingAddress, shippingAddress);
         CreateTokenDetailsSerializer.decorate(params, createTokenDetails);
+    }
+
+    @Override
+    protected RedirectUrl adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    {
+        RedirectUrlXmlAdapter adapter = new RedirectUrlXmlAdapter();
+        RedirectUrl redirectUrl = adapter.read(response);
+        return redirectUrl;
     }
 
     public PayPalPaymentRequest orderDetails(OrderDetails orderDetails)

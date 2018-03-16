@@ -10,14 +10,10 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
+import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
-import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgException;
-import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.apm.PayPalPaymentRequest;
-import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
-
-import java.util.UUID;
 
 public class PayPalTokenisationDemoApp
 {
@@ -40,7 +36,7 @@ public class PayPalTokenisationDemoApp
         try
         {
             // create order
-            RedirectUrlResponse response = (RedirectUrlResponse) new PayPalPaymentRequest()
+            RedirectUrl response = new PayPalPaymentRequest()
                     .orderDetails(orderDetails)
                     .billingAddress(address)
                     .shippingAddress(address)

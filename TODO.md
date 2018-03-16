@@ -1,3 +1,7 @@
+make it so sessionctx doesnt need to be passed-in for threeds/currencyconversion submission/approval
+- store it in objects
+
+
 in-progress:
 - parsing order notifications for xml
 - multiple payments sent in order status

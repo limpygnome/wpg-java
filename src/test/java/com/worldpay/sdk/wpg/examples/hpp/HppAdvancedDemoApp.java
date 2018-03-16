@@ -12,11 +12,12 @@ import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
+import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
-import com.worldpay.sdk.wpg.response.redirect.RedirectUrlResponse;
 
 import java.util.Locale;
 
@@ -43,7 +44,7 @@ public class HppAdvancedDemoApp
         try
         {
             // create order
-            RedirectUrlResponse response = (RedirectUrlResponse) new HostedPaymentPagesRequest()
+            RedirectUrl response = new HostedPaymentPagesRequest()
                     .orderDetails(orderDetails)
                     .billingAddress(billingAddress)
                     .shippingAddress(shippingAddress)
@@ -70,6 +71,10 @@ public class HppAdvancedDemoApp
             e.printStackTrace();
         }
         catch (WpgRequestException e)
+        {
+            e.printStackTrace();
+        }
+        catch (WpgMalformedXmlException e)
         {
             e.printStackTrace();
         }
