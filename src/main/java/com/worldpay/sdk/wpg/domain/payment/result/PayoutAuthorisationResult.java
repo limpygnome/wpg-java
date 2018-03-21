@@ -23,4 +23,11 @@ public class PayoutAuthorisationResult
         return authorisationId;
     }
 
+    @Override
+    public String toString()
+    {
+        return "PayoutAuthorisationResult{" +
+                "authorisationId='" + authorisationId + '\'' +
+                '}';
+    }
 }

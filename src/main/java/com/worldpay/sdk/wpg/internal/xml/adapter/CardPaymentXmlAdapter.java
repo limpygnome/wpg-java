@@ -14,8 +14,6 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.conversion.CurrencyC
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.threeds.ThreeDsSerializer;
 import com.worldpay.sdk.wpg.domain.payment.CardPayment;
 
-// TODO tonight need to hook this up to the CardPaymentRequest somehow. use xml as if client, dont inherit.
-
 public class CardPaymentXmlAdapter
 {
 

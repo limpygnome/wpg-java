@@ -51,4 +51,16 @@ public class TokenDetails
         return eventReason;
     }
 
+    @Override
+    public String toString()
+    {
+        return "TokenDetails{" +
+                "paymentTokenId='" + paymentTokenId + '\'' +
+                ", shopperId='" + shopperId + '\'' +
+                ", tokenExpiry=" + tokenExpiry +
+                ", tokenEvent='" + tokenEvent + '\'' +
+                ", eventReference='" + eventReference + '\'' +
+                ", eventReason='" + eventReason + '\'' +
+                '}';
+    }
 }

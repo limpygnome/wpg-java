@@ -65,4 +65,18 @@ public class CardResult
         return type;
     }
 
+    @Override
+    public String toString()
+    {
+        return "CardResult{" +
+                "maskedCardNumber='" + maskedCardNumber + '\'' +
+                ", hashedCardNumber='" + hashedCardNumber + '\'' +
+                ", expiryMonth=" + expiryMonth +
+                ", expiryYear=" + expiryYear +
+                ", issuerCountryCode='" + issuerCountryCode + '\'' +
+                ", issuerName='" + issuerName + '\'' +
+                ", cardHolderName='" + cardHolderName + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

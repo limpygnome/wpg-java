@@ -27,4 +27,12 @@ public class ISO8583Result
         return description;
     }
 
+    @Override
+    public String toString()
+    {
+        return "ISO8583Result{" +
+                "code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

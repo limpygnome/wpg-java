@@ -139,4 +139,24 @@ public class Payment
         return tokenCardDetails;
     }
 
+    @Override
+    public String toString()
+    {
+        return "Payment{" +
+                "paymentMethod=" + paymentMethod +
+                ", amount=" + amount +
+                ", lastEvent=" + lastEvent +
+                ", balance=" + balance +
+                ", cardResult=" + cardResult +
+                ", payoutAuthorisationResult=" + payoutAuthorisationResult +
+                ", iso8583Result=" + iso8583Result +
+                ", threeDSecureResult=" + threeDSecureResult +
+                ", avsResult=" + avsResult +
+                ", cvcResult=" + cvcResult +
+                ", avvResult=" + avvResult +
+                ", riskScoreResult=" + riskScoreResult +
+                ", tokenDetails=" + tokenDetails +
+                ", tokenCardDetails=" + tokenCardDetails +
+                '}';
+    }
 }

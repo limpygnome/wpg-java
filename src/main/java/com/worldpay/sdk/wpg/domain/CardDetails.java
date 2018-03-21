@@ -1,5 +1,7 @@
 package com.worldpay.sdk.wpg.domain;
 
+import com.worldpay.sdk.wpg.builder.CardObfuscator;
+
 public class CardDetails
 {
     private String cardNumber;
@@ -118,4 +120,17 @@ public class CardDetails
         this.encryptedCardNumber = encryptedCardNumber;
     }
 
+    @Override
+    public String toString()
+    {
+        return "CardDetails{" +
+                "cardNumber='" + CardObfuscator.mask(cardNumber) + '\'' +
+                ", expiryMonth=" + expiryMonth +
+                ", expiryYear=" + expiryYear +
+                ", cardHolderName='" + cardHolderName + '\'' +
+                ", cvc=" + cvc +
+                ", cardHolderAddress=" + cardHolderAddress +
+                ", encryptedCardNumber='" + encryptedCardNumber + '\'' +
+                '}';
+    }
 }

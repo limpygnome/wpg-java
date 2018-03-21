@@ -28,6 +28,7 @@
         </bookingDate>
         <accountTx accountType="IN_PROCESS_AUTHORISED" batchId="30">
           <amount value="1000" currencyCode="EUR" exponent="2" debitCreditIndicator="debit"/>
+        </accountTx>
       </journal>
     </orderStatusEvent>
   </notify>

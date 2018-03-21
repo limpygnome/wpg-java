@@ -25,4 +25,13 @@ public class OrderNotification
     {
         return journal;
     }
+
+    @Override
+    public String toString()
+    {
+        return "OrderNotification{" +
+                "payments=" + payments +
+                ", journal=" + journal +
+                '}';
+    }
 }

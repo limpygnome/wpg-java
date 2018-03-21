@@ -28,4 +28,13 @@ public class ThreeDSecureResult
         return cavv;
     }
 
+    @Override
+    public String toString()
+    {
+        return "ThreeDSecureResult{" +
+                "description='" + description + '\'' +
+                ", eci='" + eci + '\'' +
+                ", cavv='" + cavv + '\'' +
+                '}';
+    }
 }

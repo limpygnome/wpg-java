@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -23,8 +24,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class XmlBuilder
 {
@@ -32,6 +37,12 @@ public class XmlBuilder
     private Element current;
 
     private XmlBuilder() { }
+
+    private XmlBuilder(Document document, Element current)
+    {
+        this.document = document;
+        this.current = current;
+    }
 
     public XmlBuilder(String rootTagName)
     {
@@ -240,6 +251,20 @@ public class XmlBuilder
         return this;
     }
 
+    public List<XmlBuilder> childTags(String tagName)
+    {
+        NodeList list = current.getElementsByTagName(tagName);
+        int len = list.getLength();
+        List<XmlBuilder> result = new ArrayList<>(len);
+        for (int i = 0; i < len; i++)
+        {
+            Node node = list.item(i);
+            XmlBuilder clone = new XmlBuilder(document, (Element) node);
+            result.add(clone);
+        }
+        return result;
+    }
+
     @Override
     public String toString()
     {
@@ -278,6 +303,20 @@ public class XmlBuilder
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
+            // Prevent XXE attacks and only read from local for performance
+            builder.setEntityResolver(new EntityResolver()
+            {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
+                {
+                    if ("http://dtd.worldpay.com/paymentService_v1.dtd".equals(systemId))
+                    {
+                        InputStream is = this.getClass().getResourceAsStream("/paymentService_v1.dtd");
+                        return new InputSource(is);
+                    }
+                    return null;
+                }
+            });
 
             InputSource inputSource = new InputSource(new StringReader(text));
             xmlBuilder.document = builder.parse(inputSource);
@@ -305,7 +344,7 @@ public class XmlBuilder
 
         do
         {
-            path = parent.getNodeName() + (path.length() > 0 ? "/" : "");
+            path = "/" + parent.getNodeName() + path;
             parent = parent.getParentNode();
         }
         while (parent != null);

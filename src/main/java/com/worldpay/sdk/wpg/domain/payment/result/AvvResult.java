@@ -44,4 +44,16 @@ public class AvvResult
     {
         return emailResultCode;
     }
+
+    @Override
+    public String toString()
+    {
+        return "AvvResult{" +
+                "addressResultCode='" + addressResultCode + '\'' +
+                ", postCodeResultCode='" + postCodeResultCode + '\'' +
+                ", cardHolderNameResultCode='" + cardHolderNameResultCode + '\'' +
+                ", telephoneResultCode='" + telephoneResultCode + '\'' +
+                ", emailResultCode='" + emailResultCode + '\'' +
+                '}';
+    }
 }

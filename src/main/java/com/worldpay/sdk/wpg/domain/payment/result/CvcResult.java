@@ -16,4 +16,12 @@ public class CvcResult
     {
         return description;
     }
+
+    @Override
+    public String toString()
+    {
+        return "CvcResult{" +
+                "description='" + description + '\'' +
+                '}';
+    }
 }

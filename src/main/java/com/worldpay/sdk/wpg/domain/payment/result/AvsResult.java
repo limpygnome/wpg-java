@@ -16,4 +16,12 @@ public class AvsResult
     {
         return avsResultCode;
     }
+
+    @Override
+    public String toString()
+    {
+        return "AvsResult{" +
+                "avsResultCode='" + avsResultCode + '\'' +
+                '}';
+    }
 }

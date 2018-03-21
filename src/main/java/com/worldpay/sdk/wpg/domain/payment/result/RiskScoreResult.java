@@ -69,4 +69,20 @@ public class RiskScoreResult
     {
         return extendedResponse;
     }
+
+    @Override
+    public String toString()
+    {
+        return "RiskScoreResult{" +
+                "id='" + id + '\'' +
+                ", provider='" + provider + '\'' +
+                ", value=" + value +
+                ", finalScore=" + finalScore +
+                ", totalScore=" + totalScore +
+                ", totalRisk=" + totalRisk +
+                ", riskGuardianId='" + riskGuardianId + '\'' +
+                ", message='" + message + '\'' +
+                ", extendedResponse='" + extendedResponse + '\'' +
+                '}';
+    }
 }
