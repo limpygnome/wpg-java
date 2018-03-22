@@ -16,7 +16,7 @@ import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.CardPayment;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 
 public class CardDemoApp
@@ -40,7 +40,7 @@ public class CardDemoApp
         try
         {
             // create order
-            CardPayment cardPayment = new CardPaymentRequest()
+            PaymentResponse paymentResponse = new CardPaymentRequest()
                     .orderDetails(orderDetails)
                     .cardDetails(cardDetails)
                     .billingAddress(address)
@@ -48,22 +48,22 @@ public class CardDemoApp
                     .shopper(shopper)
                     .send(gatewayContext);
 
-            switch (cardPayment.getStatus())
+            switch (paymentResponse.getStatus())
             {
                 case CURRENCY_CONVERSION_REQUESTED:
-                    CurrencyConversionRequired conversion = cardPayment.getCurrencyConversionRequired();
+                    CurrencyConversionRequired conversion = paymentResponse.getCurrencyConversionRequired();
                     // do something...
                     break;
                 case THREEDS_REQUESTED:
-                    ThreeDsRequired threeDs = cardPayment.getThreeDsRequired();
+                    ThreeDsRequired threeDs = paymentResponse.getThreeDsRequired();
                     System.out.println("3ds required - issuer URL:" + threeDs.getIssuerURL() + ", paRes: " + threeDs.getPaRequest());
                     break;
-                case PAYMENT_STATUS:
-                    Payment payment = cardPayment.getPayment();
+                case PAYMENT_RESULT:
+                    Payment payment = paymentResponse.getPayment();
                     System.out.println("payment - lastEvent: " + payment.getLastEvent());
                     break;
                 default:
-                    throw new IllegalStateException("Unhandled response - status=" + cardPayment.getStatus());
+                    throw new IllegalStateException("Unhandled response - status=" + paymentResponse.getStatus());
             }
         }
         catch (WpgException e)

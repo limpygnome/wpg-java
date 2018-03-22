@@ -3,16 +3,15 @@ package com.worldpay.sdk.wpg.request.cse;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.payment.CardPayment;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
-import com.worldpay.sdk.wpg.internal.xml.XmlClient;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
-import com.worldpay.sdk.wpg.internal.xml.adapter.CardPaymentXmlAdapter;
+import com.worldpay.sdk.wpg.internal.xml.adapter.PaymentResponseXmlAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.AddressSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.CseSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
@@ -23,7 +22,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateT
 /**
  * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm
  */
-public class ClientsideEncryptedCardRequest extends XmlRequest<CardPayment>
+public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse>
 {
     // Mandatory
     private OrderDetails orderDetails;
@@ -83,11 +82,11 @@ public class ClientsideEncryptedCardRequest extends XmlRequest<CardPayment>
     }
 
     @Override
-    protected CardPayment adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected PaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
     {
-        CardPaymentXmlAdapter adapter = new CardPaymentXmlAdapter();
-        CardPayment cardPayment = adapter.read(response);
-        return cardPayment;
+        PaymentResponseXmlAdapter adapter = new PaymentResponseXmlAdapter();
+        PaymentResponse paymentResponse = adapter.read(response);
+        return paymentResponse;
     }
 
     public ClientsideEncryptedCardRequest orderDetails(OrderDetails orderDetails)

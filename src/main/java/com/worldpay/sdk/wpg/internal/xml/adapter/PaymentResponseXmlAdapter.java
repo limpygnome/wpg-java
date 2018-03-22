@@ -12,18 +12,18 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.PaymentSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.conversion.CurrencyConversionSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.threeds.ThreeDsSerializer;
-import com.worldpay.sdk.wpg.domain.payment.CardPayment;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 
-public class CardPaymentXmlAdapter
+public class PaymentResponseXmlAdapter
 {
 
-    public CardPayment read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    public PaymentResponse read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
     {
         HttpResponse httpResponse = response.getResponse();
         String xml = httpResponse.getBody();
         XmlBuilder builder = XmlBuilder.parse(xml);
 
-        CardPayment result = null;
+        PaymentResponse result = null;
 
         if (builder.isCurrentTag("paymentService"))
         {
@@ -48,9 +48,9 @@ public class CardPaymentXmlAdapter
         return result;
     }
 
-    private CardPayment readOrderStatus(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
+    private PaymentResponse readOrderStatus(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
     {
-        CardPayment result = null;
+        PaymentResponse result = null;
 
         if (builder.hasE("error"))
         {
@@ -61,18 +61,18 @@ public class CardPaymentXmlAdapter
             if (builder.hasE("request3DSecure"))
             {
                 ThreeDsRequired threeDsRequired = ThreeDsSerializer.read(builder);
-                result = new CardPayment(threeDsRequired);
+                result = new PaymentResponse(threeDsRequired);
             }
         }
         else if (builder.hasE("fxApprovalRequired"))
         {
             CurrencyConversionRequired currencyConversionRequired = CurrencyConversionSerializer.read(builder);
-            result = new CardPayment(currencyConversionRequired);
+            result = new PaymentResponse(currencyConversionRequired);
         }
         else if (builder.hasE("payment"))
         {
             Payment payment = PaymentSerializer.read(builder);
-            result = new CardPayment(payment);
+            result = new PaymentResponse(payment);
         }
 
         // check we have something

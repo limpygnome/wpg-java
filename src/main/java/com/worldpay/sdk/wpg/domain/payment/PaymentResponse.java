@@ -6,7 +6,7 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 
 import java.io.Serializable;
 
-public class CardPayment implements Serializable
+public class PaymentResponse implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -14,27 +14,27 @@ public class CardPayment implements Serializable
     private CurrencyConversionRequired currencyConversionRequired;
     private ThreeDsRequired threeDsRequired;
 
-    private CardPaymentStatus status;
+    private PaymentStatus status;
 
-    public CardPayment(Payment payment) throws WpgRequestException
+    public PaymentResponse(Payment payment) throws WpgRequestException
     {
         this.payment = payment;
-        this.status = CardPaymentStatus.PAYMENT_STATUS;
+        this.status = PaymentStatus.PAYMENT_RESULT;
     }
 
-    public CardPayment(CurrencyConversionRequired currencyConversionRequired)
+    public PaymentResponse(CurrencyConversionRequired currencyConversionRequired)
     {
         this.currencyConversionRequired = currencyConversionRequired;
-        this.status = CardPaymentStatus.CURRENCY_CONVERSION_REQUESTED;
+        this.status = PaymentStatus.CURRENCY_CONVERSION_REQUESTED;
     }
 
-    public CardPayment(ThreeDsRequired threeDsRequired)
+    public PaymentResponse(ThreeDsRequired threeDsRequired)
     {
         this.threeDsRequired = threeDsRequired;
-        this.status = CardPaymentStatus.THREEDS_REQUESTED;
+        this.status = PaymentStatus.THREEDS_REQUESTED;
     }
 
-    public CardPaymentStatus getStatus()
+    public PaymentStatus getStatus()
     {
         return status;
     }

@@ -10,8 +10,8 @@ import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.CardPayment;
-import com.worldpay.sdk.wpg.domain.payment.CardPaymentStatus;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
+import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
@@ -43,7 +43,7 @@ public class CardStateMachineDemoApp
         try
         {
             // create order
-            CardPayment cardPayment = new CardPaymentRequest()
+            PaymentResponse paymentResponse = new CardPaymentRequest()
                     .orderDetails(orderDetails)
                     .cardDetails(cardDetails)
                     .billingAddress(address)
@@ -51,16 +51,16 @@ public class CardStateMachineDemoApp
                     .shopper(shopper)
                     .send(gatewayContext);
 
-            CardPaymentStatus result;
+            PaymentStatus result;
             boolean continuePayment = true;
 
             do
             {
-                result = cardPayment.getStatus();
+                result = paymentResponse.getStatus();
                 switch (result)
                 {
                     case CURRENCY_CONVERSION_REQUESTED:
-                        CurrencyConversionRequired currencyConversion = cardPayment.getCurrencyConversionRequired();
+                        CurrencyConversionRequired currencyConversion = paymentResponse.getCurrencyConversionRequired();
                         Amount approvalAmount = currencyConversion.getAmount();
 
                         // prompt to continue
@@ -68,17 +68,17 @@ public class CardStateMachineDemoApp
 
                         break;
                     case THREEDS_REQUESTED:
-                        ThreeDsRequired threeDs = cardPayment.getThreeDsRequired();
+                        ThreeDsRequired threeDs = paymentResponse.getThreeDsRequired();
                         break;
-                    case PAYMENT_STATUS:
-                        Payment payment = cardPayment.getPayment();
+                    case PAYMENT_RESULT:
+                        Payment payment = paymentResponse.getPayment();
                         System.out.println("payment - lastEvent: " + payment.getLastEvent());
                         break;
                     default:
                         throw new IllegalStateException("Unhandled response - result=" + result);
                 }
             }
-            while (continuePayment && result != CardPaymentStatus.PAYMENT_STATUS);
+            while (continuePayment && result != PaymentStatus.PAYMENT_RESULT);
         }
         catch (WpgConnectionException e)
         {

@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
+/**
+ * This demo prints out examples of received order notifications.
+ */
 public class XmlNotificationDemoApp
 {
 
@@ -19,6 +22,7 @@ public class XmlNotificationDemoApp
             XmlNotificationBuilder builder = new XmlNotificationBuilder();
 
             String[] xmlExamples = new String[] {
+                    "/order-notifications/authorised.txt",
                     "/order-notifications/cancelled.txt",
                     "/order-notifications/captured.txt",
                     "/order-notifications/refund.txt",
