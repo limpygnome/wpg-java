@@ -2,7 +2,7 @@ package com.worldpay.sdk.wpg.internal.xml.adapter;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
@@ -11,9 +11,7 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.PaymentSerializer;
-import com.worldpay.sdk.wpg.internal.xml.serializer.payment.conversion.CurrencyConversionSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.threeds.ThreeDsSerializer;
-import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 
 public class PaymentResponseXmlAdapter
 {
@@ -64,11 +62,6 @@ public class PaymentResponseXmlAdapter
                 ThreeDsRequired threeDsRequired = ThreeDsSerializer.read(builder);
                 result = new PaymentResponse(threeDsRequired);
             }
-        }
-        else if (builder.hasE("fxApprovalRequired"))
-        {
-            CurrencyConversionRequired currencyConversionRequired = CurrencyConversionSerializer.read(builder);
-            result = new PaymentResponse(currencyConversionRequired);
         }
         else if (builder.hasE("payment"))
         {

@@ -32,3 +32,5 @@ descoped:
 - mobile wallets
 - industry data (airline data etc)
 - pos integration / iso8583
+- currency conversion
+    - likely only HPP, looks like direct auto-converts

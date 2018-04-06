@@ -1,6 +1,5 @@
 package com.worldpay.sdk.wpg.domain.payment;
 
-import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 
@@ -11,7 +10,6 @@ public class PaymentResponse implements Serializable
     private static final long serialVersionUID = 1L;
 
     private Payment payment;
-    private CurrencyConversionRequired currencyConversionRequired;
     private ThreeDsRequired threeDsRequired;
 
     private PaymentStatus status;
@@ -20,12 +18,6 @@ public class PaymentResponse implements Serializable
     {
         this.payment = payment;
         this.status = PaymentStatus.PAYMENT_RESULT;
-    }
-
-    public PaymentResponse(CurrencyConversionRequired currencyConversionRequired)
-    {
-        this.currencyConversionRequired = currencyConversionRequired;
-        this.status = PaymentStatus.CURRENCY_CONVERSION_REQUESTED;
     }
 
     public PaymentResponse(ThreeDsRequired threeDsRequired)
@@ -42,11 +34,6 @@ public class PaymentResponse implements Serializable
     public Payment getPayment()
     {
         return payment;
-    }
-
-    public CurrencyConversionRequired getCurrencyConversionRequired()
-    {
-        return currencyConversionRequired;
     }
 
     public ThreeDsRequired getThreeDsRequired()

@@ -10,11 +10,10 @@ import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
-import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
+import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
@@ -22,7 +21,7 @@ import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 
-public class CardStateMachineDemoApp
+public class CardAdvancedDemoApp
 {
 
     public static void main(String[] args)
@@ -59,14 +58,6 @@ public class CardStateMachineDemoApp
                 result = paymentResponse.getStatus();
                 switch (result)
                 {
-                    case CURRENCY_CONVERSION_REQUESTED:
-                        CurrencyConversionRequired currencyConversion = paymentResponse.getCurrencyConversionRequired();
-                        Amount approvalAmount = currencyConversion.getAmount();
-
-                        // prompt to continue
-                        System.out.println("The order will need to convert the amount to " + approvalAmount.getValue() + " " + approvalAmount.getCurrency() + ", continue?");
-
-                        break;
                     case THREEDS_REQUESTED:
                         ThreeDsRequired threeDs = paymentResponse.getThreeDsRequired();
                         break;

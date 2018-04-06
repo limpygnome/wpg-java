@@ -14,7 +14,6 @@ import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgException;
@@ -56,10 +55,6 @@ public class CardTokenisationDemoApp
 
             switch (paymentResponse.getStatus())
             {
-                case CURRENCY_CONVERSION_REQUESTED:
-                    CurrencyConversionRequired currencyConversion = paymentResponse.getCurrencyConversionRequired();
-                    // do something...
-                    break;
                 case THREEDS_REQUESTED:
                     ThreeDsRequired threeDs = paymentResponse.getThreeDsRequired();
                     System.out.println("3ds required - issuer URL:" + threeDs.getIssuerURL() + ", paRes: " + threeDs.getPaRequest());
