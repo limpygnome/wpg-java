@@ -22,4 +22,13 @@ public class AmountSerializer
         return amount;
     }
 
+    public static void write(XmlBuilder builder, Amount amount)
+    {
+        builder.e("amount")
+                .a("currencyCode", amount.getCurrency().ISO4217_CURRENCY_CODE)
+                .a("exponent", String.valueOf(amount.getExponent()))
+                .a("value", String.valueOf(amount.getValue()))
+                .up();
+    }
+
 }

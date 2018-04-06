@@ -9,6 +9,7 @@ import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
 import com.worldpay.sdk.wpg.domain.payment.result.RiskScoreResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ThreeDSecureResult;
+import com.worldpay.sdk.wpg.domain.tokenisation.Token;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenCardDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenDetails;
 
@@ -30,14 +31,13 @@ public class Payment
     private final CvcResult cvcResult;
     private final AvvResult avvResult;
     private final RiskScoreResult riskScoreResult;
-    private final TokenDetails tokenDetails;
-    private final TokenCardDetails tokenCardDetails;
+    private final Token token;
 
     public Payment(PaymentMethod paymentMethod, Amount amount, LastEvent lastEvent, Balance balance,
                    CardResult cardResult, PayoutAuthorisationResult payoutAuthorisationResult,
                    ISO8583Result iso8583Result, ThreeDSecureResult threeDSecureResult, AvsResult avsResult,
                    CvcResult cvcResult, AvvResult avvResult, RiskScoreResult riskScoreResult,
-                   TokenDetails tokenDetails, TokenCardDetails tokenCardDetails)
+                   Token token)
     {
         this.paymentMethod = paymentMethod;
         this.amount = amount;
@@ -51,8 +51,7 @@ public class Payment
         this.cvcResult = cvcResult;
         this.avvResult = avvResult;
         this.riskScoreResult = riskScoreResult;
-        this.tokenDetails = tokenDetails;
-        this.tokenCardDetails = tokenCardDetails;
+        this.token = token;
     }
 
     /**
@@ -129,14 +128,9 @@ public class Payment
         return riskScoreResult;
     }
 
-    public TokenDetails getTokenDetails()
+    public Token getToken()
     {
-        return tokenDetails;
-    }
-
-    public TokenCardDetails getTokenCardDetails()
-    {
-        return tokenCardDetails;
+        return token;
     }
 
     @Override
@@ -155,8 +149,8 @@ public class Payment
                 ", cvcResult=" + cvcResult +
                 ", avvResult=" + avvResult +
                 ", riskScoreResult=" + riskScoreResult +
-                ", tokenDetails=" + tokenDetails +
-                ", tokenCardDetails=" + tokenCardDetails +
+                ", token=" + token +
                 '}';
     }
+
 }

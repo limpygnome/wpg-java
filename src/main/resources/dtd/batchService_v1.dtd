@@ -1,0 +1,276 @@
+<!-- Root elements
+
+The root element batchService needs three attributes :
+- version : The DTD version.
+- merchantCode : The code that identifies the merchant
+- batchCode : The code that identifies the batch to the merchant
+
+The batchService can have the following child elements:
+- capture : capture an existing order for the specified amount
+- refund : refund an existing order for the specified amount
+- cancelOrRefund : cancel or refund the order for the full amount depending on the payment status
+
+Other root elements:
+- ok : a reply which states we have accepted the batch
+- error : a reply which states something went wrong and we have not accepted the batch
+-->
+<!ELEMENT ok EMPTY>
+<!--
+The element error will be returned when an error occurs. The error contains an 
+error message describing what caused this error.
+Attributes of error :
+- code : An error code for this error. 
+Errorcodes can be:
+- 1 : ERROR_INTERNAL : please call bibit
+- 2 : ERROR_PARSE : your xml could not be parsed
+- 3 : ERROR_ORDER_AMOUNT : either the order or the amount is invalid
+- 4 : ERROR_SECURITY : security violation
+- 5 : ERROR_INVALID_REQUEST : Error in request (duplicate order, cancel not existing order etc.)
+- 6 : ERROR_INVALID_CONTENT : invalid order in orderbatch
+- 7 : ERROR_PAYMENT_DETAILS : payment details are not correct (f.i. expiry date in past)
+- 8 : ERROR_NOT_AVAILABLE : this service is currently not available, try again later
+
+-->
+<!ELEMENT error  (#PCDATA )>
+<!ATTLIST error  code  (1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 )  #REQUIRED >
+
+<!ELEMENT batchService ((capture|referredCapture|refund|cancelOrRefund|referral)+|ok|error)>
+<!ATTLIST batchService  version       ( 1.0 )  #REQUIRED
+                        merchantCode NMTOKEN  #REQUIRED
+                        batchCode CDATA  #REQUIRED >
+
+<!ELEMENT refund  (amount, branchSpecificExtension? )>
+<!ATTLIST refund  orderCode CDATA  #REQUIRED >
+<!ATTLIST refund  reference CDATA #IMPLIED >
+
+<!ELEMENT capture  (amount, branchSpecificExtension? )>
+<!ATTLIST capture  orderCode CDATA  #REQUIRED >
+<!ATTLIST capture  reference CDATA #IMPLIED >
+
+
+<!ELEMENT referredCapture  (amount, branchSpecificExtension? )>
+<!ATTLIST referredCapture  orderCode CDATA  #REQUIRED >
+<!ATTLIST referredCapture  reference CDATA #IMPLIED >
+<!ATTLIST referredCapture authorisationCode CDATA #REQUIRED >
+
+<!ELEMENT cancelOrRefund  EMPTY>
+<!ATTLIST cancelOrRefund  orderCode CDATA  #REQUIRED >
+
+<!ELEMENT referral (cardReferral | bankReferral-NL | bankReferral-DE ) >
+<!ATTLIST referral action NMTOKEN #REQUIRED >
+<!-- action = { "stop" | "white" | "remove" } -->
+<!ATTLIST referral reason CDATA #IMPLIED >
+
+<!ELEMENT date EMPTY>
+<!ATTLIST date  dayOfMonth NMTOKEN  #IMPLIED
+                month      NMTOKEN  #REQUIRED
+                year       NMTOKEN  #REQUIRED
+                hour       NMTOKEN  #IMPLIED
+                minute     NMTOKEN  #IMPLIED
+                second     NMTOKEN  #IMPLIED >
+
+<!ELEMENT amount EMPTY>
+<!ATTLIST amount  value					NMTOKEN  #REQUIRED
+                  currencyCode			NMTOKEN  #REQUIRED
+                  exponent				(0 | 2 | 3)  #REQUIRED >
+
+<!ELEMENT branchSpecificExtension (airline|purchase)>
+
+<!-- CHILD ELEMENTS OF ALL AIRLINE ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT airline  (	airlineName,
+						passenger,
+						(ticket|nonTicket),
+						agent )>
+<!-- Code, length 3, consists of the IATA airline code -->
+<!ATTLIST airline	code NMTOKEN #REQUIRED
+					planNumber (03|06|09|12|00) #IMPLIED>
+	
+<!-- CHILD ELEMENTS OF ALL AIRLINENAME ELEMENTS -->
+<!-- ================================= -->
+<!-- Contains the name of an airline as it may appear on a bill -->
+<!ELEMENT	airlineName  (	#PCDATA )>
+
+<!-- CHILD ELEMENTS OF ALL PASSENGER ELEMENTS -->
+<!-- ================================= -->
+<!-- Contains the name of a passenger  -->
+<!ELEMENT	passenger  (	#PCDATA	)>
+<!ATTLIST	passenger	code NMTOKEN #REQUIRED>	
+
+<!-- CHILD ELEMENTS OF ALL TICKET ELEMENTS -->
+<!-- ================================= -->
+<!-- Code consists of the ticket number -->
+<!ELEMENT ticket  (	issuer,
+					flight*	)>
+<!ATTLIST ticket	code NMTOKEN #REQUIRED
+					restricted (0|1) #REQUIRED>
+
+<!-- CHILD ELEMENTS OF ALL NONTICKET ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT nonTicket  (	#PCDATA	)>
+<!ATTLIST nonTicket	subCode NMTOKEN #IMPLIED>
+
+<!-- CHILD ELEMENTS OF ALL AGENT ELEMENTS -->
+<!-- ================================= -->
+<!-- Code, length 8, consists of the IATA travel agency code -->
+<!-- Agent element, contains name of travel agent -->
+<!ELEMENT agent	(	#PCDATA )>
+<!ATTLIST agent	code NMTOKEN #REQUIRED>
+
+<!-- CHILD ELEMENTS OF ALL ISSUER ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT issuer  (	address )>
+
+<!-- CHILD ELEMENTS OF ALL FLIGHT ELEMENTS -->
+<!-- ================================= -->
+<!-- carrierCode, length 2, consists of the IATA carrier code -->
+<!ELEMENT flight  (	departureAirport,
+					arrivalAirport,
+					departureDate,
+					fare,
+					tax	)>
+<!ATTLIST flight	carrierCode NMTOKEN #REQUIRED
+					stopOverCode (0|1) #IMPLIED
+					domestic     (0|1) #IMPLIED >
+
+<!-- CHILD ELEMENTS OF ALL DEPARTUREAIRPORT ELEMENTS -->
+<!-- ================================= -->
+<!-- Consists of the 3 chars IATA airport code -->
+<!ELEMENT departureAirport  (	#PCDATA )>
+
+<!-- CHILD ELEMENTS OF ALL ARRIVALAIRPORT ELEMENTS -->
+<!-- ================================= -->
+<!-- Consists of the 3 chars IATA airport code -->
+<!ELEMENT arrivalAirport  (	#PCDATA )>
+
+<!-- CHILD ELEMENTS OF ALL DEPARTUREDATE ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT departureDate  (	date	)>
+
+<!-- CHILD ELEMENTS OF ALL FARE ELEMENTS -->
+<!-- ================================= -->
+<!-- class consists of the single character IATA 
+		travel class code -->
+<!ELEMENT fare 	EMPTY>
+<!ATTLIST fare	class NMTOKEN #REQUIRED
+				basis NMTOKEN #IMPLIED>
+
+<!-- CHILD ELEMENTS OF ALL FARE ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT tax 	(	amount	)	>
+
+
+
+
+<!-- CHILD ELEMENTS OF ALL PURCHASE ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT purchase (	costCenter,
+						shopperVATNumber,
+                        merchantVATNumber,
+						purchaseCardAccount?,
+						item*, 
+                        freight, 
+                        total)>
+
+<!ELEMENT costCenter (#PCDATA)>
+<!ELEMENT item (	description, 
+					commodity, 
+					netUnitPrice, 
+					netDiscount, 
+					grossAmount,
+					VAT)>
+<!ATTLIST item	quantity NMTOKEN #REQUIRED
+				unit NMTOKEN #REQUIRED>
+                
+<!ELEMENT freight (	departure,
+					destination,
+					netAmount,
+					grossAmount,
+					VAT)>
+<!ELEMENT total (	netAmount,
+					netDiscount,
+					VAT)>
+<!-- GRANDCHILD ELEMENTS OF ALL PURCHASE ELEMENTS -->
+<!-- ================================= -->
+<!-- if Vatnumber doesn't start with two character language code, it may be
+prefixed with the destination CountryCode in the case of the Shopper and
+with the departure countryCode in case of the merchant VAT number -->
+
+<!ELEMENT shopperVATNumber					(#PCDATA )>
+<!ELEMENT merchantVATNumber					(#PCDATA )>
+<!ELEMENT purchaseCardAccount		(#PCDATA )>
+
+<!ELEMENT commodity EMPTY>
+<!ATTLIST commodity	code NMTOKEN #REQUIRED>
+
+<!ELEMENT netUnitPrice (amount)>
+
+<!ELEMENT netDiscount (amount)>
+
+<!ELEMENT grossAmount (amount)>
+
+<!ELEMENT netAmount (amount)>
+
+<!ELEMENT VAT EMPTY>
+<!ATTLIST VAT percentage NMTOKEN #REQUIRED>
+
+<!ELEMENT 	departure EMPTY>
+<!ATTLIST departure 	countryCode NMTOKEN #REQUIRED
+						zipCode NMTOKEN #REQUIRED>
+
+
+<!ELEMENT 	destination EMPTY>
+<!ATTLIST destination 	countryCode NMTOKEN #REQUIRED
+						zipCode NMTOKEN #REQUIRED>
+
+
+
+<!-- CHILD ELEMENTS OF ALL ADDRESS ELEMENTS -->
+<!-- ================================= -->
+<!ELEMENT address  (	firstName?,
+			lastName?,
+			((street, houseName?, houseNumber?, houseNumberExtension?) 
+			| (address1, address2?, address3?)),
+			postalCode, 
+			city, 
+			state?,
+ 			countryCode, 
+			telephoneNumber? )>
+
+<!-- CHILD ELEMENTS OF ADDRESS ELEMENT -->
+<!-- ================================= -->
+<!ELEMENT firstName		(#PCDATA )>
+<!ELEMENT lastName		(#PCDATA )>
+<!ELEMENT street		(#PCDATA )>
+<!ELEMENT houseName		(#PCDATA )>
+<!ELEMENT houseNumber		(#PCDATA )>
+<!ELEMENT houseNumberExtension	(#PCDATA )>
+<!ELEMENT address1			(#PCDATA )>
+<!ELEMENT address2			(#PCDATA )>
+<!ELEMENT address3			(#PCDATA )>
+<!ELEMENT postalCode		(#PCDATA )>
+<!ELEMENT city			(#PCDATA )>
+<!ELEMENT state			(#PCDATA )>
+<!ELEMENT countryCode		(#PCDATA )>
+<!ELEMENT telephoneNumber	(#PCDATA )>
+
+<!--
+The maximum length of description is 50 characters. In case an order with
+airline element is used, the first 20 characters should contain the name
+of the airline.
+-->
+<!ELEMENT description  (#PCDATA )>
+
+<!-- CHILD ELEMENTS OF ALL REFERRAL ELEMENTS -->
+<!-- ======================================= -->
+<!ELEMENT cardReferral EMPTY >
+<!ATTLIST cardReferral cardNumber CDATA #REQUIRED >
+
+<!ELEMENT bankReferral-NL EMPTY >
+<!ATTLIST bankReferral-NL accountNumber NMTOKEN #REQUIRED >
+
+<!ELEMENT bankReferral-DE EMPTY >
+<!ATTLIST bankReferral-DE branchCode NMTOKEN #REQUIRED >
+<!ATTLIST bankReferral-DE accountNumber NMTOKEN #REQUIRED >
+
+<!ELEMENT reason (#PCDATA) >

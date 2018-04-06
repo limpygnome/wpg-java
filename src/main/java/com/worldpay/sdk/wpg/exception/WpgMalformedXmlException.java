@@ -1,7 +1,10 @@
 package com.worldpay.sdk.wpg.exception;
 
+import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+
 public class WpgMalformedXmlException extends WpgException
 {
+    private XmlResponse response;
     private String text;
 
     public WpgMalformedXmlException(String text)
@@ -16,11 +19,22 @@ public class WpgMalformedXmlException extends WpgException
         this.text = text;
     }
 
+    public WpgMalformedXmlException(String message, XmlResponse response)
+    {
+        super(message);
+        this.response = response;
+    }
+
     /**
      * @return the text attempted to be parsed
      */
     public String getText()
     {
         return text;
+    }
+
+    public XmlResponse getResponse()
+    {
+        return response;
     }
 }

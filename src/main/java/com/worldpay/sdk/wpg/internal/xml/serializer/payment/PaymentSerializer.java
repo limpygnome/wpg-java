@@ -12,6 +12,7 @@ import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
 import com.worldpay.sdk.wpg.domain.payment.result.RiskScoreResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ThreeDSecureResult;
+import com.worldpay.sdk.wpg.domain.tokenisation.Token;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenCardDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
@@ -27,8 +28,9 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.ISO8583Result
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.PayoutAuthorisationResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.RiskScoreResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.ThreeDSecureResultSerializer;
-import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.TokenCardDetailsSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.TokenInstrumentSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.TokenDetailsSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.TokenSerializer;
 
 public class PaymentSerializer
 {
@@ -57,15 +59,13 @@ public class PaymentSerializer
         AvvResult avvResult = AvvResultSerializer.read(builder);
         Balance balance = BalanceSerializer.read(builder);
         RiskScoreResult riskScoreResult = RiskScoreResultSerializer.read(builder);
-        TokenDetails tokenDetails = TokenDetailsSerializer.read(builder);
-        TokenCardDetails tokenCardDetails = TokenCardDetailsSerializer.read(builder);
+        Token token = TokenSerializer.read(builder);
         builder.reset();
 
         // wrap it all up
         Payment payment = new Payment(
                 paymentMethod, amount, lastEvent, balance, cardResult, payoutAuthorisationResult,
-                iso8583Result, threeDSecureResult, avsResult, cvcResult, avvResult, riskScoreResult , tokenDetails,
-                tokenCardDetails
+                iso8583Result, threeDSecureResult, avsResult, cvcResult, avvResult, riskScoreResult, token
         );
         return payment;
     }

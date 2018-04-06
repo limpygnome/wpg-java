@@ -2,7 +2,7 @@ package com.worldpay.sdk.wpg.domain.tokenisation;
 
 import com.worldpay.sdk.wpg.domain.CardDetails;
 
-public class TokenCardDetails
+public class TokenCardDetails implements TokenInstrument
 {
     private final String cardBrand;
     private final String cardSubBrand;

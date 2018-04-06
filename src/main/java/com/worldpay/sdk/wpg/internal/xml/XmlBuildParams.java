@@ -7,7 +7,7 @@ public class XmlBuildParams
 {
     private final GatewayContext gatewayContext;
     private final SessionContext sessionContext;
-    private final XmlBuilder xmlBuilder;
+    private XmlBuilder xmlBuilder;
 
     public XmlBuildParams(GatewayContext gatewayContext, SessionContext sessionContext, XmlBuilder xmlBuilder)
     {
@@ -29,6 +29,11 @@ public class XmlBuildParams
     public XmlBuilder xmlBuilder()
     {
         return xmlBuilder;
+    }
+
+    public void setBuilder(XmlBuilder xmlBuilder)
+    {
+        this.xmlBuilder = xmlBuilder;
     }
 
 }

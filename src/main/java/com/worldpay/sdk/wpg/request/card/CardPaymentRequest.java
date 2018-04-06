@@ -21,6 +21,9 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.SessionSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
 
+/**
+ * Supports tokenisation.
+ */
 public class CardPaymentRequest extends XmlRequest<PaymentResponse>
 {
     // Mandatory

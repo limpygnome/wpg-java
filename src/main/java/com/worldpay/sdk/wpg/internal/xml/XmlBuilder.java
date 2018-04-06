@@ -44,7 +44,7 @@ public class XmlBuilder
         this.current = current;
     }
 
-    public XmlBuilder(String rootTagName)
+    private XmlBuilder(String rootTagName)
     {
         try
         {
@@ -265,6 +265,11 @@ public class XmlBuilder
         return result;
     }
 
+    public boolean hasChildNodes()
+    {
+        return current.hasChildNodes();
+    }
+
     @Override
     public String toString()
     {
@@ -303,7 +308,8 @@ public class XmlBuilder
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            // Prevent XXE attacks and only read from local for performance
+
+            // Only read from local for performance (also prevents XXE attacks)
             builder.setEntityResolver(new EntityResolver()
             {
                 @Override
@@ -311,7 +317,12 @@ public class XmlBuilder
                 {
                     if ("http://dtd.worldpay.com/paymentService_v1.dtd".equals(systemId))
                     {
-                        InputStream is = this.getClass().getResourceAsStream("/paymentService_v1.dtd");
+                        InputStream is = this.getClass().getResourceAsStream("/dtd/paymentService_v1.dtd");
+                        return new InputSource(is);
+                    }
+                    else if ("http://dtd.worldpay.com/batchService_v1.dtd".equals(systemId))
+                    {
+                        InputStream is = this.getClass().getResourceAsStream("/dtd/batchService_v1.dtd");
                         return new InputSource(is);
                     }
                     return null;
@@ -334,6 +345,13 @@ public class XmlBuilder
     {
         XmlBuilder builder = new XmlBuilder("paymentService");
         builder.a("version", "1.4");
+        return builder;
+    }
+
+    public static XmlBuilder createBatchService()
+    {
+        XmlBuilder builder = new XmlBuilder("batchService");
+        builder.a("version", "1.0");
         return builder;
     }
 

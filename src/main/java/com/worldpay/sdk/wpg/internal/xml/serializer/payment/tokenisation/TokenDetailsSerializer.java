@@ -14,19 +14,18 @@ public class TokenDetailsSerializer
 
         if (builder.hasE("tokenDetails"))
         {
-            String shopperId = builder.getCdata("authenticatedShopperID");
-
             String tokenEvent = builder.a("tokenEvent");
             String paymentTokenId = builder.getCdata("paymentTokenID");
 
             builder.e("paymentTokenExpiry");
+            // TODO use date serializer
             LocalDateTime tokenExpiry = readExpiry(builder);
             builder.up();
 
             String eventReference = builder.getCdata("tokenEventReference");
             String eventReason = builder.getCdata("tokenReason");
 
-            tokenDetails = new TokenDetails(paymentTokenId, shopperId, tokenExpiry, tokenEvent, eventReference, eventReason);
+            tokenDetails = new TokenDetails(paymentTokenId, tokenExpiry, tokenEvent, eventReference, eventReason);
         }
 
         return tokenDetails;

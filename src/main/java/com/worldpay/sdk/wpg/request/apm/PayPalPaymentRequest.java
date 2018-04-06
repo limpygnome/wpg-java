@@ -20,6 +20,8 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
 
 /**
+ * Supports tokenisation
+ *
  * Supported language codes, otherwise defaults to English:
  * http://support.worldpay.com/support/kb/gg/paypal/paypalcg.htm#languagecodes.htm%3FTocPath%3DXML%2520input%2520examples%7CTechnical%2520Integration%7C_____3
  */

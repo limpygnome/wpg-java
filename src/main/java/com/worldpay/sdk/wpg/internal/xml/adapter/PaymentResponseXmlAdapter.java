@@ -5,6 +5,7 @@ import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.conversion.CurrencyConversionRequired;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
@@ -42,7 +43,7 @@ public class PaymentResponseXmlAdapter
 
         if (result == null)
         {
-            throw new WpgRequestException("Unable to handle server response: \n" + httpResponse.getBody());
+            throw new WpgMalformedResponseException(response);
         }
 
         return result;

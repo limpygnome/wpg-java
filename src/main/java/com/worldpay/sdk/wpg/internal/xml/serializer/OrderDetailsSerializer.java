@@ -36,10 +36,7 @@ public class OrderDetailsSerializer
             throw new IllegalArgumentException("Amount is mandatory for order details");
         }
 
-        builder.e("amount")
-                    .a("currencyCode", amount.getCurrency().ISO4217_CURRENCY_CODE)
-                    .a("exponent", String.valueOf(amount.getExponent()))
-                    .a("value", String.valueOf(amount.getValue()));
+        AmountSerializer.write(builder, amount);
 
         // reset
         builder.reset();
