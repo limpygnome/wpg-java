@@ -20,11 +20,12 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.SessionSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
+import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
  * Supports tokenisation.
  */
-public class CardPaymentRequest extends XmlRequest<PaymentResponse>
+public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements BatchOrderItem
 {
     // Mandatory
     private OrderDetails orderDetails;
@@ -68,10 +69,15 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse>
     @Override
     protected void validate(XmlBuildParams params)
     {
-        Assert.notEmpty(shopper.getIpAddress(), "Shopper IP address is required for card payments");
+        if (!params.isBatch())
+        {
+            Assert.notNull(shopper, "Shopper is required for card payments");
+            Assert.notEmpty(shopper.getIpAddress(), "Shopper IP address is required for card payments");
+        }
 
         if (this.createTokenDetails != null)
         {
+            Assert.notNull(shopper, "Shopper is required for tokenised payments");
             Assert.notEmpty(shopper.getShopperId(), "Shopper ID is required for tokenised payments");
         }
     }
@@ -79,12 +85,13 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse>
     @Override
     protected void build(XmlBuildParams params)
     {
-        OrderDetailsSerializer.decorate(params, orderDetails);
-        CardDetailsSerializer.decorate(params, cardDetails);
-        SessionSerializer.decorate(params, shopper);
-        ShopperSerializer.decorate(params, shopper);
-        AddressSerializer.decorate(params, billingAddress, shippingAddress);
-        CreateTokenDetailsSerializer.decorate(params, createTokenDetails);
+        OrderDetailsSerializer.decorateAndStartOrder(params, orderDetails);
+        CardDetailsSerializer.decorateOrder(params, cardDetails);
+        SessionSerializer.decorateOrderPaymentDetails(params, shopper);
+        ShopperSerializer.decorateOrder(params, shopper);
+        AddressSerializer.decorateOrder(params, billingAddress, shippingAddress);
+        CreateTokenDetailsSerializer.decorateOrder(params, createTokenDetails);
+        OrderDetailsSerializer.decorateFinishOrder(params);
     }
 
     @Override

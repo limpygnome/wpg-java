@@ -7,16 +7,14 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
 public class ShopperSerializer
 {
-    public static void decorate(XmlBuildParams params, Shopper shopper)
+    public static void decorateOrder(XmlBuildParams params, Shopper shopper)
     {
         if (shopper != null)
         {
             XmlBuilder builder = params.xmlBuilder();
 
             // Get to shopper element
-            builder.e("submit")
-                    .e("order")
-                    .e("shopper");
+            builder.e("shopper");
 
             // Append details
             if (shopper.getEmail() == null)
@@ -34,8 +32,8 @@ public class ShopperSerializer
             ShopperBrowser browser = shopper.getBrowser();
             decorateBrowser(builder, browser);
 
-            // Reset
-            builder.reset();
+            // Reset to order element
+            builder.up();
         }
     }
 

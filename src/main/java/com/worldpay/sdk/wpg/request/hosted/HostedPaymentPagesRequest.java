@@ -57,10 +57,11 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
     @Override
     protected void build(XmlBuildParams params)
     {
-        OrderDetailsSerializer.decorate(params, orderDetails);
+        OrderDetailsSerializer.decorateAndStartOrder(params, orderDetails);
         PaymentMethodMaskSerializer.decorate(params, paymentMethodFilter);
-        ShopperSerializer.decorate(params, shopper);
-        AddressSerializer.decorate(params, billingAddress, shippingAddress);
+        ShopperSerializer.decorateOrder(params, shopper);
+        AddressSerializer.decorateOrder(params, billingAddress, shippingAddress);
+        OrderDetailsSerializer.decorateFinishOrder(params);
     }
 
     @Override

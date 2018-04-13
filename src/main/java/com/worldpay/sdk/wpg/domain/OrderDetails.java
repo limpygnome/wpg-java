@@ -1,11 +1,14 @@
 package com.worldpay.sdk.wpg.domain;
 
+import com.worldpay.sdk.wpg.builder.RandomIdentifier;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 
 import java.util.UUID;
 
 public class OrderDetails
 {
+    private static final int ID_MAX_LEN = 32;
+
     private String orderCode;
     private String description;
     private Amount amount;
@@ -23,7 +26,7 @@ public class OrderDetails
 
         if (orderCode == null)
         {
-            this.orderCode = UUID.randomUUID().toString();
+            this.orderCode = RandomIdentifier.generate(ID_MAX_LEN);
         }
     }
 

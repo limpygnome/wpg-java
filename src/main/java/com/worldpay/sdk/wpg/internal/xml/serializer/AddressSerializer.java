@@ -6,17 +6,18 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
 public class AddressSerializer
 {
-    public static void decorate(XmlBuildParams params, Address billingAddress, Address shippingAddress)
+    public static void decorateOrder(XmlBuildParams params, Address billingAddress, Address shippingAddress)
     {
         XmlBuilder builder = params.xmlBuilder();
-        builder.e("submit")
-                .e("order");
 
-        decorateAddress("shippingAddress", builder, shippingAddress);
-        decorateAddress("billingAddress", builder, billingAddress);
-
-        // Reset
-        builder.reset();
+        if (shippingAddress != null)
+        {
+            decorateAddress("shippingAddress", builder, shippingAddress);
+        }
+        if (billingAddress != null)
+        {
+            decorateAddress("billingAddress", builder, billingAddress);
+        }
     }
 
     public static void decorateCurrentElement(XmlBuildParams params, Address address)

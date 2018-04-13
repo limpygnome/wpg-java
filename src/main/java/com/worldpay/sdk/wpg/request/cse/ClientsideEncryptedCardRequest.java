@@ -18,11 +18,12 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.SessionSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
+import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
  * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm
  */
-public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse>
+public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse> implements BatchOrderItem
 {
     // Mandatory
     private OrderDetails orderDetails;
@@ -72,13 +73,13 @@ public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse>
 
     protected void build(XmlBuildParams params)
     {
-        OrderDetailsSerializer.decorate(params, orderDetails);
-        CseSerializer.decorateCard(params, encryptedData, cardHolderAddress);
-        SessionSerializer.decorate(params, shopper);
-        ShopperSerializer.decorate(params, shopper);
-        AddressSerializer.decorate(params, billingAddress, shippingAddress);
-        // TODO does tokenisation work?
-        CreateTokenDetailsSerializer.decorate(params, createTokenDetails);
+        OrderDetailsSerializer.decorateAndStartOrder(params, orderDetails);
+        CseSerializer.decorateOrder(params, encryptedData, cardHolderAddress);
+        SessionSerializer.decorateOrderPaymentDetails(params, shopper);
+        ShopperSerializer.decorateOrder(params, shopper);
+        AddressSerializer.decorateOrder(params, billingAddress, shippingAddress);
+        CreateTokenDetailsSerializer.decorateOrder(params, createTokenDetails);
+        OrderDetailsSerializer.decorateFinishOrder(params);
     }
 
     @Override

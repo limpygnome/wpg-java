@@ -8,17 +8,29 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
 public class OrderDetailsSerializer
 {
-    public static void decorate(XmlBuildParams params, OrderDetails orderDetails)
+
+    public static void decorateMerchantCode(XmlBuildParams params)
+    {
+        UserPassAuth auth = (UserPassAuth) params.gatewayContext().getAuth();
+
+        XmlBuilder builder = params.xmlBuilder();
+        builder.a("merchantCode", auth.getMerchantCode());
+    }
+
+    public static void decorateAndStartOrder(XmlBuildParams params, OrderDetails orderDetails)
     {
         UserPassAuth auth = (UserPassAuth) params.gatewayContext().getAuth();
         XmlBuilder builder = params.xmlBuilder();
 
-        // build order element
-        builder = builder
-                .a("merchantCode", auth.getMerchantCode())
-                .e("submit")
-                .e("order")
-                    .a("orderCode", orderDetails.getOrderCode());
+        // add merchant code (handled differently for batch)
+        if (!params.isBatch())
+        {
+            decorateMerchantCode(params);
+            builder.e("submit");
+        }
+
+        // start order element
+        builder.e("order", true).a("orderCode", orderDetails.getOrderCode());
 
         if (auth.getInstallationId() != null)
         {
@@ -37,9 +49,20 @@ public class OrderDetailsSerializer
         }
 
         AmountSerializer.write(builder, amount);
+    }
 
-        // reset
-        builder.reset();
+    public static void decorateFinishOrder(XmlBuildParams params)
+    {
+        XmlBuilder builder = params.xmlBuilder();
+
+        if (params.isBatch())
+        {
+             builder.up();
+        }
+        else
+        {
+            builder.reset();
+        }
     }
 
 }

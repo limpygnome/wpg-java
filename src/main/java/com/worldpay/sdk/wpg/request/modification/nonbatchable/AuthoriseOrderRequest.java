@@ -6,6 +6,7 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificationSerializer;
 
 public class AuthoriseOrderRequest extends XmlRequest<Void>

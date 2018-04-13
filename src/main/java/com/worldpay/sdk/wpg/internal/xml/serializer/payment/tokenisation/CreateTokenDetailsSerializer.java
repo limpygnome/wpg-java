@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 public class CreateTokenDetailsSerializer
 {
 
-    public static void decorate(XmlBuildParams params, CreateTokenDetails createTokenDetails)
+    public static void decorateOrder(XmlBuildParams params, CreateTokenDetails createTokenDetails)
     {
         XmlBuilder builder = params.xmlBuilder();
 
         if (createTokenDetails != null)
         {
             TokenScope scope = createTokenDetails.getScope();
-            builder.e("submit").e("order").e("createToken").a("tokenScope", scope.name().toLowerCase());
+            builder.e("createToken").a("tokenScope", scope.name().toLowerCase());
             builder.e("tokenEventReference").cdata(createTokenDetails.getEventReference()).up();
             builder.e("tokenReason").cdata(createTokenDetails.getReason()).up();
 
@@ -29,6 +29,7 @@ public class CreateTokenDetailsSerializer
             {
                 LocalDateTime dateTime = createTokenDetails.getExpiry();
 
+                // TODO replace with date serializer
                 builder.e("paymentTokenExpiry").e("date");
                 builder.a("dayOfMonth", dateTime.getDayOfMonth());
                 builder.a("month", dateTime.getMonthValue());
@@ -38,6 +39,9 @@ public class CreateTokenDetailsSerializer
                 builder.a("second", dateTime.getSecond());
                 builder.up().up();
             }
+
+            // reset to order
+            builder.up();
         }
     }
 

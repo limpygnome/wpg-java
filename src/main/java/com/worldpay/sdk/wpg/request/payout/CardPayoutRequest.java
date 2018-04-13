@@ -12,6 +12,7 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.adapter.CardPayoutAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.CardDetailsSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
+import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
  * A payment may not always be returned, as is the case for Visa. This still means the payout has been received
@@ -19,7 +20,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
  *
  * TODO test
  */
-public class CardPayoutRequest extends XmlRequest<CardPayout>
+public class CardPayoutRequest extends XmlRequest<CardPayout> implements BatchOrderItem
 {
     private OrderDetails orderDetails;
     private CardDetails cardDetails;
@@ -32,8 +33,9 @@ public class CardPayoutRequest extends XmlRequest<CardPayout>
     @Override
     protected void build(XmlBuildParams params)
     {
-        OrderDetailsSerializer.decorate(params, orderDetails);
-        CardDetailsSerializer.decorate(params, cardDetails);
+        OrderDetailsSerializer.decorateAndStartOrder(params, orderDetails);
+        CardDetailsSerializer.decorateOrder(params, cardDetails);
+        OrderDetailsSerializer.decorateFinishOrder(params);
     }
 
     @Override

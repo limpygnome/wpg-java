@@ -19,23 +19,15 @@ public class PaymentResponseXmlAdapter
     public PaymentResponse read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
     {
         HttpResponse httpResponse = response.getResponse();
-        String xml = httpResponse.getBody();
-        XmlBuilder builder = XmlBuilder.parse(xml);
+        XmlBuilder builder =  response.getBuilder();
 
         PaymentResponse result = null;
 
         if (builder.isCurrentTag("paymentService"))
         {
-            if (builder.hasE("reply"))
+            if (builder.hasE("reply") && builder.hasE("orderStatus"))
             {
-                if (builder.hasE("orderStatus"))
-                {
-                    result = readOrderStatus(httpResponse, builder);
-                }
-                else if (builder.hasE("error"))
-                {
-                    handleError(httpResponse, builder);
-                }
+                result = readOrderStatus(httpResponse, builder);
             }
         }
 
@@ -51,11 +43,7 @@ public class PaymentResponseXmlAdapter
     {
         PaymentResponse result = null;
 
-        if (builder.hasE("error"))
-        {
-            handleError(httpResponse, builder);
-        }
-        else if (builder.hasE("requestInfo"))
+        if (builder.hasE("requestInfo"))
         {
             if (builder.hasE("request3DSecure"))
             {
@@ -76,13 +64,6 @@ public class PaymentResponseXmlAdapter
         }
 
         return result;
-    }
-
-    private void handleError(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
-    {
-        long code = builder.aToLong("code");
-        String message = builder.cdata();
-        throw new WpgErrorResponseException(code, message, httpResponse);
     }
 
 }

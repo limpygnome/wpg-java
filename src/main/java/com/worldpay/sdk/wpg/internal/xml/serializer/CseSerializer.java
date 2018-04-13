@@ -6,11 +6,12 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
 public class CseSerializer
 {
-    public static void decorateCard(XmlBuildParams params, String encryptedData, Address cardHolderAddress)
+
+    public static void decorateOrder(XmlBuildParams params, String encryptedData, Address cardHolderAddress)
     {
         XmlBuilder builder = params.xmlBuilder();
 
-        builder.e("submit").e("order").e("paymentDetails").e("CSE-DATA");
+        builder.e("paymentDetails").e("CSE-DATA");
 
         // add encrypted data
         builder.e("encryptedData").cdata(encryptedData).up();
@@ -18,6 +19,11 @@ public class CseSerializer
         // add cardholder address
         builder.e("cardAddress");
         AddressSerializer.decorateCurrentElement(params, cardHolderAddress);
-        builder.reset();
+
+        builder.up();
+
+        // reset to order element
+        builder.up().up();
     }
+
 }

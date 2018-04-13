@@ -9,34 +9,40 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 public class CardDetailsSerializer
 {
 
-    public static void decorate(XmlBuildParams params, CardDetails cardDetails)
+    public static void decorateOrder(XmlBuildParams params, CardDetails cardDetails)
     {
         if (cardDetails != null)
         {
             XmlBuilder builder = params.xmlBuilder();
 
-            builder.e("submit").e("order").e("paymentDetails");
+            builder.e("paymentDetails");
 
             // build card element
             // TODO allow card scheme to be customised?
             builder.e("CARD-SSL")
                     .e("cardNumber")
-                    .cdata(cardDetails.getCardNumber())
-                    .up()
+                        .cdata(cardDetails.getCardNumber())
+                        .up()
                     .e("expiryDate")
                         .e("date")
-                        .a("month", String.valueOf(cardDetails.getExpiryMonth()))
-                        .a("year", String.valueOf(cardDetails.getExpiryYear()))
+                            .a("month", String.valueOf(cardDetails.getExpiryMonth()))
+                            .a("year", String.valueOf(cardDetails.getExpiryYear()))
+                            .up()
                         .up()
-                    .up()
                     .e("cardHolderName")
-                    .cdata(cardDetails.getCardHolderName())
-                    .up()
-                    .e("cardAddress");
+                        .cdata(cardDetails.getCardHolderName())
+                        .up();
 
-            AddressSerializer.decorateCurrentElement(params, cardDetails.getCardHolderAddress());
+            // add card holder address
+            if (cardDetails.getCardHolderAddress() != null)
+            {
+                builder.e("cardAddress");
+                AddressSerializer.decorateCurrentElement(params, cardDetails.getCardHolderAddress());
+                builder.up();
+            }
 
-            builder.reset();
+            // reset to order element
+            builder.up().up();
         }
     }
 

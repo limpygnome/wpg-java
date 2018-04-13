@@ -11,10 +11,11 @@ testing / demos:
 - order modifications (single and batch)
 - payouts
 - tokenisation management
+- tokenised payment
 
 immediate:
-- refunds
 - batch orders
+- fast fund
 - debug logging to output XML; would be useful for e.g. unrecognized responses etc
 - integration docs / javadoc / enforce validation
 - basic validation
@@ -34,3 +35,5 @@ descoped:
 - pos integration / iso8583
 - currency conversion
     - likely only HPP, looks like direct auto-converts
+- APMs (except paypal)
+- overriding details for a token payment request

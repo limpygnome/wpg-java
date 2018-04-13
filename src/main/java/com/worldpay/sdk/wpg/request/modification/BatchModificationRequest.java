@@ -1,6 +1,7 @@
 package com.worldpay.sdk.wpg.request.modification;
 
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -65,6 +66,7 @@ public class BatchModificationRequest extends XmlRequest<Void>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        // TODO need to run validate on items
     }
 
     @Override
@@ -81,7 +83,7 @@ public class BatchModificationRequest extends XmlRequest<Void>
 
         if (!builder.hasE("ok"))
         {
-            throw new WpgErrorResponseException(0, "Unexpected response from gateway", response.getResponse());
+            throw new WpgMalformedResponseException(response);
         }
 
         return null;

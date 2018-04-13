@@ -270,6 +270,20 @@ public class XmlBuilder
         return current.hasChildNodes();
     }
 
+    public XmlBuilder getElementByName(String elementName)
+    {
+        XmlBuilder result = null;
+
+        NodeList list = document.getElementsByTagName(elementName);
+        if (list.getLength() > 0)
+        {
+            Node node = list.item(0);
+            result = new XmlBuilder(document, (Element) node);
+        }
+
+        return result;
+    }
+
     @Override
     public String toString()
     {

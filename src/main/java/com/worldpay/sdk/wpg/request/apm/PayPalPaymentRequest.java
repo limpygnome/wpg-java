@@ -52,7 +52,7 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
     @Override
     protected void build(XmlBuildParams params)
     {
-        OrderDetailsSerializer.decorate(params, orderDetails);
+        OrderDetailsSerializer.decorateAndStartOrder(params, orderDetails);
 
         XmlBuilder builder = params.xmlBuilder();
 
@@ -79,9 +79,11 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
         builder.reset();
 
         // Continue generic information
-        ShopperSerializer.decorate(params, shopper);
-        AddressSerializer.decorate(params, billingAddress, shippingAddress);
-        CreateTokenDetailsSerializer.decorate(params, createTokenDetails);
+        ShopperSerializer.decorateOrder(params, shopper);
+        AddressSerializer.decorateOrder(params, billingAddress, shippingAddress);
+        CreateTokenDetailsSerializer.decorateOrder(params, createTokenDetails);
+
+        OrderDetailsSerializer.decorateFinishOrder(params);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.BatchOrderModificationSerializer;
 
 public class BatchModificationCancelRequest extends XmlRequest<Void>
