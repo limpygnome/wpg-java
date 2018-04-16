@@ -1,7 +1,11 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
 /**
- * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm
+ * Result from card verification code (CVC).
+ *
+ * TODO change description to enum
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm</a>
  */
 public class CvcResult
 {

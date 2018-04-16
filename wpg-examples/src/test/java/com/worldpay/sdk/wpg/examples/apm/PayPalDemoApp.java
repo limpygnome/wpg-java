@@ -2,17 +2,18 @@ package com.worldpay.sdk.wpg.examples.apm;
 
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
-import com.worldpay.sdk.wpg.connection.auth.Auth;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
-import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.apm.PayPalPaymentRequest;
+
+import static com.worldpay.sdk.wpg.examples.AuthConstants.INSTALLATION_ID;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.MERCHANT_CODE;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.PASS;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.USER;
 
 public class PayPalDemoApp
 {
@@ -20,24 +21,17 @@ public class PayPalDemoApp
     public static void main(String[] args)
     {
         // setup gateway details
-        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", "1008775");
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
+        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
 
         // build order details
-        Amount amount = new Amount(Currency.GBP, 2L, 1000L);
-        OrderDetails orderDetails = new OrderDetails("test order", amount);
-        Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
-        Shopper shopper = new Shopper("test@test.com");
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1000L));
 
         try
         {
             // create order
             RedirectUrl response = new PayPalPaymentRequest()
                     .orderDetails(orderDetails)
-                    .billingAddress(address)
-                    .shippingAddress(address)
-                    .shopper(shopper)
-                    .resultURL("https://continue")
+                    .resultURL("https://merchant.com/continue")
                     .send(gatewayContext);
 
             System.out.println(response.getUrl());

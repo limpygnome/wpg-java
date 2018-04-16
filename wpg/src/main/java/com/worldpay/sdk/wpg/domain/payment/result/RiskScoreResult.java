@@ -1,5 +1,8 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
+/**
+ * Results from performing risk checks.
+ */
 public class RiskScoreResult
 {
     private final String id;

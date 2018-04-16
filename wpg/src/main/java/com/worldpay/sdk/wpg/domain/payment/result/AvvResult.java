@@ -1,7 +1,9 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
 /**
- * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm
+ * Represents the result from American Express Advanced Verification (AVV) checks.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm</a>
  */
 public class AvvResult
 {
@@ -20,26 +22,41 @@ public class AvvResult
         this.emailResultCode = emailResultCode;
     }
 
+    /**
+     * @return see XML docs
+     */
     public String getAddressResultCode()
     {
         return addressResultCode;
     }
 
+    /**
+     * @return see XML docs
+     */
     public String getPostCodeResultCode()
     {
         return postCodeResultCode;
     }
 
+    /**
+     * @return see XML docs
+     */
     public String getCardHolderNameResultCode()
     {
         return cardHolderNameResultCode;
     }
 
+    /**
+     * @return see XML docs
+     */
     public String getTelephoneResultCode()
     {
         return telephoneResultCode;
     }
 
+    /**
+     * @return see XML docs
+     */
     public String getEmailResultCode()
     {
         return emailResultCode;
@@ -56,4 +73,5 @@ public class AvvResult
                 ", emailResultCode='" + emailResultCode + '\'' +
                 '}';
     }
+
 }

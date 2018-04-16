@@ -43,7 +43,7 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
     @Override
     protected void validate(XmlBuildParams params)
     {
-        if (this.createTokenDetails == null)
+        if (this.createTokenDetails != null)
         {
             Assert.notEmpty(shopper.getShopperId(), "Shopper ID is required for tokenised payments");
         }
@@ -60,12 +60,11 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
         // --- Language
         if (languageCode != null && languageCode.length() > 0)
         {
-            builder.e("submit").e("order").a("shopperLanguageCode", languageCode);
+            builder.a("shopperLanguageCode", languageCode);
         }
-        builder.reset();
 
         // -- PayPal details
-        builder.e("submit").e("order").e("paymentDetails").e("PAYPAL-EXPRESS");
+        builder.e("paymentDetails").e("PAYPAL-EXPRESS");
 
         if (createTokenDetails != null)
         {
@@ -76,7 +75,7 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
         builder.e("failureURL").cdata(failureURL).up();
         builder.e("cancelURL").cdata(cancelURL).up();
 
-        builder.reset();
+        builder.up().up();
 
         // Continue generic information
         ShopperSerializer.decorateOrder(params, shopper);

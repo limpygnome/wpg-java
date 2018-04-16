@@ -21,13 +21,18 @@ import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 
+import static com.worldpay.sdk.wpg.examples.AuthConstants.INSTALLATION_ID;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.MERCHANT_CODE;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.PASS;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.USER;
+
 public class CardAdvancedDemoApp
 {
 
     public static void main(String[] args)
     {
         // setup gateway details
-        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", "1008775");
+        Auth auth = new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID);
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
 
         // build order details

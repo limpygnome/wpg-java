@@ -25,41 +25,65 @@ public class CardResult
         this.type = type;
     }
 
+    /**
+     * @return Masked card number
+     */
     public String getMaskedCardNumber()
     {
         return maskedCardNumber;
     }
 
+    /**
+     * @return Hashed card number
+     */
     public String getHashedCardNumber()
     {
         return hashedCardNumber;
     }
 
+    /**
+     * @return The month of when the card expires
+     */
     public Long getExpiryMonth()
     {
         return expiryMonth;
     }
 
+    /**
+     * @return The year of when the card expires
+     */
     public Long getExpiryYear()
     {
         return expiryYear;
     }
 
+    /**
+     * @return THe issuer's country code
+     */
     public String getIssuerCountryCode()
     {
         return issuerCountryCode;
     }
 
+    /**
+     * @return The issuer's name
+     */
     public String getIssuerName()
     {
         return issuerName;
     }
 
+    /**
+     * @return The card holder's name
+     */
     public String getCardHolderName()
     {
         return cardHolderName;
     }
 
+    /**
+     * @return The type of card
+     */
     public CardType getType()
     {
         return type;
@@ -79,4 +103,5 @@ public class CardResult
                 ", type=" + type +
                 '}';
     }
+
 }

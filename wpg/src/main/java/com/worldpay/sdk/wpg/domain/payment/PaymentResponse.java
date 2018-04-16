@@ -5,14 +5,20 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 
 import java.io.Serializable;
 
+/**
+ * Represents the response from submitting payment details.
+ *
+ * You can use {@link #getStatus()} to check whether the payment is in-flight, or requires 3ds / threeds
+ * authentication. Refer to {@link ThreeDsRequired} for details.
+ */
 public class PaymentResponse implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    private PaymentStatus status;
+
     private Payment payment;
     private ThreeDsRequired threeDsRequired;
-
-    private PaymentStatus status;
 
     public PaymentResponse(Payment payment) throws WpgRequestException
     {

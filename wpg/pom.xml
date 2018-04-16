@@ -14,6 +14,10 @@
     <artifactId>wpg</artifactId>
     <packaging>jar</packaging>
 
+    <!-- only test dependencies -->
+    <dependencies>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

@@ -15,13 +15,18 @@ import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 
+import static com.worldpay.sdk.wpg.examples.AuthConstants.INSTALLATION_ID;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.MERCHANT_CODE;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.PASS;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.USER;
+
 public class CardDemoApp
 {
 
     public static void main(String[] args)
     {
         // setup gateway details
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", "1008775"));
+        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
 
         // build order details
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));

@@ -1,5 +1,10 @@
 package com.worldpay.sdk.wpg.examples.apm;
 
+import static com.worldpay.sdk.wpg.examples.AuthConstants.INSTALLATION_ID;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.MERCHANT_CODE;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.PASS;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.USER;
+
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.Auth;
@@ -23,7 +28,7 @@ public class PayPalAdvancedDemoApp
     public static void main(String[] args)
     {
         // setup gateway details
-        Auth auth = new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", "1008775");
+        Auth auth = new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID);
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
 
         // build order details

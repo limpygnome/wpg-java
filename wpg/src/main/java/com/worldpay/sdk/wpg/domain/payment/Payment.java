@@ -15,6 +15,11 @@ import com.worldpay.sdk.wpg.domain.tokenisation.TokenDetails;
 
 /**
  * Response from a payment attempt.
+ *
+ * This only represents the payment at the time of submission, with changes/updates available through order
+ * notifications.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/ordernotifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/ordernotifications.htm</a>
  */
 public class Payment
 {
@@ -55,7 +60,7 @@ public class Payment
     }
 
     /**
-     * @return payment method used
+     * @return Payment method used
      */
     public PaymentMethod getPaymentMethod()
     {
@@ -63,7 +68,7 @@ public class Payment
     }
 
     /**
-     * @return order amount
+     * @return Order amount
      */
     public Amount getAmount()
     {
@@ -71,7 +76,8 @@ public class Payment
     }
 
     /**
-     * @return the last event to occur for the payment.
+     * @return The last event to occur for the payment; changes can be received using order notifications
+     * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/ordernotifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/ordernotifications.htm</a>
      */
     public LastEvent getLastEvent()
     {
@@ -79,55 +85,80 @@ public class Payment
     }
 
     /**
-     * Details related to the card used in the payment.
-     *
-     * @return card details, or null if not card payment
+     * @return Details relating to the card used for a payment, for card payments (may not always be present)
      */
     public CardResult getCardResult()
     {
         return cardResult;
     }
 
+    /**
+     * @return Details relating to payout authorisation
+     */
     public PayoutAuthorisationResult getPayoutAuthorisationResult()
     {
         return payoutAuthorisationResult;
     }
 
+    /**
+     * @return Extended ISO8583 details from submitting card details (may not always be present)
+     */
     public ISO8583Result getIso8583Result()
     {
         return iso8583Result;
     }
 
+    /**
+     * @return Result from threeds during the payment; only present after submitting threeds response
+     */
     public ThreeDSecureResult getThreeDSecureResult()
     {
         return threeDSecureResult;
     }
 
+    /**
+     * @return AVS result, not always present
+     */
     public AvsResult getAvsResult()
     {
         return avsResult;
     }
 
+    /**
+     * @return CVC result, not always present
+     */
     public CvcResult getCvcResult()
     {
         return cvcResult;
     }
 
+    /**
+     * @return AVV result, not always present
+     */
     public AvvResult getAvvResult()
     {
         return avvResult;
     }
 
+    /**
+     * @return Balance, not always present
+     */
     public Balance getBalance()
     {
         return balance;
     }
 
+    /**
+     * @return Results from performing result checks, not always present
+     */
     public RiskScoreResult getRiskScoreResult()
     {
         return riskScoreResult;
     }
 
+    /**
+     * @return Result from attempting to create a token, only present for tokenised payments
+     */
     public Token getToken()
     {
         return token;

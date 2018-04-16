@@ -3,20 +3,18 @@ package com.worldpay.sdk.wpg.examples.batchorder;
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
-import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
-import com.worldpay.sdk.wpg.domain.CountryCode;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
-import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
-import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.batch.BatchOrderRequest;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
+
+import static com.worldpay.sdk.wpg.examples.AuthConstants.INSTALLATION_ID;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.MERCHANT_CODE;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.PASS;
+import static com.worldpay.sdk.wpg.examples.AuthConstants.USER;
 
 public class BatchOrderDemoApp
 {
@@ -25,7 +23,7 @@ public class BatchOrderDemoApp
     public static void main(String[] args)
     {
         // setup gateway details
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth("NGPPTESTMERCH1", "live2014", "NGPPTESTMERCH1", "1008775"));
+        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
 
         // setup request for batch orders
         BatchOrderRequest request = new BatchOrderRequest();

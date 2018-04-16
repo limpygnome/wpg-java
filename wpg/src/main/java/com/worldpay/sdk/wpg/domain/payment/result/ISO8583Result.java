@@ -1,10 +1,11 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
 /**
- *
- * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/reference/usefultables.htm#Acquirer
+ * The ISO8583 result from the acquirer.
  *
  * TODO change code into enum
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/reference/usefultables.htm#Acquirer">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/reference/usefultables.htm#Acquirer</a>
  */
 public class ISO8583Result
 {
@@ -35,4 +36,5 @@ public class ISO8583Result
                 ", description='" + description + '\'' +
                 '}';
     }
+
 }

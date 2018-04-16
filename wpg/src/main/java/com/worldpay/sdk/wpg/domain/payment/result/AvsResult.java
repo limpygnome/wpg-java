@@ -1,7 +1,13 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
 /**
- * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm
+ * Represents the result from address verification service (AVS) checks.
+ *
+ * This is performed on the card holder address.
+ *
+ * TODO change result code to enum
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide-beta/content/directintegration/authentication.htm</a>
  */
 public class AvsResult
 {
@@ -12,6 +18,9 @@ public class AvsResult
         this.avsResultCode = avsResultCode;
     }
 
+    /**
+     * @return see XML docs
+     */
     public String getAvsResultCode()
     {
         return avsResultCode;
@@ -24,4 +33,5 @@ public class AvsResult
                 "avsResultCode='" + avsResultCode + '\'' +
                 '}';
     }
+
 }

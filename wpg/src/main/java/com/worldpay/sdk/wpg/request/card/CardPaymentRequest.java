@@ -23,6 +23,8 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateT
 import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
+ * A request to make a payment by submitting card details.
+ *
  * Supports tokenisation.
  */
 public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements BatchOrderItem
@@ -39,7 +41,6 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements B
 
     public CardPaymentRequest() { }
 
-    // TODO merge session with shopper
     public CardPaymentRequest(OrderDetails orderDetails, CardDetails cardDetails, Shopper shopper)
     {
         this.orderDetails = orderDetails;

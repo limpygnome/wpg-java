@@ -1,5 +1,10 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
+/**
+ * The result from threeds (3ds) authentication during a card payment.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/directintegration/authentication.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/directintegration/authentication.htm</a>
+ */
 public class ThreeDSecureResult
 {
     private String description;
@@ -13,16 +18,25 @@ public class ThreeDSecureResult
         this.cavv = cavv;
     }
 
+    /**
+     * @return Description of the outcome
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * @return Electronic Commerce Indicator (ECI), only present if enabled for your account
+     */
     public String getEci()
     {
         return eci;
     }
 
+    /**
+     * @return Cardholder Authentication Verification Value (CAVV), only present if enabled for your account
+     */
     public String getCavv()
     {
         return cavv;
@@ -37,4 +51,5 @@ public class ThreeDSecureResult
                 ", cavv='" + cavv + '\'' +
                 '}';
     }
+
 }
