@@ -18,27 +18,34 @@ public class TokenInstrumentSerializer
         {
             if (builder.hasE("cardDetails"))
             {
-                CardDetails cardDetails = CardDetailsSerializer.read(builder);
-                String cardBrand = null;
-                String cardSubBrand = null;
-                String issuerCountryCode = null;
-                String obfuscatedPAN = null;
-
-                if (builder.hasE("derived"))
-                {
-                    cardBrand = builder.getCdata("cardBrand");
-                    cardSubBrand = builder.getCdata("cardSubBrand");
-                    issuerCountryCode = builder.getCdata("issuerCountryCode");
-                    obfuscatedPAN = builder.getCdata("obfuscatedPAN");
-
-                    builder.up();
-                }
-
-                result = new TokenCardDetails(cardBrand, cardSubBrand, issuerCountryCode, obfuscatedPAN, cardDetails);
+                result = readCardDetails(builder);
+                builder.up();
             }
             builder.up();
         }
 
+        return result;
+    }
+
+    public static TokenInstrument readCardDetails(XmlBuilder builder) throws WpgRequestException
+    {
+        CardDetails cardDetails = CardDetailsSerializer.read(builder);
+        String cardBrand = null;
+        String cardSubBrand = null;
+        String issuerCountryCode = null;
+        String obfuscatedPAN = null;
+
+        if (builder.hasE("derived"))
+        {
+            cardBrand = builder.getCdata("cardBrand");
+            cardSubBrand = builder.getCdata("cardSubBrand");
+            issuerCountryCode = builder.getCdata("issuerCountryCode");
+            obfuscatedPAN = builder.getCdata("obfuscatedPAN");
+
+            builder.up();
+        }
+
+        TokenInstrument result = new TokenCardDetails(cardBrand, cardSubBrand, issuerCountryCode, obfuscatedPAN, cardDetails);
         return result;
     }
 

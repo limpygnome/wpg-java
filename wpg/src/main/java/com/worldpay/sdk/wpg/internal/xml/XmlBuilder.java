@@ -186,6 +186,12 @@ public class XmlBuilder
         return cdata(text);
     }
 
+    public XmlBuilder cdata(long value)
+    {
+        String text = String.valueOf(value);
+        return cdata(text);
+    }
+
     public String cdata()
     {
         String result = null;

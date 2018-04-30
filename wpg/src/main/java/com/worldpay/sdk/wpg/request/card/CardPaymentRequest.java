@@ -6,6 +6,7 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
+import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
@@ -70,13 +71,8 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements B
     @Override
     protected void validate(XmlBuildParams params)
     {
-        if (!params.isBatch())
-        {
-            Assert.notNull(shopper, "Shopper is required for card payments");
-            Assert.notEmpty(shopper.getIpAddress(), "Shopper IP address is required for card payments");
-        }
-
-        if (this.createTokenDetails != null)
+        // Shopper tokens always require shopper to be present
+        if (this.createTokenDetails != null && TokenScope.SHOPPER.equals(createTokenDetails.getScope()))
         {
             Assert.notNull(shopper, "Shopper is required for tokenised payments");
             Assert.notEmpty(shopper.getShopperId(), "Shopper ID is required for tokenised payments");

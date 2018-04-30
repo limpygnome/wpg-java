@@ -59,8 +59,10 @@ public class PaymentSerializer
         AvvResult avvResult = AvvResultSerializer.read(builder);
         Balance balance = BalanceSerializer.read(builder);
         RiskScoreResult riskScoreResult = RiskScoreResultSerializer.read(builder);
+
+        // -- token details are not in paymentDetails tag, thus go up a level
+        builder.up();
         Token token = TokenSerializer.read(builder);
-        builder.reset();
 
         // wrap it all up
         Payment payment = new Payment(

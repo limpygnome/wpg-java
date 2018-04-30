@@ -6,6 +6,9 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.adapter.OrderNotificationXmlAdapter;
 
+/**
+ * TODO test
+ */
 public class XmlNotificationBuilder
 {
 

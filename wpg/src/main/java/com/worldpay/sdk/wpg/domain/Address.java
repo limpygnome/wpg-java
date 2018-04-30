@@ -156,4 +156,57 @@ public class Address
         this.telephoneNumber = telephoneNumber;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (firstName != null ? !firstName.equals(address.firstName) : address.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(address.lastName) : address.lastName != null) return false;
+        if (address1 != null ? !address1.equals(address.address1) : address.address1 != null) return false;
+        if (address2 != null ? !address2.equals(address.address2) : address.address2 != null) return false;
+        if (address3 != null ? !address3.equals(address.address3) : address.address3 != null) return false;
+        if (postalCode != null ? !postalCode.equals(address.postalCode) : address.postalCode != null) return false;
+        if (city != null ? !city.equals(address.city) : address.city != null) return false;
+        if (state != null ? !state.equals(address.state) : address.state != null) return false;
+        if (countryCode != null ? !countryCode.equals(address.countryCode) : address.countryCode != null) return false;
+        return telephoneNumber != null ? telephoneNumber.equals(address.telephoneNumber) : address.telephoneNumber == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = firstName != null ? firstName.hashCode() : 0;
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (address1 != null ? address1.hashCode() : 0);
+        result = 31 * result + (address2 != null ? address2.hashCode() : 0);
+        result = 31 * result + (address3 != null ? address3.hashCode() : 0);
+        result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
+        result = 31 * result + (telephoneNumber != null ? telephoneNumber.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Address{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", address3='" + address3 + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", countryCode='" + countryCode + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                '}';
+    }
+
 }

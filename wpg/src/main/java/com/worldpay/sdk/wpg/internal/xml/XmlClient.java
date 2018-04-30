@@ -20,11 +20,14 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.Base64;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class XmlClient
 {
     private static final URL SANDBOX_URL;
     private static final URL PRODUCTION_URL;
+    private static final Pattern PAGE_ERROR_EXTRACTOR = Pattern.compile("(?:.+)<p>([^<]+)(?:.+)", Pattern.MULTILINE | Pattern.DOTALL);
 
     static
     {
@@ -208,15 +211,40 @@ public class XmlClient
         }
 
         // deserialize
+        String body = httpResponse.getBody();
+
         try
         {
-            String body = httpResponse.getBody();
+            // check not empty or page response
+            if (body == null || body.length() == 0)
+            {
+                throw new WpgMalformedXmlException("Empty response from server");
+            }
+
+            // attempt to parse
             XmlBuilder builder = XmlBuilder.parse(body);
             XmlResponse response = new XmlResponse(httpResponse, builder);
             return response;
         }
         catch (WpgMalformedXmlException e)
         {
+            if (body != null)
+            {
+                // Check for network error from WPG
+                if ("Temporary Failure, please Retry".equals(body))
+                {
+                    throw new WpgRequestException("Failed to make request - networking issue on gateway - " + body);
+                }
+
+                // Check for generic HTTP error page and extract messagex
+                Matcher matcher = PAGE_ERROR_EXTRACTOR.matcher(body);
+
+                if (matcher.matches())
+                {
+                    String pageError = matcher.group(1).trim();
+                    throw new WpgRequestException("Failed to make request - message from server: " + pageError);
+                }
+            }
             throw new WpgRequestException("Failed to parse XML", e);
         }
     }

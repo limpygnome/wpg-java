@@ -3,7 +3,7 @@ package com.worldpay.sdk.wpg.internal.xml.adapter;
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
-import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
+import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsDetails;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
@@ -47,8 +47,8 @@ public class PaymentResponseXmlAdapter
         {
             if (builder.hasE("request3DSecure"))
             {
-                ThreeDsRequired threeDsRequired = ThreeDsSerializer.read(builder);
-                result = new PaymentResponse(threeDsRequired);
+                ThreeDsDetails threeDsDetails = ThreeDsSerializer.read(builder);
+                result = new PaymentResponse(threeDsDetails);
             }
         }
         else if (builder.hasE("payment"))

@@ -13,8 +13,7 @@ import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
-import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
-import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
+import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsDetails;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
@@ -46,7 +45,7 @@ public class CardAdvancedDemoApp
 
         try
         {
-            // create order
+            // make payment
             PaymentResponse paymentResponse = new CardPaymentRequest()
                     .orderDetails(orderDetails)
                     .cardDetails(cardDetails)
@@ -55,26 +54,19 @@ public class CardAdvancedDemoApp
                     .shopper(shopper)
                     .send(gatewayContext);
 
-            PaymentStatus result;
-            boolean continuePayment = true;
-
-            do
+            switch (paymentResponse.getStatus())
             {
-                result = paymentResponse.getStatus();
-                switch (result)
-                {
-                    case THREEDS_REQUESTED:
-                        ThreeDsRequired threeDs = paymentResponse.getThreeDsRequired();
-                        break;
-                    case PAYMENT_RESULT:
-                        Payment payment = paymentResponse.getPayment();
-                        System.out.println("payment - lastEvent: " + payment.getLastEvent());
-                        break;
-                    default:
-                        throw new IllegalStateException("Unhandled response - result=" + result);
-                }
+                case THREEDS_REQUESTED:
+                    ThreeDsDetails threeDs = paymentResponse.getThreeDsDetails();
+                    System.out.println("3ds required - issuer URL:" + threeDs.getIssuerURL() + ", paRes: " + threeDs.getPaRequest());
+                    break;
+                case PAYMENT_RESULT:
+                    Payment payment = paymentResponse.getPayment();
+                    System.out.println("payment - lastEvent: " + payment.getLastEvent());
+                    break;
+                default:
+                    throw new IllegalStateException("Unhandled response - result=" + paymentResponse.getStatus());
             }
-            while (continuePayment && result != PaymentStatus.PAYMENT_RESULT);
         }
         catch (WpgConnectionException e)
         {

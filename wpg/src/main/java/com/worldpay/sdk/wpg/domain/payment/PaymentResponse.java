@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.domain.payment;
 
-import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsRequired;
+import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsDetails;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Represents the response from submitting payment details.
  *
  * You can use {@link #getStatus()} to check whether the payment is in-flight, or requires 3ds / threeds
- * authentication. Refer to {@link ThreeDsRequired} for details.
+ * authentication. Refer to {@link ThreeDsDetails} for details.
  */
 public class PaymentResponse implements Serializable
 {
@@ -18,7 +18,7 @@ public class PaymentResponse implements Serializable
     private PaymentStatus status;
 
     private Payment payment;
-    private ThreeDsRequired threeDsRequired;
+    private ThreeDsDetails threeDsDetails;
 
     public PaymentResponse(Payment payment) throws WpgRequestException
     {
@@ -26,9 +26,9 @@ public class PaymentResponse implements Serializable
         this.status = PaymentStatus.PAYMENT_RESULT;
     }
 
-    public PaymentResponse(ThreeDsRequired threeDsRequired)
+    public PaymentResponse(ThreeDsDetails threeDsDetails)
     {
-        this.threeDsRequired = threeDsRequired;
+        this.threeDsDetails = threeDsDetails;
         this.status = PaymentStatus.THREEDS_REQUESTED;
     }
 
@@ -42,9 +42,9 @@ public class PaymentResponse implements Serializable
         return payment;
     }
 
-    public ThreeDsRequired getThreeDsRequired()
+    public ThreeDsDetails getThreeDsDetails()
     {
-        return threeDsRequired;
+        return threeDsDetails;
     }
 
 }

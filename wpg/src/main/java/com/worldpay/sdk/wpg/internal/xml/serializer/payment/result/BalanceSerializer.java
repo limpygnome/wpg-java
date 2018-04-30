@@ -15,7 +15,7 @@ public class BalanceSerializer
 
         if (builder.hasE("balance"))
         {
-            String accountType = builder.getCdata("accountType");
+            String accountType = builder.a("accountType");
 
             builder.e("amount");
             Amount amount = AmountSerializer.read(builder);
@@ -25,6 +25,8 @@ public class BalanceSerializer
             {
                 result = new Balance(accountType, amount);
             }
+
+            builder.up();
         }
 
         return result;

@@ -5,15 +5,25 @@ package com.worldpay.sdk.wpg.domain.tokenisation;
  */
 public class Token
 {
+    private final TokenScope scope;
     private final TokenDetails details;
     private final TokenInstrument instrument;
     private final String shopperId;
 
     public Token(TokenDetails details, TokenInstrument instrument, String shopperId)
     {
+        this.scope = (shopperId != null && shopperId.length() > 0 ? TokenScope.SHOPPER : TokenScope.MERCHANT);
         this.details = details;
         this.instrument = instrument;
         this.shopperId = shopperId;
+    }
+
+    /**
+     * @return scope of the token
+     */
+    public TokenScope getScope()
+    {
+        return scope;
     }
 
     /**

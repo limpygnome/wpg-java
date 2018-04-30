@@ -14,12 +14,12 @@ import com.worldpay.sdk.wpg.builder.ThreeDsRedirectBuilder;
  *
  * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/directintegration/authentication.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/directintegration/authentication.htm</a>
  */
-public class ThreeDsRequired
+public class ThreeDsDetails
 {
     private final String issuerURL;
     private final String paRequest;
 
-    public ThreeDsRequired(String issuerURL, String paRequest)
+    public ThreeDsDetails(String issuerURL, String paRequest)
     {
         this.issuerURL = issuerURL;
         this.paRequest = paRequest;

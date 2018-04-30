@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.Locale;
 
 // TODO validation on setters
+// TODO testing
 public final class PaymentPagesRedirectBuilder
 {
     private static final String ENCODING_CHARSET = "UTF-8";

@@ -13,6 +13,11 @@ public class BaseIntegrationTest
         PASS = System.getProperty("sdk.pass");
         MERCHANT_CODE = System.getProperty("sdk.merchantCode");
         INSTALLATION_ID = System.getProperty("sdk.installationId");
+
+        if (USER == null || PASS == null || MERCHANT_CODE == null || INSTALLATION_ID == null)
+        {
+            throw new IllegalStateException("Tests ran without credentials specified");
+        }
     }
 
 }

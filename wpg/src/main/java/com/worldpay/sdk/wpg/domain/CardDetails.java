@@ -8,7 +8,7 @@ public class CardDetails
     private long expiryMonth;
     private long expiryYear;
     private String cardHolderName;
-    private long cvc;
+    private String cvc;
     private Address cardHolderAddress;
     private String encryptedCardNumber;
 
@@ -20,7 +20,7 @@ public class CardDetails
         this.cardHolderName = cardHolderName;
     }
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, long cvc)
+    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, String cvc)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -29,7 +29,7 @@ public class CardDetails
         this.cvc = cvc;
     }
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, long cvc, Address cardHolderAddress)
+    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, String cvc, Address cardHolderAddress)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -39,7 +39,7 @@ public class CardDetails
         this.cardHolderAddress = cardHolderAddress;
     }
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, long cvc, Address cardHolderAddress, String encryptedCardNumber)
+    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, String cvc, Address cardHolderAddress, String encryptedCardNumber)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -90,12 +90,12 @@ public class CardDetails
         this.cardHolderName = cardHolderName;
     }
 
-    public long getCvc()
+    public String getCvc()
     {
         return cvc;
     }
 
-    public void setCvc(long cvc)
+    public void setCvc(String cvc)
     {
         this.cvc = cvc;
     }

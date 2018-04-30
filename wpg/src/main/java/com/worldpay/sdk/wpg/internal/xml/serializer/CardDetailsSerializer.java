@@ -6,6 +6,8 @@ import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
+import java.time.LocalDateTime;
+
 public class CardDetailsSerializer
 {
 
@@ -33,6 +35,13 @@ public class CardDetailsSerializer
                         .cdata(cardDetails.getCardHolderName())
                         .up();
 
+            // cvc
+            String cvc = cardDetails.getCvc();
+            if (cardDetails.getCvc() != null && cvc.length() > 0)
+            {
+                builder.e("cvc").cdata(cvc).up();
+            }
+
             // add card holder address
             if (cardDetails.getCardHolderAddress() != null)
             {
@@ -50,17 +59,21 @@ public class CardDetailsSerializer
     {
         String cardNumber = builder.getCdata("cardNumber");
         String cardHolderName = builder.getCdata("cardHolderName");
-        long cvc = builder.getCdataLong("cvc");
+        String cvc = builder.getCdata("cvc");
         String encryptedPAN = builder.getCdata("encryptedPAN");
 
         builder.e("expiryDate");
+        builder.e("date");
         long expiryMonth = builder.aToLong("month");
         long expiryYear = builder.aToLong("year");
-        builder.up();
+        builder.up().up();
 
-        builder.e("cardHolderAddress");
-        Address cardHolderAddress = AddressSerializer.read(builder);
-        builder.up();
+        Address cardHolderAddress = null;
+        if (builder.hasE("cardAddress"))
+        {
+            cardHolderAddress = AddressSerializer.read(builder);
+            builder.up();
+        }
 
         CardDetails result = new CardDetails(
                 cardNumber, expiryMonth, expiryYear, cardHolderName, cvc, cardHolderAddress, encryptedPAN);

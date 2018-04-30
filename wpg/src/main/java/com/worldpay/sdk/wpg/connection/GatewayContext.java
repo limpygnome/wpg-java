@@ -4,8 +4,6 @@ import com.worldpay.sdk.wpg.connection.auth.Auth;
 import com.worldpay.sdk.wpg.connection.factory.ConnectionFactory;
 import com.worldpay.sdk.wpg.connection.factory.SimpleConnectionFactory;
 
-import java.net.Proxy;
-
 public class GatewayContext
 {
     // Mandatory
@@ -13,7 +11,8 @@ public class GatewayContext
     private Auth auth;
 
     // Connection
-    private int socketTimeout;
+    private int socketConnectTimeout;
+    private int socketReadTimeout;
 
     private ConnectionFactory connectionFactory;
 
@@ -22,7 +21,8 @@ public class GatewayContext
         this.environment = environment;
         this.auth = auth;
         this.connectionFactory = new SimpleConnectionFactory();
-        this.socketTimeout = 30_000;
+        this.socketConnectTimeout = 10_000;
+        this.socketReadTimeout = 60_000;
     }
 
     public Environment getEnvironment()
@@ -45,14 +45,24 @@ public class GatewayContext
         this.auth = auth;
     }
 
-    public int getSocketTimeout()
+    public int getSocketReadTimeout()
     {
-        return socketTimeout;
+        return socketReadTimeout;
     }
 
-    public void setSocketTimeout(int socketTimeout)
+    public void setSocketReadTimeout(int socketReadTimeout)
     {
-        this.socketTimeout = socketTimeout;
+        this.socketReadTimeout = socketReadTimeout;
+    }
+
+    public int getSocketConnectTimeout()
+    {
+        return socketConnectTimeout;
+    }
+
+    public void setSocketConnectTimeout(int socketConnectTimeout)
+    {
+        this.socketConnectTimeout = socketConnectTimeout;
     }
 
     public ConnectionFactory getConnectionFactory()
