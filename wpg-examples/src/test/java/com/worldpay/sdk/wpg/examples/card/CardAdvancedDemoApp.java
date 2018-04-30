@@ -41,7 +41,7 @@ public class CardAdvancedDemoApp
         Shopper shopper = new Shopper("test@test.com");
 
         // build card details
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", 123);
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123");
 
         try
         {

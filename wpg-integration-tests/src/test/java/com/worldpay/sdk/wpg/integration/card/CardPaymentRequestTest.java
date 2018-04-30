@@ -1,4 +1,4 @@
-package integration.card;
+package com.worldpay.sdk.wpg.integration.card;
 
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
@@ -27,8 +27,8 @@ import com.worldpay.sdk.wpg.domain.tokenisation.TokenDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.integration.BaseIntegrationTest;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
-import integration.BaseIntegrationTest;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -222,7 +222,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         // check token expiry is within an hour of what we specified
         LocalDateTime tokenExpiryResponse = tokenDetails.getTokenExpiry();
         Duration duration = Duration.between(tokenExpiryResponse, expiry);
-        assertTrue(duration.getSeconds() < 3600);
+        assertTrue("Token expiry should not be greater than 12hrs different to requsted expiry - expiry wanted: " + expiry + ", response: " + tokenExpiryResponse, duration.getSeconds() < 12*60*60);
 
         // check token instrument
         assertNotNull("Payment instrument (payment details used to create token) should be present", token.getInstrument());
@@ -295,10 +295,10 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         assertEquals("Event ref should be same as passed in", eventReference, tokenDetails.getEventReference());
         assertEquals("Event reason should be same as passed in", eventReason, tokenDetails.getEventReason());
 
-        // check token expiry is within an hour of what we specified
+        // check token expiry is within 12 hrs of what we specified
         LocalDateTime tokenExpiryResponse = tokenDetails.getTokenExpiry();
         Duration duration = Duration.between(tokenExpiryResponse, expiry);
-        assertTrue(duration.getSeconds() < 3600);
+        assertTrue("Token expiry should not be greater than 12hrs different to requsted expiry - expiry wanted: " + expiry + ", response: " + tokenExpiryResponse, duration.getSeconds() < 12*60*60);
 
         // check token instrument
         assertNotNull("Payment instrument (payment details used to create token) should be present", token.getInstrument());

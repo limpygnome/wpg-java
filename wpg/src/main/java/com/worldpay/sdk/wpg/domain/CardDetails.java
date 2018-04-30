@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.domain;
 
-import com.worldpay.sdk.wpg.builder.CardObfuscator;
+import com.worldpay.sdk.wpg.internal.logging.CardObfuscator;
 
 public class CardDetails
 {

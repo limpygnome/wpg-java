@@ -1,5 +1,6 @@
-package com.worldpay.sdk.wpg.builder;
+package com.worldpay.sdk.wpg.internal.logging;
 
+import com.worldpay.sdk.wpg.internal.logging.CardObfuscator;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

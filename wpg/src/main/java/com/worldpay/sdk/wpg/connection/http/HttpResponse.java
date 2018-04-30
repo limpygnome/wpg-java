@@ -13,6 +13,7 @@ public class HttpResponse
     private final Map<String, String> headers;
     private final long contentLength;
     private final boolean complete;
+    private final String rawHeaders;
     private final String body;
 
     public HttpResponse(byte[] data)
@@ -26,8 +27,8 @@ public class HttpResponse
             int headerSplit = fullText.indexOf("\r\n\r\n");
 
             // read headers
-            String rawHeader = headerSplit > 0 ? fullText.substring(0, headerSplit) : "";
-            headers = readHeaders(rawHeader);
+            rawHeaders = headerSplit > 0 ? fullText.substring(0, headerSplit) : "";
+            headers = readHeaders(rawHeaders);
 
             // read body
             body = headerSplit > 0 && fullText.length() - (headerSplit + 4) > 0 ? fullText.substring(headerSplit + 4) : "";
@@ -104,6 +105,11 @@ public class HttpResponse
     public String getBody()
     {
         return body;
+    }
+
+    public String getFull()
+    {
+        return rawHeaders + "\r\n\r\n" + body;
     }
 
 }

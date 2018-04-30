@@ -135,4 +135,34 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements B
         return this;
     }
 
+    public OrderDetails getOrderDetails()
+    {
+        return orderDetails;
+    }
+
+    public CardDetails getCardDetails()
+    {
+        return cardDetails;
+    }
+
+    public Shopper getShopper()
+    {
+        return shopper;
+    }
+
+    public Address getBillingAddress()
+    {
+        return billingAddress;
+    }
+
+    public Address getShippingAddress()
+    {
+        return shippingAddress;
+    }
+
+    public CreateTokenDetails getCreateTokenDetails()
+    {
+        return createTokenDetails;
+    }
+
 }

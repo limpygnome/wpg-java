@@ -9,6 +9,7 @@ import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.logging.SanitisedLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.Base64;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +31,8 @@ public class XmlClient
     private static final URL SANDBOX_URL;
     private static final URL PRODUCTION_URL;
     private static final Pattern PAGE_ERROR_EXTRACTOR = Pattern.compile("(?:.+)<p>([^<]+)(?:.+)", Pattern.MULTILINE | Pattern.DOTALL);
+
+    private static final Logger logger = Logger.getLogger(XmlClient.class.getName());
 
     static
     {
@@ -103,9 +108,9 @@ public class XmlClient
             System.arraycopy(headers, 0, request, 0, headers.length);
             System.arraycopy(payload, 0, request, headers.length, payload.length);
 
-            // TODO drop after dev
+            // Debug logging
             String text = new String(request, "UTF-8");
-            System.out.println(text);
+            SanitisedLogger.log(logger, Level.FINEST, "Making request to gateway:\n" + text);
 
             return request;
         }
@@ -202,6 +207,10 @@ public class XmlClient
         {
             throw new WpgRequestException("Incomplete response from gateway");
         }
+
+        // output response
+        String fullResponse = httpResponse.getFull();
+        SanitisedLogger.log(logger, Level.FINEST, "Response from gateway:\n" + fullResponse);
 
         // copy cookies to session
         String cookies = httpResponse.getHeader("Set-Cookie");

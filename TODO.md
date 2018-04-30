@@ -3,8 +3,6 @@ make it so sessionctx doesnt need to be passed-in for threeds
 
 
 in-progress:
-- connect / read timeouts
-- integration docs / javadoc / enforce validation
 - basic validation
 - unit tests
 

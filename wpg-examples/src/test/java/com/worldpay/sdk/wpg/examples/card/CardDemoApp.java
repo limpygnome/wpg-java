@@ -33,7 +33,7 @@ public class CardDemoApp
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         // build card details
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", 123);
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123");
 
         try
         {

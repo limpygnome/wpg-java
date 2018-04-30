@@ -48,7 +48,7 @@ public class BatchOrderDemoApp
         {
             CardPaymentRequest order = new CardPaymentRequest()
                     .orderDetails(new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L)))
-                    .cardDetails(new CardDetails("4444333322221111", 1, 2020, "Cardholder name", 123));
+                    .cardDetails(new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123"));
 
             request.add(order);
         }

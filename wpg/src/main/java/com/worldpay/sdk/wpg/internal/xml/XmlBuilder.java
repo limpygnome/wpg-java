@@ -14,6 +14,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -327,31 +328,29 @@ public class XmlBuilder
             XmlBuilder xmlBuilder = new XmlBuilder();
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
 
-            // Only read from local for performance (also prevents XXE attacks)
-            builder.setEntityResolver(new EntityResolver()
-            {
-                @Override
-                public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
-                {
-                    if ("http://dtd.worldpay.com/paymentService_v1.dtd".equals(systemId))
-                    {
-                        InputStream is = this.getClass().getResourceAsStream("/dtd/paymentService_v1.dtd");
-                        return new InputSource(is);
-                    }
-                    else if ("http://dtd.worldpay.com/batchService_v1.dtd".equals(systemId))
-                    {
-                        InputStream is = this.getClass().getResourceAsStream("/dtd/batchService_v1.dtd");
-                        return new InputSource(is);
-                    }
-                    return null;
-                }
-            });
+            // Apply security settings to prevent XEE attacks (unlikely from gateway though)
+            // -- https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#JAXP_DocumentBuilderFactory.2C_SAXParserFactory_and_DOM4J
+            factory.setFeature("http://xml.org/sax/features/namespaces", false);
+            factory.setFeature("http://xml.org/sax/features/validation", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            factory.setXIncludeAware(false);
+            factory.setExpandEntityReferences(false);
+
+            // Parse as XML
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
             InputSource inputSource = new InputSource(new StringReader(text));
             xmlBuilder.document = builder.parse(inputSource);
             xmlBuilder.reset();
+
+            // Check root element is not HTML i.e. webpage
+            Element root = xmlBuilder.current;
+            if ("html".equals(root.getTagName()))
+            {
+                throw new WpgMalformedXmlException("Received web page instead of XML");
+            }
 
             return xmlBuilder;
         }

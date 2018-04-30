@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.builder;
+package com.worldpay.sdk.wpg.internal.logging;
 
 public class CardObfuscator
 {
