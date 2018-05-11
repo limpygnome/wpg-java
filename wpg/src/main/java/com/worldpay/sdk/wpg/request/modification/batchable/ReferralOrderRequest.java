@@ -7,7 +7,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 
-// TODO batch only
+/**
+ * Not yet supported.
+ */
 public class ReferralOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
     private ReferralAction action;

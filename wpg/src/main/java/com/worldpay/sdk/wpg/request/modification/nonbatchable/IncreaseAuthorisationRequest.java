@@ -9,6 +9,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificationSerializer;
 
+/**
+ * Not yet supported.
+ */
 public class IncreaseAuthorisationRequest extends XmlRequest<Void>
 {
     private String orderCode;

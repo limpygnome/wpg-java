@@ -17,6 +17,14 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.PaymentMethodMaskSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 
+/**
+ * Generates an order for taking payments using the Hosted Payment Pages (HPP) platform.
+ *
+ * This request will return a URL, which can be used to redirect the shopper or with the JavaScript SDK (for embedded
+ * payments).
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/hostedintegration/quickstart.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/hostedintegration/quickstart.htm</a>
+ */
 public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
 {
     // Mandatory

@@ -12,6 +12,14 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.adapter.PaymentResponseXmlAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.PayAsOrderSerializer;
 
+/**
+ * Not yet supported.
+ *
+ *
+ * A request to setup recurring payments, using payment details from an existing order.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/recurringpayments.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/recurringpayments.htm</a>
+ */
 public class RecurringPaymentRequest extends XmlRequest<PaymentResponse>
 {
     private OrderDetails orderDetails;

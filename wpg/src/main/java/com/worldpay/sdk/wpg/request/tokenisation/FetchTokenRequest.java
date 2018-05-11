@@ -12,6 +12,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.TokenSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.tokenisation.FetchTokenSerializer;
 
+/**
+ * Not yet supported.
+ */
 public class FetchTokenRequest extends XmlRequest<Token>
 {
     private String paymentTokenId;

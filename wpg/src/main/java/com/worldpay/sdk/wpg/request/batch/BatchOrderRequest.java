@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Not yet supported.
+ *
+ *
  * Allows multiple orders to be sent together, as a batch.
  *
  * Currently supports:

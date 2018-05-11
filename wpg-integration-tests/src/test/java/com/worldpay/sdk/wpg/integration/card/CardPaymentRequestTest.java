@@ -76,8 +76,6 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send() throws WpgException
     {
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
-
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
@@ -87,7 +85,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
                 .orderDetails(orderDetails)
                 .cardDetails(cardDetails)
                 .shopper(shopper)
-                .send(gatewayContext);
+                .send(GATEWAY_CONTEXT);
 
         // check threeds missing
         assertEquals("ThreeDS should not be used", PaymentStatus.PAYMENT_RESULT, response.getStatus());
@@ -130,8 +128,6 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_withoutCvc() throws WpgException
     {
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
-
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
@@ -141,7 +137,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
                 .orderDetails(orderDetails)
                 .cardDetails(cardDetails)
                 .shopper(shopper)
-                .send(gatewayContext);
+                .send(GATEWAY_CONTEXT);
 
         // check cvc status
         Payment payment = response.getPayment();
@@ -155,8 +151,6 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_withAddresses() throws WpgException
     {
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
-
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
@@ -171,7 +165,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
                 .shopper(shopper)
                 .billingAddress(billingAddress)
                 .shippingAddress(shippingAddress)
-                .send(gatewayContext);
+                .send(GATEWAY_CONTEXT);
 
         // check payment present
         Payment payment = response.getPayment();
@@ -181,8 +175,6 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_createShopperToken_shopperFullDetails() throws WpgException
     {
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
-
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), "shopper123");
 
@@ -201,7 +193,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
                 .cardDetails(cardDetails)
                 .shopper(shopper)
                 .tokeniseForReoccurringPayments(createTokenDetails)
-                .send(gatewayContext);
+                .send(GATEWAY_CONTEXT);
 
         // check payment present
         Payment payment = response.getPayment();
@@ -222,7 +214,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         // check token expiry is within an hour of what we specified
         LocalDateTime tokenExpiryResponse = tokenDetails.getTokenExpiry();
         Duration duration = Duration.between(tokenExpiryResponse, expiry);
-        assertTrue("Token expiry should not be greater than 12hrs different to requsted expiry - expiry wanted: " + expiry + ", response: " + tokenExpiryResponse, duration.getSeconds() < 12*60*60);
+        assertTrue("Token expiry should not be greater than 244hrs different to requested expiry - expiry wanted: " + expiry + ", response: " + tokenExpiryResponse, duration.getSeconds() < 24*60*60);
 
         // check token instrument
         assertNotNull("Payment instrument (payment details used to create token) should be present", token.getInstrument());
@@ -255,8 +247,6 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_createMerchanrToken_fullDetails() throws WpgException
     {
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
-
         OrderDetails orderDetails = new OrderDetails("test order 2", new Amount(Currency.GBP, 2L, 1234L));
 
         // No shopper ID present as not needed; other details only needed for 3ds
@@ -277,7 +267,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
                 .cardDetails(cardDetails)
                 .shopper(shopper)
                 .tokeniseForReoccurringPayments(createTokenDetails)
-                .send(gatewayContext);
+                .send(GATEWAY_CONTEXT);
 
         // check payment present
         Payment payment = response.getPayment();
@@ -298,7 +288,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         // check token expiry is within 12 hrs of what we specified
         LocalDateTime tokenExpiryResponse = tokenDetails.getTokenExpiry();
         Duration duration = Duration.between(tokenExpiryResponse, expiry);
-        assertTrue("Token expiry should not be greater than 12hrs different to requsted expiry - expiry wanted: " + expiry + ", response: " + tokenExpiryResponse, duration.getSeconds() < 12*60*60);
+        assertTrue("Token expiry should not be greater than 244hrs different to requested expiry - expiry wanted: " + expiry + ", response: " + tokenExpiryResponse, duration.getSeconds() < 24*60*60);
 
         // check token instrument
         assertNotNull("Payment instrument (payment details used to create token) should be present", token.getInstrument());
@@ -331,8 +321,6 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_tokeniseWithAddresses() throws WpgException
     {
-        GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
-
         final String shopperId = "shopper1234";
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), shopperId);
@@ -350,7 +338,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
                 .billingAddress(billingAddress)
                 .shippingAddress(shippingAddress)
                 .tokeniseForReoccurringPayments(tokenDetails)
-                .send(gatewayContext);
+                .send(GATEWAY_CONTEXT);
 
         // check payment present
         Payment payment = response.getPayment();

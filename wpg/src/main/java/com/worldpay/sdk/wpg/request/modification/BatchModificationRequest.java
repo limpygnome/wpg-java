@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">XML API Docs - Batch Modications</a>
+ * A request to submit multiple order modifications as a single job.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm</a>
  */
 public class BatchModificationRequest extends XmlRequest<Void>
 {

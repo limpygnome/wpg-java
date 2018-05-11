@@ -11,6 +11,11 @@ import com.worldpay.sdk.wpg.internal.xml.adapter.BatchInquiryAdapter;
 import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.BatchOrderModificationSerializer;
 
+/**
+ * A request to inquire about the status of a batch modification job.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm</a>
+ */
 public class BatchModificationInquiryRequest extends XmlRequest<BatchInquiry>
 {
     private String batchCode;

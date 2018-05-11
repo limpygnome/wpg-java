@@ -32,7 +32,10 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- test only -->
+            <!--
+                Dependencies should only be for testing, never include anything distributed with the SDK.
+            -->
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

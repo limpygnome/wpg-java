@@ -21,7 +21,12 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateT
 import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
- * http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm
+ * Not yet supported.
+ *
+ *
+ * Submit card payment details to make a payment, which have been client-side encrypted.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm</a>
  */
 public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse> implements BatchOrderItem
 {

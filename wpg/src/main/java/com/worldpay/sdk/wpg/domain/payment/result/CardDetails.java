@@ -2,7 +2,7 @@ package com.worldpay.sdk.wpg.domain.payment.result;
 
 import com.worldpay.sdk.wpg.domain.CardType;
 
-public class CardResult
+public class CardDetails
 {
     private final String maskedCardNumber;
     private final String hashedCardNumber;
@@ -13,7 +13,7 @@ public class CardResult
     private final String cardHolderName;
     private final CardType type;
 
-    public CardResult(String maskedCardNumber, String hashedCardNumber, Long expiryMonth, Long expiryYear, String issuerCountryCode, String issuerName, String cardHolderName, CardType type)
+    public CardDetails(String maskedCardNumber, String hashedCardNumber, Long expiryMonth, Long expiryYear, String issuerCountryCode, String issuerName, String cardHolderName, CardType type)
     {
         this.maskedCardNumber = maskedCardNumber;
         this.hashedCardNumber = hashedCardNumber;
@@ -92,7 +92,7 @@ public class CardResult
     @Override
     public String toString()
     {
-        return "CardResult{" +
+        return "CardDetails{" +
                 "maskedCardNumber='" + maskedCardNumber + '\'' +
                 ", hashedCardNumber='" + hashedCardNumber + '\'' +
                 ", expiryMonth=" + expiryMonth +

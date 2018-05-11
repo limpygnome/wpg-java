@@ -9,6 +9,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem;
 
+/**
+ * Not yet supported.
+ */
 public class RefundOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
     private String orderCode;

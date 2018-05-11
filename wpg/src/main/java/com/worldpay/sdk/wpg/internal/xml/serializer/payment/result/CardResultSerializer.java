@@ -1,14 +1,14 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer.payment.result;
 
 import com.worldpay.sdk.wpg.domain.CardType;
-import com.worldpay.sdk.wpg.domain.payment.result.CardResult;
+import com.worldpay.sdk.wpg.domain.payment.result.CardDetails;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
 public class CardResultSerializer
 {
 
-    public static CardResult read(XmlBuilder builder) throws WpgRequestException
+    public static CardDetails read(XmlBuilder builder) throws WpgRequestException
     {
         String maskedCardNumber = null;
         String hashedCardNumber = null;
@@ -46,13 +46,13 @@ public class CardResultSerializer
         String cardHolderName = builder.getCdata("cardHolderName");
 
         // Check whether anything was found, otherwise return no result at all
-        CardResult result;
+        CardDetails result;
 
         if (maskedCardNumber != null || hashedCardNumber != null || expiryMonth != null || expiryYear != null
                 || issuerCountryCode != null || issuerName != null || cardHolderName != null
                 || type != null)
         {
-            result = new CardResult(maskedCardNumber, hashedCardNumber, expiryMonth, expiryYear,
+            result = new CardDetails(maskedCardNumber, hashedCardNumber, expiryMonth, expiryYear,
                     issuerCountryCode, issuerName, cardHolderName, type);
         }
         else

@@ -22,11 +22,11 @@ public class XmlNotificationDemoApp
             XmlNotificationBuilder builder = new XmlNotificationBuilder();
 
             String[] xmlExamples = new String[] {
-                    "/order-notifications/authorised.txt",
-                    "/order-notifications/cancelled.txt",
-                    "/order-notifications/captured.txt",
-                    "/order-notifications/refund.txt",
-                    "/order-notifications/refused.txt"
+                    "/order-notification/authorised.txt",
+                    "/order-notification/cancelled.txt",
+                    "/order-notification/captured.txt",
+                    "/order-notification/refund.txt",
+                    "/order-notification/refused.txt"
             };
 
             for (String xmlExample : xmlExamples)

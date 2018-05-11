@@ -11,6 +11,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.tokenisation.DeleteTokenSerializer;
 
+/**
+ * Not yet supported.
+ */
 public class DeleteTokenRequest extends XmlRequest<Void>
 {
     private String paymentTokenId;

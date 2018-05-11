@@ -10,6 +10,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificationSerializer;
 import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem;
 
+/**
+ * Not yet supported.
+ */
 public class CaptureOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
     private String orderCode;

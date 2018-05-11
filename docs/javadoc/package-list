@@ -18,6 +18,7 @@ com.worldpay.sdk.wpg.request.batch
 com.worldpay.sdk.wpg.request.card
 com.worldpay.sdk.wpg.request.cse
 com.worldpay.sdk.wpg.request.hosted
+com.worldpay.sdk.wpg.request.inquiry
 com.worldpay.sdk.wpg.request.modification
 com.worldpay.sdk.wpg.request.modification.batchable
 com.worldpay.sdk.wpg.request.modification.nonbatchable

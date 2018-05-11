@@ -24,7 +24,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateT
 import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
- * A request to make a payment by submitting card details.
+ * A request to make a payment using card details.
  *
  * Supports tokenisation.
  */

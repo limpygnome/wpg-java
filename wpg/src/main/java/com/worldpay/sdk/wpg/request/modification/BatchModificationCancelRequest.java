@@ -11,6 +11,11 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.BatchOrderModificationSerializer;
 
+/**
+ * A request to cancel a batch modification job.
+ *
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm</a>
+ */
 public class BatchModificationCancelRequest extends XmlRequest<Void>
 {
     private String batchCode;

@@ -3,15 +3,13 @@ package com.worldpay.sdk.wpg.domain.payment;
 import com.worldpay.sdk.wpg.domain.payment.result.AvsResult;
 import com.worldpay.sdk.wpg.domain.payment.result.AvvResult;
 import com.worldpay.sdk.wpg.domain.payment.result.Balance;
-import com.worldpay.sdk.wpg.domain.payment.result.CardResult;
+import com.worldpay.sdk.wpg.domain.payment.result.CardDetails;
 import com.worldpay.sdk.wpg.domain.payment.result.CvcResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
 import com.worldpay.sdk.wpg.domain.payment.result.RiskScoreResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ThreeDSecureResult;
 import com.worldpay.sdk.wpg.domain.tokenisation.Token;
-import com.worldpay.sdk.wpg.domain.tokenisation.TokenCardDetails;
-import com.worldpay.sdk.wpg.domain.tokenisation.TokenDetails;
 
 /**
  * Response from a payment attempt.
@@ -28,7 +26,7 @@ public class Payment
     private final LastEvent lastEvent;
     private final Balance balance;
 
-    private final CardResult cardResult;
+    private final CardDetails cardDetails;
     private final PayoutAuthorisationResult payoutAuthorisationResult;
     private final ISO8583Result iso8583Result;
     private final ThreeDSecureResult threeDSecureResult;
@@ -39,7 +37,7 @@ public class Payment
     private final Token token;
 
     public Payment(PaymentMethod paymentMethod, Amount amount, LastEvent lastEvent, Balance balance,
-                   CardResult cardResult, PayoutAuthorisationResult payoutAuthorisationResult,
+                   CardDetails cardDetails, PayoutAuthorisationResult payoutAuthorisationResult,
                    ISO8583Result iso8583Result, ThreeDSecureResult threeDSecureResult, AvsResult avsResult,
                    CvcResult cvcResult, AvvResult avvResult, RiskScoreResult riskScoreResult,
                    Token token)
@@ -48,7 +46,7 @@ public class Payment
         this.amount = amount;
         this.lastEvent = lastEvent;
         this.balance = balance;
-        this.cardResult = cardResult;
+        this.cardDetails = cardDetails;
         this.payoutAuthorisationResult = payoutAuthorisationResult;
         this.iso8583Result = iso8583Result;
         this.threeDSecureResult = threeDSecureResult;
@@ -87,9 +85,9 @@ public class Payment
     /**
      * @return Details relating to the card used for a payment, for card payments (may not always be present)
      */
-    public CardResult getCardResult()
+    public CardDetails getCardDetails()
     {
-        return cardResult;
+        return cardDetails;
     }
 
     /**
@@ -172,7 +170,7 @@ public class Payment
                 ", amount=" + amount +
                 ", lastEvent=" + lastEvent +
                 ", balance=" + balance +
-                ", cardResult=" + cardResult +
+                ", cardDetails=" + cardDetails +
                 ", payoutAuthorisationResult=" + payoutAuthorisationResult +
                 ", iso8583Result=" + iso8583Result +
                 ", threeDSecureResult=" + threeDSecureResult +

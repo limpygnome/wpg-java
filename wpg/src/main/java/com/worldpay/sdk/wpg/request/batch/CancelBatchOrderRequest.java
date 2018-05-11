@@ -9,6 +9,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 
+/**
+ * Not yet supported.
+ */
 public class CancelBatchOrderRequest extends XmlRequest<Void>
 {
     private String id;

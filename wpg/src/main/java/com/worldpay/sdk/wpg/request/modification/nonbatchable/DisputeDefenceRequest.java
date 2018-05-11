@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 
-// TODO attachment limit?
+/**
+ * Not yet supported.
+ */
 public class DisputeDefenceRequest extends XmlRequest<Void>
 {
     private String orderCode;
@@ -34,6 +36,7 @@ public class DisputeDefenceRequest extends XmlRequest<Void>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        // TODO attachment limit?
     }
 
     @Override

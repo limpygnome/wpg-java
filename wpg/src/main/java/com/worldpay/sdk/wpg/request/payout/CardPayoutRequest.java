@@ -15,10 +15,15 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
 import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
+ * Not yet supported.
+ *
+ *
+ * A request to push funds to a card.
+ *
  * A payment may not always be returned, as is the case for Visa. This still means the payout has been received
  * successfully.
  *
- * TODO test
+ * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/cardpayouts.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/cardpayouts.htm</a>
  */
 public class CardPayoutRequest extends XmlRequest<CardPayout> implements BatchOrderItem
 {

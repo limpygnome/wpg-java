@@ -19,6 +19,9 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.tokenisation.TokenPaymentSerializer;
 import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
+/**
+ * Not yet supported.
+ */
 public class TokenPaymentRequest extends XmlRequest<PaymentResponse> implements BatchOrderItem
 {
     private String paymentTokenId;

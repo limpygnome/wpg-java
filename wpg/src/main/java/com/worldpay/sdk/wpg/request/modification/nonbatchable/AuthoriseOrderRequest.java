@@ -9,6 +9,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificationSerializer;
 
+/**
+ * Not yet supported.
+ */
 public class AuthoriseOrderRequest extends XmlRequest<Void>
 {
     private String orderCode;

@@ -12,6 +12,9 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.tokenisation.FetchTokenSeria
 
 import java.util.List;
 
+/**
+ * Not yet supported.
+ */
 public class FetchTokensByShopperRequest extends XmlRequest<List<Token>>
 {
     private String shopperId;
