@@ -14,7 +14,7 @@
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="com.worldpay" level="trace">
+    <logger name="com.worldpay" level="trace" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 

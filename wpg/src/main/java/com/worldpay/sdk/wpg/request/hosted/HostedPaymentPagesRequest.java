@@ -40,6 +40,12 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
     {
     }
 
+    public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper)
+    {
+        this.orderDetails = orderDetails;
+        this.shopper = shopper;
+    }
+
     public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper, Address billingAddress)
     {
         this.orderDetails = orderDetails;

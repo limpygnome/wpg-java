@@ -30,8 +30,12 @@ public class JournalSerializer
         // Read journal type details
         List<JournalTypeDetail> typeDetails = readJournalDetails(builder);
 
+        // Read attribs
+        String type = builder.a("journalType");
+        String sent = builder.a("sent");
+
         // Give back result
-        Journal journal = new Journal(bookingDate, transactions, references, typeDetails);
+        Journal journal = new Journal(type, sent, bookingDate, transactions, references, typeDetails);
         return journal;
     }
 

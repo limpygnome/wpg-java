@@ -31,8 +31,8 @@ public class XmlNotificationDemoApp
 
             for (String xmlExample : xmlExamples)
             {
-                String xml = fromClassPath(xmlExample);
-                OrderNotification notification = builder.read(xml);
+                InputStream inputStream = fromClassPath(xmlExample);
+                OrderNotification notification = builder.read(inputStream);
                 System.out.println(notification.toString());
             }
         }
@@ -42,11 +42,10 @@ public class XmlNotificationDemoApp
         }
     }
 
-    private static String fromClassPath(String path)
+    private static InputStream fromClassPath(String path)
     {
         InputStream inputStream = XmlNotificationDemoApp.class.getResourceAsStream(path);
-        String xml = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-        return xml;
+        return inputStream;
     }
 
 }

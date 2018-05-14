@@ -1,5 +1,7 @@
 package com.worldpay.sdk.wpg.builder;
 
+import com.worldpay.sdk.wpg.domain.Country;
+import com.worldpay.sdk.wpg.domain.Language;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTranslator;
 
@@ -130,9 +132,21 @@ public final class PaymentPagesRedirectBuilder
         return this;
     }
 
+    public PaymentPagesRedirectBuilder language(Language language)
+    {
+        this.language = language.ISO639_1_2_LANGUAGE_CODE;
+        return this;
+    }
+
     public PaymentPagesRedirectBuilder language(String language)
     {
         this.language = language;
+        return this;
+    }
+
+    public PaymentPagesRedirectBuilder country(Country country)
+    {
+        this.country = country.ISO3166_1_ALPHA_2_COUNTRY_CODE;
         return this;
     }
 

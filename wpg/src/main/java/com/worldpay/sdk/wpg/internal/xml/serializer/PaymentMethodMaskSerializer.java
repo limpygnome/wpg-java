@@ -29,9 +29,7 @@ public class PaymentMethodMaskSerializer
         }
 
         // Move to correct element
-        builder.e("submit")
-                .e("order")
-                .e("paymentMethodMask");
+        builder.e("paymentMethodMask");
 
         if (paymentMethodFilter == null || (included.isEmpty() && excluded.isEmpty()))
         {
@@ -57,8 +55,8 @@ public class PaymentMethodMaskSerializer
             }
         }
 
-        // reset
-        builder.reset();
+        // reset back
+        builder.up();
     }
 
     private static void appendList(XmlBuilder builder, String elementName, List<PaymentMethod> list)
@@ -66,7 +64,8 @@ public class PaymentMethodMaskSerializer
         for (PaymentMethod paymentMethod : list)
         {
             String mask = getLegacyPaymentMethodMask(paymentMethod);
-            builder.e(elementName, true).a("code", mask).up();
+            builder.e(elementName, true).a("code", mask)
+                    .up();
         }
     }
 

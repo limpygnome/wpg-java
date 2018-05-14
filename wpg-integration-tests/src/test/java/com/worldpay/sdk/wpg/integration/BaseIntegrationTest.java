@@ -10,10 +10,18 @@ import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.inquiry.OrderInquiryRequest;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.logging.Logger;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 public class BaseIntegrationTest
 {
+    private static final Logger LOG = Logger.getLogger(BaseIntegrationTest.class.getName());
+
     protected static final String USER;
     protected static final String PASS;
     protected static final String MERCHANT_CODE;
@@ -77,6 +85,17 @@ public class BaseIntegrationTest
         }
 
         return result;
+    }
+
+    protected void assertStatusCode(String url, int expectedStatusCode) throws IOException
+    {
+        LOG.fine("asserted url: " + url);
+
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setInstanceFollowRedirects(true);
+
+        int statusCode = conn.getResponseCode();
+        assertThat(statusCode, is(expectedStatusCode));
     }
 
 }

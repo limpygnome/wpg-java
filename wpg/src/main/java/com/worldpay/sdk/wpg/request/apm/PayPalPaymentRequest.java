@@ -3,6 +3,7 @@ package com.worldpay.sdk.wpg.request.apm;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
@@ -43,9 +44,29 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
     private String languageCode;
     private CreateTokenDetails createTokenDetails;
 
+    public PayPalPaymentRequest() { }
+
+    public PayPalPaymentRequest(OrderDetails orderDetails, Shopper shopper, String successURL, String failureURL, String cancelURL)
+    {
+        this.orderDetails = orderDetails;
+        this.shopper = shopper;
+        this.successURL = successURL;
+        this.failureURL = failureURL;
+        this.cancelURL = cancelURL;
+    }
+
+    public PayPalPaymentRequest(OrderDetails orderDetails, Shopper shopper, String resultURL)
+    {
+        this.orderDetails = orderDetails;
+        this.shopper = shopper;
+        this.resultURL(resultURL);
+    }
+
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notNull(orderDetails, "Order details is mandatory");
+
         if (this.createTokenDetails != null)
         {
             Assert.notEmpty(shopper.getShopperId(), "Shopper ID is required for tokenised payments");
@@ -146,7 +167,13 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
         return this;
     }
 
-    public PayPalPaymentRequest languageCode(String languageCode)
+    public PayPalPaymentRequest language(PayPalLanguage language)
+    {
+        this.languageCode = language.LANGUAGE_CODE;
+        return this;
+    }
+
+    public PayPalPaymentRequest language(String languageCode)
     {
         this.languageCode = languageCode;
         return this;

@@ -4,7 +4,7 @@ import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CountryCode;
+import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
@@ -36,8 +36,8 @@ public class HppAdvancedDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-        Address billingAddress = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
-        Address shippingAddress = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
+        Address billingAddress = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
+        Address shippingAddress = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
         Shopper shopper = new Shopper("test@test.com");
 
         // filter payment methods available

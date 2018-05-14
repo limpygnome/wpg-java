@@ -4,7 +4,7 @@ import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CountryCode;
+import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
@@ -32,7 +32,7 @@ public class CseDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-        Address address = new Address("123 test address", "blah", "1234", CountryCode.GREAT_BRITAIN);
+        Address address = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         // encrypted card details payload

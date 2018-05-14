@@ -104,7 +104,7 @@ public class SubmitThreeDSRequest extends XmlRequest<PaymentResponse>
     @Override
     public PaymentResponse send(GatewayContext gatewayContext) throws WpgRequestException, WpgConnectionException, WpgErrorResponseException, WpgMalformedXmlException
     {
-        throw new IllegalStateException("Method not supported, as existing session needed");
+        throw new IllegalStateException("Method not supported, use send(gatewayContext, sessionContext) - you need to pass session context");
     }
 
 }

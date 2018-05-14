@@ -136,7 +136,7 @@ public class XmlClient
             // append headers
             for (Map.Entry<String, String> header : sessionContext.getHeaders().entrySet())
             {
-                buff.append(header.getKey()).append("=").append(header.getValue()).append("\r\n");
+                buff.append(header.getKey()).append(": ").append(header.getValue()).append("\r\n");
             }
 
             // append content/payload length
@@ -205,7 +205,7 @@ public class XmlClient
 
         if (httpResponse == null || !httpResponse.isComplete())
         {
-            throw new WpgRequestException("Incomplete response from gateway");
+            throw new WpgRequestException("Incomplete response from gateway, connection may have ended prematurely - response: " + (httpResponse != null ? "yes" : "no"));
         }
 
         // output response
