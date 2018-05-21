@@ -8,6 +8,7 @@ import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -21,10 +22,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateT
 import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
 
 /**
- * Not yet supported.
- *
- *
- * Submit card payment details to make a payment, which have been client-side encrypted.
+ * Submit card payment details, which have been client-side encrypted.
  *
  * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/clientsideencryption/serversideintegration.htm</a>
  */
@@ -33,10 +31,10 @@ public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse> 
     // Mandatory
     private OrderDetails orderDetails;
     private String encryptedData;
-    private Address cardHolderAddress;
-    private Shopper shopper;
 
     // Optional
+    private Address cardHolderAddress;
+    private Shopper shopper;
     private Address billingAddress;
     private Address shippingAddress;
     private CreateTokenDetails createTokenDetails;
@@ -80,6 +78,9 @@ public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse> 
 
     protected void validate(XmlBuildParams params)
     {
+        Assert.notNull(orderDetails, "Order details are mandatory");
+        Assert.notNull(encryptedData, "Encrypted data is mandatory");
+        // TODO shopper?
     }
 
     protected void build(XmlBuildParams params)

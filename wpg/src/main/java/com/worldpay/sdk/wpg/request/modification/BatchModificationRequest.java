@@ -5,6 +5,7 @@ import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
@@ -13,12 +14,15 @@ import com.worldpay.sdk.wpg.internal.xml.XmlService;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.BatchOrderModificationSerializer;
 import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * A request to submit multiple order modifications as a single job.
+ *
+ * This will throw {@link IllegalStateException} if no items are added to the request upon being sent.
  *
  * @see <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm</a>
  */
@@ -40,6 +44,12 @@ public class BatchModificationRequest extends XmlRequest<Void>
         this.items = items;
     }
 
+    /**
+     * Adds modification items.
+     *
+     * @param items item(s) to be added
+     * @return Current instance
+     */
     public synchronized BatchModificationRequest add(BatchModificationItem... items)
     {
         setupList();
@@ -50,23 +60,37 @@ public class BatchModificationRequest extends XmlRequest<Void>
         return this;
     }
 
+    /**
+     * @param items List of items to be modified
+     * @return Current instance
+     */
     public synchronized BatchModificationRequest setItems(List<BatchModificationItem> items)
     {
         this.items = items;
         return this;
     }
 
+    /**
+     * @return Unmodifiable list of items/modifications; never null
+     */
     public synchronized List<BatchModificationItem> getItems()
     {
-        return items;
+        return items != null ? Collections.unmodifiableList(items) : Collections.emptyList();
     }
 
+    /**
+     * @param batchCode The identifier for this batch
+     * @return Current instance
+     */
     public BatchModificationRequest batchCode(String batchCode)
     {
         this.batchCode = batchCode;
         return this;
     }
 
+    /**
+     * @return The identifier of this batch
+     */
     public String getBatchCode()
     {
         return batchCode;
@@ -75,7 +99,12 @@ public class BatchModificationRequest extends XmlRequest<Void>
     @Override
     protected void validate(XmlBuildParams params)
     {
-        // TODO need to run validate on items
+        Assert.notEmpty(batchCode, "Batch code is mandatory");
+
+        if (items == null || items.isEmpty())
+        {
+            throw new IllegalStateException("There must be one or more items");
+        }
     }
 
     @Override
@@ -111,6 +140,5 @@ public class BatchModificationRequest extends XmlRequest<Void>
             items = new LinkedList<>();
         }
     }
-
 
 }

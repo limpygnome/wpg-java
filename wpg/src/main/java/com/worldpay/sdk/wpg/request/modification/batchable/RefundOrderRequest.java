@@ -21,9 +21,12 @@ import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem
  */
 public class RefundOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
+    // Mandatory
     private String orderCode;
-    private String reference;
     private Amount amount;
+
+    // Optional
+    private String reference;
 
     public RefundOrderRequest() { }
 
@@ -45,6 +48,8 @@ public class RefundOrderRequest extends XmlRequest<Void> implements BatchModific
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(orderCode, "Order code is mandatory");
+        Assert.notNull(amount, "Amount is mandatory");
     }
 
     @Override

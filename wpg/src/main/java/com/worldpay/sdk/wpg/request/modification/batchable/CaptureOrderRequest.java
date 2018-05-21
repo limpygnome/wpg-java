@@ -19,9 +19,12 @@ import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem
  */
 public class CaptureOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
+    // Mandatory
     private String orderCode;
-    private String reference;
     private Amount amount;
+
+    // Optional
+    private String reference;
 
     public CaptureOrderRequest() { }
 
@@ -43,6 +46,8 @@ public class CaptureOrderRequest extends XmlRequest<Void> implements BatchModifi
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(orderCode, "Order code is mandatory");
+        Assert.notNull(amount, "Reference is mandatory");
     }
 
     @Override

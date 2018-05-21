@@ -4,13 +4,16 @@ import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 
 /**
- * Not yet supported.
+ * Cancels a batch modification request.
+ *
+ * <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm</a>
  */
 public class CancelBatchOrderRequest extends XmlRequest<Void>
 {
@@ -19,6 +22,7 @@ public class CancelBatchOrderRequest extends XmlRequest<Void>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(id, "Batch ID is mandatory");
     }
 
     @Override
@@ -42,15 +46,30 @@ public class CancelBatchOrderRequest extends XmlRequest<Void>
         return null;
     }
 
+    /**
+     * @param id The identifier of the batch to be cancelled
+     * @return Current instance
+     */
     public CancelBatchOrderRequest id(String id)
     {
         this.id = id;
         return this;
     }
 
+    /**
+     * @return The identifier of the batch to be cancelled
+     */
     public String getId()
     {
         return id;
+    }
+
+    /**
+     * @param id The identifier of the batch to be cancelled
+     */
+    public void setId(String id)
+    {
+        this.id = id;
     }
 
 }

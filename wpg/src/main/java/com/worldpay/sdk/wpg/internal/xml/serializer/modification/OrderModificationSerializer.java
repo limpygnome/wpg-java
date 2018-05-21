@@ -52,6 +52,13 @@ public class OrderModificationSerializer
     {
         XmlBuilder builder = params.xmlBuilder();
         builder.e("capture");
+
+        String reference = request.getReference();
+        if (reference != null)
+        {
+            builder.a("reference", reference);
+        }
+
         AmountSerializer.write(builder, request.getAmount());
     }
 

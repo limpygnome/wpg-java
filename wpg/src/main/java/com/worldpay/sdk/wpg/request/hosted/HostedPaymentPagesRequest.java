@@ -8,6 +8,7 @@ import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -29,10 +30,10 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
 {
     // Mandatory
     private OrderDetails orderDetails;
-    private Shopper shopper;
-    private Address billingAddress;
 
     // Optional
+    private Shopper shopper;
+    private Address billingAddress;
     private Address shippingAddress;
     private PaymentMethodFilter paymentMethodFilter;
 
@@ -40,17 +41,15 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
     {
     }
 
+    public HostedPaymentPagesRequest(OrderDetails orderDetails)
+    {
+        this.orderDetails = orderDetails;
+    }
+
     public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper)
     {
         this.orderDetails = orderDetails;
         this.shopper = shopper;
-    }
-
-    public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper, Address billingAddress)
-    {
-        this.orderDetails = orderDetails;
-        this.shopper = shopper;
-        this.billingAddress = billingAddress;
     }
 
     public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper, Address billingAddress, Address shippingAddress, PaymentMethodFilter paymentMethodFilter)
@@ -65,7 +64,7 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
     @Override
     protected void validate(XmlBuildParams params)
     {
-        // TODO add validation
+        Assert.notNull(orderDetails, "Order details are mandatory");
     }
 
     @Override

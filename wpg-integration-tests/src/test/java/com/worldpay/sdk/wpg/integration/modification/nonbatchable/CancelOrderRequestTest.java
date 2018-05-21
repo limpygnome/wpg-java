@@ -23,12 +23,8 @@ public class CancelOrderRequestTest extends BaseIntegrationTest
     @Test
     public void cancel_asExpected() throws Exception
     {
-        // Send the request
         new CancelOrderRequest(orderDetails.getOrderCode())
             .send(GATEWAY_CONTEXT);
-
-        // Then
-        pollUntil(orderDetails, LastEvent.CANCELLED);
     }
 
 }

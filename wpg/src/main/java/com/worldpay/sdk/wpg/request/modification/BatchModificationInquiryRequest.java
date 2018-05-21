@@ -4,6 +4,7 @@ import com.worldpay.sdk.wpg.domain.notification.BatchInquiry;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -28,12 +29,19 @@ public class BatchModificationInquiryRequest extends XmlRequest<BatchInquiry>
         this.batchCode = batchCode;
     }
 
+    /**
+     * @param batchCode The identifier of the batch being inquired
+     * @return Current instance
+     */
     public BatchModificationInquiryRequest batchCode(String batchCode)
     {
         this.batchCode = batchCode;
         return this;
     }
 
+    /**
+     * @return The identifier of the batch being inquired
+     */
     public String getBatchCode()
     {
         return batchCode;
@@ -42,6 +50,7 @@ public class BatchModificationInquiryRequest extends XmlRequest<BatchInquiry>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(batchCode, "Batch code is mandatory");
     }
 
     @Override

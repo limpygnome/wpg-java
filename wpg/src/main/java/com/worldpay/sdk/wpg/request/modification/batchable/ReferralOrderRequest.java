@@ -4,6 +4,7 @@ import com.worldpay.sdk.wpg.domain.modification.ReferralAction;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -13,9 +14,12 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
  */
 public class ReferralOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
+    // Mandatory
     private ReferralAction action;
-    private String reason;
     private String cardReferral;
+
+    // Optional
+    private String reason;
 
     public ReferralOrderRequest() { }
 
@@ -29,6 +33,8 @@ public class ReferralOrderRequest extends XmlRequest<Void> implements BatchModif
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notNull(action, "Referral action is mandatory");
+        Assert.notEmpty(cardReferral, "Card referral is mandatory");
     }
 
     @Override

@@ -29,17 +29,12 @@ public class HppDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-        Address address = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
-        Shopper shopper = new Shopper("test@test.com");
 
         try
         {
             // create order
             RedirectUrl response = new HostedPaymentPagesRequest()
                     .orderDetails(orderDetails)
-                    .billingAddress(address)
-                    .shippingAddress(address)
-                    .shopper(shopper)
                     .send(gatewayContext);
 
             System.out.println(response.getUrl());

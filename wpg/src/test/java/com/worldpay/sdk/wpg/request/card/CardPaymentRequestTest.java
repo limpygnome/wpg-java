@@ -127,6 +127,8 @@ public class CardPaymentRequestTest
         given(shopper.getShopperId()).willReturn("shopper123");
 
         new CardPaymentRequest()
+                .orderDetails(orderDetails)
+                .cardDetails(cardDetails)
                 .tokeniseForReoccurringPayments(createTokenDetails)
                 .shopper(shopper)
                 .validate(params);

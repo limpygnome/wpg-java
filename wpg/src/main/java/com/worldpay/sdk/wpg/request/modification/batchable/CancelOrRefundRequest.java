@@ -37,6 +37,7 @@ public class CancelOrRefundRequest extends XmlRequest<Void> implements BatchModi
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(orderCode, "Order code is mandatory");
     }
 
     @Override

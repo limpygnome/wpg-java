@@ -27,9 +27,6 @@ public class CancelOrRefundRequestTest extends BaseIntegrationTest
         // When
         new CancelOrRefundRequest(orderDetails.getOrderCode())
                 .send(GATEWAY_CONTEXT);
-
-        // Then
-        pollUntil(orderDetails, LastEvent.CANCELLED);
     }
 
 }

@@ -5,6 +5,7 @@ import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
@@ -18,17 +19,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Not yet supported.
- *
- *
- * Allows multiple orders to be sent together, as a batch.
+ * Allows multiple order modifications to be sent together as a batch.
  *
  * Currently supports:
  * - {@link com.worldpay.sdk.wpg.request.payout.CardPayoutRequest}
  * - {@link com.worldpay.sdk.wpg.request.cse.ClientsideEncryptedCardRequest}
  * - {@link com.worldpay.sdk.wpg.request.tokenisation.TokenPaymentRequest}
+ *
+ * <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/batchedmodifications.htm</a>
  */
-// TODO when building, we'll need to check all serializers are resetting correctly and not just writing to top-level
 public class BatchOrderRequest extends XmlRequest<Void>
 {
     private static final int ID_MIN_LEN = 1;
@@ -40,6 +39,7 @@ public class BatchOrderRequest extends XmlRequest<Void>
     public BatchOrderRequest()
     {
         this.id = RandomIdentifier.generate(ID_MAX_LEN);
+        this.items = new LinkedList();
     }
 
     /**
@@ -106,35 +106,51 @@ public class BatchOrderRequest extends XmlRequest<Void>
         return true;
     }
 
+    /**
+     * @return The batch identifier
+     */
     public String getId()
     {
         return id;
     }
 
+    /**
+     * @param id The batch identifier
+     * @return Current instance
+     */
     public BatchOrderRequest id(String id)
     {
         this.id = id;
         return this;
     }
 
+    /**
+     * Retrieves the list of items to be included in the batch.
+     *
+     * @return Read-only / unmodifiable list of items, never null
+     */
     public synchronized List<BatchOrderItem> getItems()
     {
         return Collections.unmodifiableList(items);
     }
 
+    /**
+     * @param items List of items; cannot be null
+     * @return Current instance
+     */
     public synchronized BatchOrderRequest items(List<BatchOrderItem> items)
     {
+        Assert.notNull(items, "Batch modification cannot have a null list of items");
         this.items = items;
         return this;
     }
 
+    /**
+     * @param items Items to be added to this batch of modifications
+     * @return Current instance
+     */
     public synchronized BatchOrderRequest add(BatchOrderItem... items)
     {
-        if (this.items == null)
-        {
-            this.items = new LinkedList();
-        }
-
         for (BatchOrderItem item : items)
         {
             this.items.add(item);

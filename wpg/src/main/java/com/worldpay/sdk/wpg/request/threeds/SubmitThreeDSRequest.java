@@ -9,6 +9,7 @@ import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
@@ -54,6 +55,8 @@ public class SubmitThreeDSRequest extends XmlRequest<PaymentResponse>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(orderCode, "Order code is mandatory");
+        Assert.notEmpty(paResponse, "PaResponse is mandatory");
     }
 
     @Override

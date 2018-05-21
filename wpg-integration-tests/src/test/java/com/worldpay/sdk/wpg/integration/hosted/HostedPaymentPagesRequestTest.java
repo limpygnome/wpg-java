@@ -21,29 +21,39 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
 {
     private RedirectUrl redirectUrl;
 
-    @Before
-    public void generateOrderUrl() throws WpgException
-    {
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2, 1234L));
-        HostedPaymentPagesRequest request = new HostedPaymentPagesRequest(orderDetails, new Shopper("test@worldpay.com"));
-        redirectUrl = request.send(GATEWAY_CONTEXT);
-    }
-
     @Test
-    public void orderUrl_vanilla() throws IOException
+    public void basicOrder() throws IOException, WpgException
     {
+        // Given
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2, 1234L));
+
+        // When
+        HostedPaymentPagesRequest request = new HostedPaymentPagesRequest(orderDetails);
+        redirectUrl = request.send(GATEWAY_CONTEXT);
+
+        // Then
         assertStatusCode(redirectUrl.getUrl(), 200);
     }
 
     @Test
-    public void orderUrl_malformed() throws IOException
+    public void orderUrl_vanilla() throws IOException, WpgException
     {
+        givenOrder();
+        assertStatusCode(redirectUrl.getUrl(), 200);
+    }
+
+    @Test
+    public void orderUrl_malformed() throws IOException, WpgException
+    {
+        givenOrder();
         assertStatusCode(redirectUrl.getUrl() + "&blah=ttest", 400);
     }
 
     @Test
-    public void orderUrl_withResultUrls() throws IOException
+    public void orderUrl_withResultUrls() throws IOException, WpgException
     {
+        givenOrder();
+
         String url = redirectUrl.paymentPages()
                 .successUrl("https://success.worldpay.com")
                 .cancelUrl("https://cancel.worldpay.com")
@@ -56,8 +66,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_withPreferredPaymentMethod() throws IOException
+    public void orderUrl_withPreferredPaymentMethod() throws IOException, WpgException
     {
+        givenOrder();
+
         String url = redirectUrl.paymentPages()
                 .preferredPaymentMethod(PaymentMethod.VISA)
                 .build();
@@ -66,8 +78,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_withLocale() throws IOException
+    public void orderUrl_withLocale() throws IOException, WpgException
     {
+        givenOrder();
+
         String url = redirectUrl.paymentPages()
                 .languageAndCountry(Locale.CANADA_FRENCH)
                 .build();
@@ -76,8 +90,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_withCountryLanguage() throws IOException
+    public void orderUrl_withCountryLanguage() throws IOException, WpgException
     {
+        givenOrder();
+
         String url = redirectUrl.paymentPages()
                 .country("gb")
                 .language("en")
@@ -87,8 +103,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_withCountry2() throws IOException
+    public void orderUrl_withCountry2() throws IOException, WpgException
     {
+        givenOrder();
+
         String url = redirectUrl.paymentPages()
                 .country(Country.GREAT_BRITAIN)
                 .language("en")
@@ -98,8 +116,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_allCountries() throws IOException
+    public void orderUrl_allCountries() throws IOException, WpgException
     {
+        givenOrder();
+
         // TODO consider making parameitised
         for (Country country : Country.values())
         {
@@ -112,8 +132,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_allLanguages() throws IOException
+    public void orderUrl_allLanguages() throws IOException, WpgException
     {
+        givenOrder();
+
         // TODO consider making parameitised
         for (Language language : Language.values())
         {
@@ -126,8 +148,10 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void orderUrl_withEverything() throws IOException
+    public void orderUrl_withEverything() throws IOException, WpgException
     {
+        givenOrder();
+
         String url = redirectUrl.paymentPages()
                 .successUrl("https://success.worldpay.com")
                 .cancelUrl("https://cancel.worldpay.com")
@@ -139,6 +163,13 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
                 .build();
 
         assertStatusCode(url, 200);
+    }
+
+    private void givenOrder() throws WpgException
+    {
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2, 1234L));
+        HostedPaymentPagesRequest request = new HostedPaymentPagesRequest(orderDetails, new Shopper("test@worldpay.com"));
+        redirectUrl = request.send(GATEWAY_CONTEXT);
     }
 
 }

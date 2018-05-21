@@ -4,6 +4,7 @@ import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
@@ -27,12 +28,16 @@ import com.worldpay.sdk.wpg.request.batch.BatchOrderItem;
  * A request to make a payment using card details.
  *
  * Supports tokenisation.
+ *
+ * <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/directintegration/paymentrequests.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/directintegration/paymentrequests.htm</a>
  */
 public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements BatchOrderItem
 {
     // Mandatory
     private OrderDetails orderDetails;
     private CardDetails cardDetails;
+
+    // Grey area (mandatory for 3ds)
     private Shopper shopper;
 
     // Optional
@@ -71,6 +76,9 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements B
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notNull(orderDetails, "Order details are mandatory");
+        Assert.notNull(cardDetails, "Card details are mandatory");
+
         // Shopper tokens always require shopper to be present
         if (this.createTokenDetails != null && TokenScope.SHOPPER.equals(createTokenDetails.getScope()))
         {
@@ -99,67 +107,117 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements B
         return result;
     }
 
+    /**
+     * @param orderDetails Order details (mandatory)
+     * @return Current instance
+     */
     public CardPaymentRequest orderDetails(OrderDetails orderDetails)
     {
         this.orderDetails = orderDetails;
         return this;
     }
 
+    /**
+     * @param cardDetails Card details (mandatory)
+     * @return Current instance
+     */
     public CardPaymentRequest cardDetails(CardDetails cardDetails)
     {
         this.cardDetails = cardDetails;
         return this;
     }
 
+    /**
+     * Mandatory when 3ds / ThreeDS is enabled to authenticate payments.
+     *
+     * You will need to specify shopper browser details:
+     * - {@link ShopperBrowser#getUserAgentHeader()}
+     * - {@link ShopperBrowser#getAcceptHeader()}
+     *
+     * Refer to example code.
+     *
+     * @param shopper Shopper details (mandatory for 3ds)
+     * @return Current instance
+     */
     public CardPaymentRequest shopper(Shopper shopper)
     {
         this.shopper = shopper;
         return this;
     }
 
+    /**
+     * @param billingAddress Shopper's billing address (optional)
+     * @return Current instance
+     */
     public CardPaymentRequest billingAddress(Address billingAddress)
     {
         this.billingAddress = billingAddress;
         return this;
     }
 
+    /**
+     * @param shippingAddress Shopper's shipping address (optional)
+     * @return Current instance
+     */
     public CardPaymentRequest shippingAddress(Address shippingAddress)
     {
         this.shippingAddress = shippingAddress;
         return this;
     }
 
+    /**
+     * @param createTokenDetails Details to tokenise card details for future payments (optional)
+     * @return Current instance
+     */
     public CardPaymentRequest tokeniseForReoccurringPayments(CreateTokenDetails createTokenDetails)
     {
         this.createTokenDetails = createTokenDetails;
         return this;
     }
 
+    /**
+     * @return Order details
+     */
     public OrderDetails getOrderDetails()
     {
         return orderDetails;
     }
 
+    /**
+     * @return Card details
+     */
     public CardDetails getCardDetails()
     {
         return cardDetails;
     }
 
+    /**
+     * @return Shopper details
+     */
     public Shopper getShopper()
     {
         return shopper;
     }
 
+    /**
+     * @return Shopper's billing address
+     */
     public Address getBillingAddress()
     {
         return billingAddress;
     }
 
+    /**
+     * @return Shopper's shipping address
+     */
     public Address getShippingAddress()
     {
         return shippingAddress;
     }
 
+    /**
+     * @return Tokenisation details
+     */
     public CreateTokenDetails getCreateTokenDetails()
     {
         return createTokenDetails;

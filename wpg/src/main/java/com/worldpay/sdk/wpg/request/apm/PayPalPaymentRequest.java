@@ -21,13 +21,11 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.CreateTokenDetailsSerializer;
 
 /**
- * Not yet supported.
+ * A request to create a transaction and take a payment using PayPal.
  *
+ * Supports tokenisation.
  *
- * Supports tokenisation
- *
- * Supported language codes, otherwise defaults to English:
- * http://support.worldpay.com/support/kb/gg/paypal/paypalcg.htm#languagecodes.htm%3FTocPath%3DXML%2520input%2520examples%7CTechnical%2520Integration%7C_____3
+ * <a href="http://support.worldpay.com/support/kb/gg/paypal/paypalcg.htm#languagecodes.htm%3FTocPath%3DXML%2520input%2520examples%7CTechnical%2520Integration%7C_____3">http://support.worldpay.com/support/kb/gg/paypal/paypalcg.htm#languagecodes.htm%3FTocPath%3DXML%2520input%2520examples%7CTechnical%2520Integration%7C_____3</a>
  */
 public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
 {
@@ -65,7 +63,12 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
     @Override
     protected void validate(XmlBuildParams params)
     {
-        Assert.notNull(orderDetails, "Order details is mandatory");
+        Assert.notNull(orderDetails, "Order details are mandatory");
+        Assert.notNull(shopper, "Shopper details are mandatory");
+        Assert.notNull(shopper.getEmail(), "Shopper's e-mail is mandatory");
+        Assert.notNull(successURL, "Success URL is mandatory");
+        Assert.notNull(successURL, "Failure URL is mandatory");
+        Assert.notNull(successURL, "Cancel URL is mandatory");
 
         if (this.createTokenDetails != null)
         {
@@ -117,18 +120,36 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
         return redirectUrl;
     }
 
+    /**
+     * @param orderDetails Order details (mandatory)
+     * @return Current instance
+     */
     public PayPalPaymentRequest orderDetails(OrderDetails orderDetails)
     {
         this.orderDetails = orderDetails;
         return this;
     }
 
+    /**
+     * The shopper's e-mail address is required.
+     *
+     * @param shopper Shopper details (mandatory)
+     * @return Current instance
+     */
     public PayPalPaymentRequest shopper(Shopper shopper)
     {
         this.shopper = shopper;
         return this;
     }
 
+    /**
+     * Sets the success, cancel and failure URL to the same thing.
+     *
+     * These URLs are mandatory.
+     *
+     * @param resultURL The URL for all outcomes
+     * @return Current instance
+     */
     public PayPalPaymentRequest resultURL(String resultURL)
     {
         successURL(resultURL);
@@ -137,48 +158,83 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
         return this;
     }
 
+    /**
+     * @param successURL The URL to which the shopper is redirected for a successful payment (mandatory)
+     * @return Current instance
+     */
     public PayPalPaymentRequest successURL(String successURL)
     {
         this.successURL = successURL;
         return this;
     }
 
+    /**
+     * @param failureURL The URL to which the shopper is redirected for a failed payment (mandatory)
+     * @return Current instance
+     */
     public PayPalPaymentRequest failureURL(String failureURL)
     {
         this.failureURL = failureURL;
         return this;
     }
 
+    /**
+     * @param cancelURL The URL to which the shopper is redirected for a cancelled payment (mandatory)
+     * @return Current instance
+     */
     public PayPalPaymentRequest cancelURL(String cancelURL)
     {
         this.cancelURL = cancelURL;
         return this;
     }
 
+    /**
+     * @param billingAddress The shopper's billing address (optional)
+     * @return Current instance
+     */
     public PayPalPaymentRequest billingAddress(Address billingAddress)
     {
         this.billingAddress = billingAddress;
         return this;
     }
 
+    /**
+     * @param shippingAddress The shopper's shipping address (optional)
+     * @return Current instance
+     */
     public PayPalPaymentRequest shippingAddress(Address shippingAddress)
     {
         this.shippingAddress = shippingAddress;
         return this;
     }
 
+    /**
+     * Defaults to showing PayPal with English.
+     *
+     * @param language The language used for PayPal (optional)
+     * @return Current instance
+     */
     public PayPalPaymentRequest language(PayPalLanguage language)
     {
         this.languageCode = language.LANGUAGE_CODE;
         return this;
     }
 
+    /**
+     * @param languageCode The language used for PayPal (optional)
+     * @return Current instance
+     */
     public PayPalPaymentRequest language(String languageCode)
     {
         this.languageCode = languageCode;
         return this;
     }
 
+    /**
+     * Allows reoccurring PayPal payments using the same details.
+     * @param createTokenDetails Token details
+     * @return Current instance
+     */
     public PayPalPaymentRequest tokeniseForReoccurringPayments(CreateTokenDetails createTokenDetails)
     {
         this.createTokenDetails = createTokenDetails;
