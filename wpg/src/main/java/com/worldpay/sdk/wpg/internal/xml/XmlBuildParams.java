@@ -9,12 +9,14 @@ public class XmlBuildParams
     private final SessionContext sessionContext;
     private XmlBuilder xmlBuilder;
     private boolean batch;
+    private XmlService service;
 
-    public XmlBuildParams(GatewayContext gatewayContext, SessionContext sessionContext, XmlBuilder xmlBuilder, boolean batch)
+    public XmlBuildParams(GatewayContext gatewayContext, SessionContext sessionContext, XmlBuilder xmlBuilder, XmlService service, boolean batch)
     {
         this.gatewayContext = gatewayContext;
         this.sessionContext = sessionContext;
         this.xmlBuilder = xmlBuilder;
+        this.service = service;
         this.batch = batch;
     }
 
@@ -41,6 +43,11 @@ public class XmlBuildParams
     public boolean isBatch()
     {
         return batch;
+    }
+
+    public XmlService getService()
+    {
+        return service;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.request.modification.batchable;
+package com.worldpay.sdk.wpg.domain.modification;
 
 public enum ReferralAction
 {

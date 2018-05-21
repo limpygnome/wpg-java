@@ -3,10 +3,18 @@ package com.worldpay.sdk.wpg.integration;
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
+import com.worldpay.sdk.wpg.domain.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
+import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.ShopperBrowser;
+import com.worldpay.sdk.wpg.domain.payment.Amount;
+import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
+import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
+import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
 import com.worldpay.sdk.wpg.exception.WpgException;
+import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
 import com.worldpay.sdk.wpg.request.inquiry.OrderInquiryRequest;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
@@ -16,11 +24,24 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class BaseIntegrationTest
 {
     private static final Logger LOG = Logger.getLogger(BaseIntegrationTest.class.getName());
+
+    /**
+     * Maximum number of times to poll an order for its status / last event to change.
+     *
+     * This is only required due to replication or/and processing delay.
+     */
+    protected static final int ORDER_INQUIRY_ATTEMPTS = 40;
+
+    /**
+     * Milliseconds delay between order inquiry polling attempts.
+     */
+    protected static final int ORDER_INQUIRY_DELAY = 2500;
 
     protected static final String USER;
     protected static final String PASS;
@@ -49,7 +70,7 @@ public class BaseIntegrationTest
         Logger.getLogger("").info("Starting test...");
     }
 
-    protected LastEvent pollUntil(OrderDetails orderDetails, LastEvent expectedLastEvent, int maxAttempts) throws Exception
+    protected LastEvent pollUntil(OrderDetails orderDetails, LastEvent expectedLastEvent) throws Exception
     {
         boolean ready = false;
         int attempts = 0;
@@ -74,14 +95,18 @@ public class BaseIntegrationTest
             // Sleep until ready, probably replication delay...
             if (!ready)
             {
-                Thread.sleep(1000);
+                Thread.sleep(ORDER_INQUIRY_DELAY);
             }
         }
-        while (!ready && attempts < maxAttempts);
+        while (!ready && attempts++ < ORDER_INQUIRY_ATTEMPTS);
 
         if (result == null)
         {
             throw new IllegalStateException("Order not ready - unable to inquire status");
+        }
+        else if (!result.equals(expectedLastEvent))
+        {
+            throw new IllegalStateException("Order does not have expected last event - currently: " + result + ", expected: " + expectedLastEvent);
         }
 
         return result;
@@ -96,6 +121,19 @@ public class BaseIntegrationTest
 
         int statusCode = conn.getResponseCode();
         assertThat(statusCode, is(expectedStatusCode));
+    }
+
+    protected OrderDetails createGenericOrder() throws WpgException
+    {
+        OrderDetails orderDetails = new OrderDetails("threeds test order", new Amount(Currency.GBP, 2L, 1000L));
+
+        CardDetails cardDetails = new CardDetails("4444333322221129", 1L, 2030L, "test");
+        Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("accepts", "user agent"));
+        CardPaymentRequest request = new CardPaymentRequest(orderDetails, cardDetails, shopper);
+        PaymentResponse response = request.send(GATEWAY_CONTEXT);
+        assertEquals(PaymentStatus.PAYMENT_RESULT, response.getStatus());
+
+        return orderDetails;
     }
 
 }

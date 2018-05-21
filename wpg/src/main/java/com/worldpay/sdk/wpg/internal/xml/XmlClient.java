@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.internal.xml;
 
+import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.SessionContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
@@ -16,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.util.Base64;
@@ -28,24 +28,9 @@ import java.util.regex.Pattern;
 
 public class XmlClient
 {
-    private static final URL SANDBOX_URL;
-    private static final URL PRODUCTION_URL;
     private static final Pattern PAGE_ERROR_EXTRACTOR = Pattern.compile("(?:.+)<p>([^<]+)(?:.+)", Pattern.MULTILINE | Pattern.DOTALL);
 
     private static final Logger logger = Logger.getLogger(XmlClient.class.getName());
-
-    static
-    {
-        try
-        {
-            SANDBOX_URL = new URL("https://secure-test.worldpay.com/jsp/merchant/xml/paymentService.jsp");
-            PRODUCTION_URL = new URL("https://secure.worldpay.com/jsp/merchant/xml/paymentService.jsp");
-        }
-        catch (MalformedURLException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 
     public XmlResponse send(XmlBuildParams params)
             throws WpgRequestException, WpgConnectionException, WpgErrorResponseException
@@ -59,7 +44,8 @@ public class XmlClient
 
         try
         {
-            URL url = getUrl(gatewayContext);
+            Environment environment = gatewayContext.getEnvironment();
+            URL url = params.getService().getUrl(environment);
 
             // build request
             byte[] request = buildRequest(url, gatewayContext, sessionContext, builder);
@@ -81,7 +67,7 @@ public class XmlClient
             os.flush();
 
             // handle response
-            XmlResponse response = readResponse(connectionFactory, socket, sessionContext);
+            XmlResponse response = readResponse(connectionFactory, socket, sessionContext, params);
             return response;
         }
         catch (IOException e)
@@ -165,20 +151,7 @@ public class XmlClient
         }
     }
 
-    private URL getUrl(GatewayContext gatewayContext) throws WpgRequestException
-    {
-        switch (gatewayContext.getEnvironment())
-        {
-            case PRODUCTION:
-                return PRODUCTION_URL;
-            case SANDBOX:
-                return SANDBOX_URL;
-            default:
-                throw new WpgRequestException("Unknown environment for WPG - " + gatewayContext.getEnvironment());
-        }
-    }
-
-    private XmlResponse readResponse(ConnectionFactory connectionFactory, Socket socket, SessionContext sessionContext)
+    private XmlResponse readResponse(ConnectionFactory connectionFactory, Socket socket, SessionContext sessionContext, XmlBuildParams params)
             throws IOException, WpgRequestException, WpgErrorResponseException
     {
         // read raw response
@@ -231,7 +204,7 @@ public class XmlClient
             }
 
             // attempt to parse
-            XmlBuilder builder = XmlBuilder.parse(body);
+            XmlBuilder builder = XmlBuilder.parse(params.getService(), body);
             XmlResponse response = new XmlResponse(httpResponse, builder);
             return response;
         }

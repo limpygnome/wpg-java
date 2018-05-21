@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.request.modification.batchable;
 
+import com.worldpay.sdk.wpg.domain.modification.ReferralAction;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;

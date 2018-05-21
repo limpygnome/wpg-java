@@ -43,6 +43,12 @@ public class ClientsideEncryptedCardRequest extends XmlRequest<PaymentResponse> 
 
     public ClientsideEncryptedCardRequest() { }
 
+    public ClientsideEncryptedCardRequest(OrderDetails orderDetails, String encryptedData)
+    {
+        this.orderDetails = orderDetails;
+        this.encryptedData = encryptedData;
+    }
+
     public ClientsideEncryptedCardRequest(OrderDetails orderDetails, String encryptedData, Address cardHolderAddress, Shopper shopper)
     {
         this.orderDetails = orderDetails;

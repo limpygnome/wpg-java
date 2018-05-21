@@ -39,7 +39,7 @@ public class OrderInquiryRequestTest extends BaseIntegrationTest
     public void inquiry_asExpected() throws Exception
     {
         // Due to replication delay, poll until auth
-        pollUntil(orderDetails, LastEvent.AUTHORISED, 10);
+        pollUntil(orderDetails, LastEvent.AUTHORISED);
 
         // Check received as expected, but not in detail as tested elsewhere based on PM
         Payment payment = new OrderInquiryRequest(orderDetails).send(GATEWAY_CONTEXT);

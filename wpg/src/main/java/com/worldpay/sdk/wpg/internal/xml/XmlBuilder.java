@@ -34,25 +34,28 @@ import java.util.List;
 
 public class XmlBuilder
 {
+    private XmlService service;
     private Document document;
     private Element current;
 
-    private XmlBuilder() { }
-
-    private XmlBuilder(Document document, Element current)
+    private XmlBuilder(XmlService service, Document document, Element current)
     {
+        this.service = service;
         this.document = document;
         this.current = current;
     }
 
-    private XmlBuilder(String rootTagName)
+    public XmlBuilder(XmlService service)
     {
         try
         {
+            this.service = service;
+
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             document = builder.newDocument();
-            current = document.createElement(rootTagName);
+            current = document.createElement(service.XML_ROOT_ELEMENT);
+            current.setAttribute("version", service.VERSION);
             document.appendChild(current);
         }
         catch (ParserConfigurationException e)
@@ -266,7 +269,7 @@ public class XmlBuilder
         for (int i = 0; i < len; i++)
         {
             Node node = list.item(i);
-            XmlBuilder clone = new XmlBuilder(document, (Element) node);
+            XmlBuilder clone = new XmlBuilder(service, document, (Element) node);
             result.add(clone);
         }
         return result;
@@ -285,7 +288,7 @@ public class XmlBuilder
         if (list.getLength() > 0)
         {
             Node node = list.item(0);
-            result = new XmlBuilder(document, (Element) node);
+            result = new XmlBuilder(service, document, (Element) node);
         }
 
         return result;
@@ -301,7 +304,7 @@ public class XmlBuilder
 
             DOMImplementation domImplementation = document.getImplementation();
             DocumentType docType = domImplementation.createDocumentType(
-                    "doctype", "-//Worldpay//DTD Worldpay PaymentService v1//EN", "http://dtd.worldpay.com/paymentService_v1.dtd"
+                    "doctype", service.XML_DOCTYPE_PUBLIC_ID, service.XML_DOCTYPE_SYSTEM_ID
             );
 
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
@@ -321,11 +324,11 @@ public class XmlBuilder
         }
     }
 
-    public static XmlBuilder parse(String text) throws WpgMalformedXmlException
+    public static XmlBuilder parse(XmlService service, String text) throws WpgMalformedXmlException
     {
         try
         {
-            XmlBuilder xmlBuilder = new XmlBuilder();
+            XmlBuilder xmlBuilder = new XmlBuilder(service);
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -358,20 +361,6 @@ public class XmlBuilder
         {
             throw new WpgMalformedXmlException("Failed to parse response XML", e);
         }
-    }
-
-    public static XmlBuilder create()
-    {
-        XmlBuilder builder = new XmlBuilder("paymentService");
-        builder.a("version", "1.4");
-        return builder;
-    }
-
-    public static XmlBuilder createBatchService()
-    {
-        XmlBuilder builder = new XmlBuilder("batchService");
-        builder.a("version", "1.0");
-        return builder;
     }
 
     public String getPath()

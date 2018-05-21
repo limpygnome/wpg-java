@@ -1,9 +1,11 @@
 package com.worldpay.sdk.wpg.request.modification.batchable;
 
+import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -11,7 +13,9 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificati
 import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem;
 
 /**
- * Not yet supported.
+ * Captures a payment that is authorised.
+ *
+ * <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/modificationrequests.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/modificationrequests.htm</a>
  */
 public class CaptureOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
@@ -20,6 +24,14 @@ public class CaptureOrderRequest extends XmlRequest<Void> implements BatchModifi
     private Amount amount;
 
     public CaptureOrderRequest() { }
+
+    public CaptureOrderRequest(OrderDetails orderDetails, String reference, Amount amount)
+    {
+        Assert.notNull(orderDetails, "Order details cannot be null");
+        this.orderCode = orderDetails.getOrderCode();
+        this.reference = reference;
+        this.amount = amount;
+    }
 
     public CaptureOrderRequest(String orderCode, String reference, Amount amount)
     {

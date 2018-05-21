@@ -17,10 +17,12 @@ public class CseSerializer
         builder.e("encryptedData").cdata(encryptedData).up();
 
         // add cardholder address
-        builder.e("cardAddress");
-        AddressSerializer.decorateCurrentElement(params, cardHolderAddress);
-
-        builder.up();
+        if (cardHolderAddress != null)
+        {
+            builder.e("cardAddress");
+            AddressSerializer.decorateCurrentElement(params, cardHolderAddress);
+            builder.up();
+        }
 
         // reset to order element
         builder.up().up();

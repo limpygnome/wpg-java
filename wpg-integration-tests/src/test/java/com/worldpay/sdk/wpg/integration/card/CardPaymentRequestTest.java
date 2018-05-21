@@ -35,6 +35,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -113,9 +114,9 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         assertEquals("Description should state CVC was not provided", "NOT SENT TO ACQUIRER", cvcResult.getDescription());
 
         // check risk
-        // TODO enable risk score
         RiskScoreResult riskScoreResult = payment.getRiskScoreResult();
-        assertNull("Risk score not expected ", riskScoreResult);
+        assertNotNull("Risk score expected ", riskScoreResult);
+        assertThat(riskScoreResult.getValue(), is(1));
 
         // check results not expected
         assertNull(payment.getIso8583Result());

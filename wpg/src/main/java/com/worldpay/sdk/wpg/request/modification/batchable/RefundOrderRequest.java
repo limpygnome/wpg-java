@@ -1,16 +1,23 @@
 package com.worldpay.sdk.wpg.request.modification.batchable;
 
+import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificationSerializer;
 import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem;
 
 /**
- * Not yet supported.
+ * Refunds a payment.
+ *
+ * This can only be done after it has reached a CAPTURED status.
+ *
+ * <a href="http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/modificationrequests.htm">http://support.worldpay.com/support/kb/gg/corporate-gateway-guide/content/manage/modificationrequests.htm</a>
  */
 public class RefundOrderRequest extends XmlRequest<Void> implements BatchModificationItem
 {
@@ -19,6 +26,14 @@ public class RefundOrderRequest extends XmlRequest<Void> implements BatchModific
     private Amount amount;
 
     public RefundOrderRequest() { }
+
+    public RefundOrderRequest(OrderDetails orderDetails, String reference, Amount amount)
+    {
+        Assert.notNull(orderDetails, "Order details cannot be null");
+        this.orderCode = orderDetails.getOrderCode();
+        this.reference = reference;
+        this.amount = amount;
+    }
 
     public RefundOrderRequest(String orderCode, String reference, Amount amount)
     {
@@ -35,7 +50,8 @@ public class RefundOrderRequest extends XmlRequest<Void> implements BatchModific
     @Override
     protected void build(XmlBuildParams params)
     {
-        // TODO should never allow this
+        OrderModificationSerializer.decorateForRequest(params, orderCode);
+        OrderModificationSerializer.decorate(params, this);
     }
 
     @Override

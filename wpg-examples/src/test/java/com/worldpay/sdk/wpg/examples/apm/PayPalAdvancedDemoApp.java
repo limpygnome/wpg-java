@@ -13,6 +13,7 @@ import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
@@ -49,7 +50,7 @@ public class PayPalAdvancedDemoApp
                     .successURL("https://success")
                     .failureURL("https://failure")
                     .cancelURL("https://cancel")
-                    .languageCode("fr")
+                    .language(PayPalLanguage.FRENCH)
                     .send(gatewayContext);
 
             System.out.println(response.getUrl());

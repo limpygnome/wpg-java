@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.request.modification;
 
+import com.worldpay.sdk.wpg.builder.RandomIdentifier;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
@@ -8,6 +9,7 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.XmlService;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.BatchOrderModificationSerializer;
 import com.worldpay.sdk.wpg.request.modification.batchable.BatchModificationItem;
 
@@ -22,12 +24,14 @@ import java.util.UUID;
  */
 public class BatchModificationRequest extends XmlRequest<Void>
 {
+    private static final int BATCH_CODE_MAX_LENGTH = 25;
+
     private String batchCode;
     private List<BatchModificationItem> items;
 
     public BatchModificationRequest()
     {
-        this.batchCode = UUID.randomUUID().toString().replace("-", "");
+        this.batchCode = RandomIdentifier.generate(BATCH_CODE_MAX_LENGTH);
         this.items = new LinkedList<>();
     }
 
@@ -36,10 +40,13 @@ public class BatchModificationRequest extends XmlRequest<Void>
         this.items = items;
     }
 
-    public synchronized BatchModificationRequest add(BatchModificationItem item)
+    public synchronized BatchModificationRequest add(BatchModificationItem... items)
     {
         setupList();
-        items.add(item);
+        for (BatchModificationItem item : items)
+        {
+            this.items.add(item);
+        }
         return this;
     }
 
@@ -89,6 +96,12 @@ public class BatchModificationRequest extends XmlRequest<Void>
         }
 
         return null;
+    }
+
+    @Override
+    protected XmlService getService()
+    {
+        return XmlService.BATCH;
     }
 
     private void setupList()

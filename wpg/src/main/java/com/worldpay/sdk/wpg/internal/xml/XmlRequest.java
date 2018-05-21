@@ -25,8 +25,9 @@ public abstract class XmlRequest<T>
     public T send(GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException,
             WpgConnectionException, WpgErrorResponseException, WpgMalformedXmlException
     {
-        XmlBuilder builder = XmlBuilder.create();
-        XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder, isBatch());
+        XmlService service = getService();
+        XmlBuilder builder = new XmlBuilder(service);
+        XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder, service, isBatch());
 
         // validate and build request
         validate(params);
@@ -57,6 +58,11 @@ public abstract class XmlRequest<T>
     protected boolean isBatch()
     {
         return false;
+    }
+
+    protected XmlService getService()
+    {
+        return XmlService.PAYMENT;
     }
 
 }

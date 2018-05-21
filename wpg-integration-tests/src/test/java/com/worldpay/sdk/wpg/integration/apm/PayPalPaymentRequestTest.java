@@ -1,6 +1,5 @@
 package com.worldpay.sdk.wpg.integration.apm;
 
-import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;

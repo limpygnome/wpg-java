@@ -4,6 +4,7 @@ import com.worldpay.sdk.wpg.domain.notification.OrderNotification;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
+import com.worldpay.sdk.wpg.internal.xml.XmlService;
 import com.worldpay.sdk.wpg.internal.xml.adapter.OrderNotificationXmlAdapter;
 
 import java.io.BufferedReader;
@@ -42,7 +43,7 @@ public class XmlNotificationBuilder
     {
         try
         {
-            XmlBuilder builder = XmlBuilder.parse(xml);
+            XmlBuilder builder = XmlBuilder.parse(XmlService.PAYMENT, xml);
             OrderNotification notification = OrderNotificationXmlAdapter.orderNotification(builder);
             return notification;
         }

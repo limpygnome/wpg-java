@@ -21,7 +21,7 @@ public class BatchOrderModificationSerializer
         UserPassAuth auth = (UserPassAuth) params.gatewayContext().getAuth();
 
         // Create a new builder for batch service schema
-        XmlBuilder builder = XmlBuilder.createBatchService();
+        XmlBuilder builder = params.xmlBuilder();
         params.setBuilder(builder);
 
         // Add top-level attribs
@@ -122,7 +122,6 @@ public class BatchOrderModificationSerializer
         AmountSerializer.write(builder, request.getAmount());
         builder.up();
     }
-
 
 
 }

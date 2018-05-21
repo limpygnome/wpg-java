@@ -1,16 +1,14 @@
-package com.worldpay.sdk.wpg.integration.modification.nonbatchable;
+package com.worldpay.sdk.wpg.integration.modification.batchable;
 
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.integration.BaseIntegrationTest;
-import com.worldpay.sdk.wpg.request.modification.nonbatchable.CancelOrderRequest;
+import com.worldpay.sdk.wpg.request.modification.batchable.CancelOrRefundRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public class CancelOrderRequestTest extends BaseIntegrationTest
+public class CancelOrRefundRequestTest extends BaseIntegrationTest
 {
     private OrderDetails orderDetails;
 
@@ -21,11 +19,14 @@ public class CancelOrderRequestTest extends BaseIntegrationTest
     }
 
     @Test
-    public void cancel_asExpected() throws Exception
+    public void cancel() throws Exception
     {
-        // Send the request
-        new CancelOrderRequest(orderDetails.getOrderCode())
-            .send(GATEWAY_CONTEXT);
+        // Given
+        pollUntil(orderDetails, LastEvent.AUTHORISED);
+
+        // When
+        new CancelOrRefundRequest(orderDetails.getOrderCode())
+                .send(GATEWAY_CONTEXT);
 
         // Then
         pollUntil(orderDetails, LastEvent.CANCELLED);
