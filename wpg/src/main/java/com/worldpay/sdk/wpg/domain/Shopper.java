@@ -7,29 +7,52 @@ public class Shopper
     private ShopperBrowser browser;
     private String shopperId;
 
+    /**
+     * @param browser Browser; mandatory for 3ds
+     */
+    public Shopper(ShopperBrowser browser)
+    {
+        this(null, null, browser, null);
+    }
+
+    /**
+     * @param email E-mail; mandatory for some APMs
+     */
     public Shopper(String email)
     {
         this(email, null, null);
     }
 
-    public Shopper(String email, String ipAddress, ShopperBrowser browser)
+    /**
+     * @param email Email; mandatory for some APMs
+     * @param shopperId Shopper ID; mandatory for shopper tokens
+     */
+    public Shopper(String email, String shopperId)
     {
-        this.email = email;
-        this.ipAddress = ipAddress;
-        this.browser = browser;
+        this(email, null, null, shopperId);
     }
 
+    /**
+     * @param email E-mail; mandatory for some APMs
+     * @param ipAddress IP address; optional but may impact risk management
+     * @param browser
+     */
+    public Shopper(String email, String ipAddress, ShopperBrowser browser)
+    {
+        this(email, ipAddress, browser, null);
+    }
+
+    /**
+     * @param email E-mail; mandatory for some APMs
+     * @param ipAddress IP address; optional, but may impact risk management
+     * @param browser Shopper's browser; required for 3ds
+     * @param shopperId Shopper ID; mandatory for shopper tokens
+     */
     public Shopper(String email, String ipAddress, ShopperBrowser browser, String shopperId)
     {
         this.email = email;
         this.ipAddress = ipAddress;
         this.browser = browser;
-        this.shopperId = shopperId;
-    }
-
-    public Shopper(String email, String shopperId)
-    {
-        this.email = email;
         this.shopperId = shopperId;
     }
 

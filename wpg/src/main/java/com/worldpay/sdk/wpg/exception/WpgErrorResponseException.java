@@ -2,6 +2,9 @@ package com.worldpay.sdk.wpg.exception;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 
+/**
+ * Thrown whe nthe WPG gateway returns an error response.
+ */
 public class WpgErrorResponseException extends WpgException
 {
     private final long gatewayErrorCode;

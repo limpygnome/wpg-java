@@ -49,4 +49,33 @@ public class ThreeDsDetails
         return new ThreeDsRedirectBuilder(this);
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ThreeDsDetails that = (ThreeDsDetails) o;
+
+        if (issuerURL != null ? !issuerURL.equals(that.issuerURL) : that.issuerURL != null) return false;
+        return paRequest != null ? paRequest.equals(that.paRequest) : that.paRequest == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = issuerURL != null ? issuerURL.hashCode() : 0;
+        result = 31 * result + (paRequest != null ? paRequest.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ThreeDsDetails{" +
+                "issuerURL='" + issuerURL + '\'' +
+                ", paRequest='" + paRequest + '\'' +
+                '}';
+    }
+
 }

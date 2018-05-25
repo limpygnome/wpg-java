@@ -17,7 +17,7 @@ public class DeleteTokenSerializer
         String reason = request.getReason();
 
         builder.e("modify")
-                .e("paymentTokenDelete").a("scope", scope)
+                .e("paymentTokenDelete").a("tokenScope", scope)
                 .e("paymentTokenID").cdata(request.getPaymentTokenId()).up();
 
         if (shopperId != null)

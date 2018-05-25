@@ -163,6 +163,52 @@ public class Payment
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Payment payment = (Payment) o;
+
+        if (paymentMethod != payment.paymentMethod) return false;
+        if (amount != null ? !amount.equals(payment.amount) : payment.amount != null) return false;
+        if (lastEvent != payment.lastEvent) return false;
+        if (balance != null ? !balance.equals(payment.balance) : payment.balance != null) return false;
+        if (cardDetails != null ? !cardDetails.equals(payment.cardDetails) : payment.cardDetails != null) return false;
+        if (payoutAuthorisationResult != null ? !payoutAuthorisationResult.equals(payment.payoutAuthorisationResult) : payment.payoutAuthorisationResult != null)
+            return false;
+        if (iso8583Result != null ? !iso8583Result.equals(payment.iso8583Result) : payment.iso8583Result != null)
+            return false;
+        if (threeDSecureResult != null ? !threeDSecureResult.equals(payment.threeDSecureResult) : payment.threeDSecureResult != null)
+            return false;
+        if (avsResult != null ? !avsResult.equals(payment.avsResult) : payment.avsResult != null) return false;
+        if (cvcResult != null ? !cvcResult.equals(payment.cvcResult) : payment.cvcResult != null) return false;
+        if (avvResult != null ? !avvResult.equals(payment.avvResult) : payment.avvResult != null) return false;
+        if (riskScoreResult != null ? !riskScoreResult.equals(payment.riskScoreResult) : payment.riskScoreResult != null)
+            return false;
+        return token != null ? token.equals(payment.token) : payment.token == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = paymentMethod != null ? paymentMethod.hashCode() : 0;
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (lastEvent != null ? lastEvent.hashCode() : 0);
+        result = 31 * result + (balance != null ? balance.hashCode() : 0);
+        result = 31 * result + (cardDetails != null ? cardDetails.hashCode() : 0);
+        result = 31 * result + (payoutAuthorisationResult != null ? payoutAuthorisationResult.hashCode() : 0);
+        result = 31 * result + (iso8583Result != null ? iso8583Result.hashCode() : 0);
+        result = 31 * result + (threeDSecureResult != null ? threeDSecureResult.hashCode() : 0);
+        result = 31 * result + (avsResult != null ? avsResult.hashCode() : 0);
+        result = 31 * result + (cvcResult != null ? cvcResult.hashCode() : 0);
+        result = 31 * result + (avvResult != null ? avvResult.hashCode() : 0);
+        result = 31 * result + (riskScoreResult != null ? riskScoreResult.hashCode() : 0);
+        result = 31 * result + (token != null ? token.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "Payment{" +

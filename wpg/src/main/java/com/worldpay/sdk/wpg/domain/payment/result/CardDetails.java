@@ -90,6 +90,42 @@ public class CardDetails
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CardDetails that = (CardDetails) o;
+
+        if (maskedCardNumber != null ? !maskedCardNumber.equals(that.maskedCardNumber) : that.maskedCardNumber != null)
+            return false;
+        if (hashedCardNumber != null ? !hashedCardNumber.equals(that.hashedCardNumber) : that.hashedCardNumber != null)
+            return false;
+        if (expiryMonth != null ? !expiryMonth.equals(that.expiryMonth) : that.expiryMonth != null) return false;
+        if (expiryYear != null ? !expiryYear.equals(that.expiryYear) : that.expiryYear != null) return false;
+        if (issuerCountryCode != null ? !issuerCountryCode.equals(that.issuerCountryCode) : that.issuerCountryCode != null)
+            return false;
+        if (issuerName != null ? !issuerName.equals(that.issuerName) : that.issuerName != null) return false;
+        if (cardHolderName != null ? !cardHolderName.equals(that.cardHolderName) : that.cardHolderName != null)
+            return false;
+        return type == that.type;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = maskedCardNumber != null ? maskedCardNumber.hashCode() : 0;
+        result = 31 * result + (hashedCardNumber != null ? hashedCardNumber.hashCode() : 0);
+        result = 31 * result + (expiryMonth != null ? expiryMonth.hashCode() : 0);
+        result = 31 * result + (expiryYear != null ? expiryYear.hashCode() : 0);
+        result = 31 * result + (issuerCountryCode != null ? issuerCountryCode.hashCode() : 0);
+        result = 31 * result + (issuerName != null ? issuerName.hashCode() : 0);
+        result = 31 * result + (cardHolderName != null ? cardHolderName.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "CardDetails{" +

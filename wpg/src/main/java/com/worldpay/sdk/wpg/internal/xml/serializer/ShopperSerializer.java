@@ -17,12 +17,10 @@ public class ShopperSerializer
             builder.e("shopper");
 
             // Append details
-            if (shopper.getEmail() == null)
+            if (shopper.getEmail() != null)
             {
-                throw new IllegalArgumentException("Shopper e-mail address is mandatory");
+                builder.e("shopperEmailAddress").cdata(shopper.getEmail()).up();
             }
-
-            builder.e("shopperEmailAddress").cdata(shopper.getEmail()).up();
 
             if (shopper.getShopperId() != null)
             {

@@ -23,6 +23,23 @@ public class PayoutAuthorisationResult
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PayoutAuthorisationResult that = (PayoutAuthorisationResult) o;
+
+        return authorisationId != null ? authorisationId.equals(that.authorisationId) : that.authorisationId == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return authorisationId != null ? authorisationId.hashCode() : 0;
+    }
+
+    @Override
     public String toString()
     {
         return "PayoutAuthorisationResult{" +

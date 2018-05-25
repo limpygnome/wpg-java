@@ -1193,8 +1193,9 @@ Example of a request3DSecure message:
 <!ELEMENT BOLETO-HTML (cpf, firstName?, lastName?)>
 
 <!-- Payment token elements -->
-<!ELEMENT TOKEN-SSL (paymentTokenID, paymentInstrument? )>
+<!ELEMENT TOKEN-SSL ((paymentTokenID, paymentInstrument?) | (cvc, session))>
 <!ATTLIST TOKEN-SSL tokenScope (shopper | merchant) 'shopper'>
+<!ATTLIST TOKEN-SSL captureCvc (true | false) 'false'>
 <!ELEMENT paymentInstrument (cardDetails | paypal | sepa | emvcoTokenDetails)>
 <!ELEMENT cardDetails (cardNumber?, expiryDate?, cardHolderName?, cvc?, cardAddress?, derived?, encryptedPAN?)>
 <!ELEMENT paypal (#PCDATA)>

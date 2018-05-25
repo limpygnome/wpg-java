@@ -5,6 +5,7 @@ import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
@@ -16,11 +17,16 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.tokenisation.DeleteTokenSeri
  */
 public class DeleteTokenRequest extends XmlRequest<Void>
 {
+    // Mandatory
     private String paymentTokenId;
+    private TokenScope scope;
+
+    // Partially mandatory
     private String shopperId;
+
+    // Optional
     private String eventReference;
     private String reason;
-    private TokenScope scope;
 
     /**
      * Sets up a request for a merchant token.
@@ -43,6 +49,7 @@ public class DeleteTokenRequest extends XmlRequest<Void>
     {
         this.paymentTokenId = paymentTokenId;
         this.shopperId = shopperId;
+        this.scope = (shopperId != null ? TokenScope.SHOPPER : TokenScope.MERCHANT);
     }
 
     public DeleteTokenRequest(String paymentTokenId, String shopperId, String eventReference, String reason, TokenScope scope)
@@ -57,6 +64,13 @@ public class DeleteTokenRequest extends XmlRequest<Void>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(paymentTokenId, "Payment token ID is mandatory");
+        Assert.notNull(scope, "Token scope is mandatory");
+
+        if (scope == TokenScope.SHOPPER)
+        {
+            Assert.notEmpty(shopperId, "Shopper ID is mandatory for shopper tokens");
+        }
     }
 
     @Override

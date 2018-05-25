@@ -1,5 +1,8 @@
 package com.worldpay.sdk.wpg.exception;
 
+/**
+ * THrown when a request cannot be sent to the WPG gateway.
+ */
 public class WpgRequestException extends WpgException
 {
 

@@ -14,9 +14,15 @@ public class TokenPaymentSerializer
         String scope = request.getScope().name().toLowerCase();
 
         builder.e("paymentDetails")
-                .e("TOKEN-SSL").a("tokenScope", scope);
+                .e("TOKEN-SSL")
+                    .a("tokenScope", scope);
 
-        builder.e("paymentTokenId").cdata(request.getPaymentTokenId()).up();
+        if (request.isCaptureCvc())
+        {
+            builder.a("captureCvc", "true");
+        }
+
+        builder.e("paymentTokenID").cdata(request.getPaymentTokenId()).up();
 
         // reset to order element
         builder.up().up();

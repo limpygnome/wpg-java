@@ -17,7 +17,7 @@ public class FetchTokenSerializer
         String paymentTokenId = request.getPaymentTokenId();
 
         builder.e("inquiry")
-                .e("paymentTokenInquiry").a("scope", scope);
+                .e("paymentTokenInquiry").a("tokenScope", scope);
 
         if (shopperId != null)
         {
@@ -33,7 +33,8 @@ public class FetchTokenSerializer
 
         String shopperId = request.getShopperId();
 
-        builder.e("shopperTokenRetrieval")
+        builder.e("inquiry")
+                .e("shopperTokenRetrieval")
                 .e("authenticatedShopperID").cdata(shopperId).up();
     }
 

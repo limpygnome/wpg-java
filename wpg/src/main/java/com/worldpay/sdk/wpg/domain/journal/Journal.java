@@ -55,6 +55,35 @@ public class Journal
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Journal journal = (Journal) o;
+
+        if (bookingDate != null ? !bookingDate.equals(journal.bookingDate) : journal.bookingDate != null) return false;
+        if (type != null ? !type.equals(journal.type) : journal.type != null) return false;
+        if (sent != null ? !sent.equals(journal.sent) : journal.sent != null) return false;
+        if (transactions != null ? !transactions.equals(journal.transactions) : journal.transactions != null)
+            return false;
+        if (references != null ? !references.equals(journal.references) : journal.references != null) return false;
+        return typeDetails != null ? typeDetails.equals(journal.typeDetails) : journal.typeDetails == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = bookingDate != null ? bookingDate.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (sent != null ? sent.hashCode() : 0);
+        result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
+        result = 31 * result + (references != null ? references.hashCode() : 0);
+        result = 31 * result + (typeDetails != null ? typeDetails.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "Journal{" +

@@ -56,7 +56,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
             OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
             Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
-            CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123");
+            CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123");
 
             // when
             new CardPaymentRequest()
@@ -80,7 +80,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123");
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123");
 
         PaymentResponse response = new CardPaymentRequest()
                 .orderDetails(orderDetails)
@@ -132,7 +132,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name");
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
 
         PaymentResponse response = new CardPaymentRequest()
                 .orderDetails(orderDetails)
@@ -155,7 +155,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name");
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
 
         Address billingAddress = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
         Address shippingAddress = new Address("987 test address", "blah", "4321", Country.GREAT_BRITAIN);
@@ -179,7 +179,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), "shopper123");
 
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name");
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
         cardDetails.setCardHolderAddress(new Address("test", "test", "123 test street", "testridge", null, "test123", "testridge", null, Country.GREAT_BRITAIN, "01234567890"));
 
         final TokenScope tokenScope = TokenScope.SHOPPER;
@@ -253,7 +253,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         // No shopper ID present as not needed; other details only needed for 3ds
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
-        CardDetails cardDetails = new CardDetails("4929930199830280", 1, 2020, "Cardholder name");
+        CardDetails cardDetails = new CardDetails("4929930199830280", 1L, 2020L, "Cardholder name");
         cardDetails.setCardHolderAddress(new Address("test", "test", "123 test street", "testridge", null, "test123", "testridge", null, Country.GREAT_BRITAIN, "01234567890"));
 
         final TokenScope tokenScope = TokenScope.MERCHANT;
@@ -326,7 +326,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), shopperId);
 
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name");
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
         Address billingAddress = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
         Address shippingAddress = new Address("987 test address", "blah", "4321", Country.GREAT_BRITAIN);
 

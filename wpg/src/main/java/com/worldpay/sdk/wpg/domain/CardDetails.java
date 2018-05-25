@@ -5,14 +5,14 @@ import com.worldpay.sdk.wpg.internal.logging.CardObfuscator;
 public class CardDetails
 {
     private String cardNumber;
-    private long expiryMonth;
-    private long expiryYear;
+    private Long expiryMonth;
+    private Long expiryYear;
     private String cardHolderName;
     private String cvc;
     private Address cardHolderAddress;
     private String encryptedCardNumber;
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName)
+    public CardDetails(String cardNumber, Long expiryMonth, Long expiryYear, String cardHolderName)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -20,7 +20,7 @@ public class CardDetails
         this.cardHolderName = cardHolderName;
     }
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, String cvc)
+    public CardDetails(String cardNumber, Long expiryMonth, Long expiryYear, String cardHolderName, String cvc)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -29,7 +29,7 @@ public class CardDetails
         this.cvc = cvc;
     }
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, String cvc, Address cardHolderAddress)
+    public CardDetails(String cardNumber, Long expiryMonth, Long expiryYear, String cardHolderName, String cvc, Address cardHolderAddress)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -39,7 +39,7 @@ public class CardDetails
         this.cardHolderAddress = cardHolderAddress;
     }
 
-    public CardDetails(String cardNumber, long expiryMonth, long expiryYear, String cardHolderName, String cvc, Address cardHolderAddress, String encryptedCardNumber)
+    public CardDetails(String cardNumber, Long expiryMonth, Long expiryYear, String cardHolderName, String cvc, Address cardHolderAddress, String encryptedCardNumber)
     {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -60,22 +60,22 @@ public class CardDetails
         this.cardNumber = cardNumber;
     }
 
-    public long getExpiryMonth()
+    public Long getExpiryMonth()
     {
         return expiryMonth;
     }
 
-    public void setExpiryMonth(long expiryMonth)
+    public void setExpiryMonth(Long expiryMonth)
     {
         this.expiryMonth = expiryMonth;
     }
 
-    public long getExpiryYear()
+    public Long getExpiryYear()
     {
         return expiryYear;
     }
 
-    public void setExpiryYear(long expiryYear)
+    public void setExpiryYear(Long expiryYear)
     {
         this.expiryYear = expiryYear;
     }
@@ -121,6 +121,38 @@ public class CardDetails
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CardDetails that = (CardDetails) o;
+
+        if (cardNumber != null ? !cardNumber.equals(that.cardNumber) : that.cardNumber != null) return false;
+        if (expiryMonth != null ? !expiryMonth.equals(that.expiryMonth) : that.expiryMonth != null) return false;
+        if (expiryYear != null ? !expiryYear.equals(that.expiryYear) : that.expiryYear != null) return false;
+        if (cardHolderName != null ? !cardHolderName.equals(that.cardHolderName) : that.cardHolderName != null)
+            return false;
+        if (cvc != null ? !cvc.equals(that.cvc) : that.cvc != null) return false;
+        if (cardHolderAddress != null ? !cardHolderAddress.equals(that.cardHolderAddress) : that.cardHolderAddress != null)
+            return false;
+        return encryptedCardNumber != null ? encryptedCardNumber.equals(that.encryptedCardNumber) : that.encryptedCardNumber == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = cardNumber != null ? cardNumber.hashCode() : 0;
+        result = 31 * result + (expiryMonth != null ? expiryMonth.hashCode() : 0);
+        result = 31 * result + (expiryYear != null ? expiryYear.hashCode() : 0);
+        result = 31 * result + (cardHolderName != null ? cardHolderName.hashCode() : 0);
+        result = 31 * result + (cvc != null ? cvc.hashCode() : 0);
+        result = 31 * result + (cardHolderAddress != null ? cardHolderAddress.hashCode() : 0);
+        result = 31 * result + (encryptedCardNumber != null ? encryptedCardNumber.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "CardDetails{" +
@@ -133,4 +165,5 @@ public class CardDetails
                 ", encryptedCardNumber='" + encryptedCardNumber + '\'' +
                 '}';
     }
+
 }

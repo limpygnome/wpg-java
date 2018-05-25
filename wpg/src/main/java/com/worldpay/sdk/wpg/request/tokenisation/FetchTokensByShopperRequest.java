@@ -4,6 +4,7 @@ import com.worldpay.sdk.wpg.domain.tokenisation.Token;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -29,6 +30,7 @@ public class FetchTokensByShopperRequest extends XmlRequest<List<Token>>
     @Override
     protected void validate(XmlBuildParams params)
     {
+        Assert.notEmpty(shopperId, "Shopper ID is mandatory");
     }
 
     @Override

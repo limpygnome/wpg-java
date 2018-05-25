@@ -61,12 +61,25 @@ public class CardDetailsSerializer
         String cardHolderName = builder.getCdata("cardHolderName");
         String cvc = builder.getCdata("cvc");
         String encryptedPAN = builder.getCdata("encryptedPAN");
+        Long expiryMonth = null;
+        Long expiryYear = null;
 
-        builder.e("expiryDate");
-        builder.e("date");
-        long expiryMonth = builder.aToLong("month");
-        long expiryYear = builder.aToLong("year");
-        builder.up().up();
+        if (builder.hasE("expiryDate"))
+        {
+            if (builder.hasE("date"))
+            {
+                try
+                {
+                    expiryMonth = Long.parseLong(builder.a("month"));
+                    expiryYear = Long.parseLong(builder.a("year"));
+                }
+                catch (NumberFormatException | NullPointerException e)
+                {
+                }
+                builder.up();
+            }
+            builder.up();
+        }
 
         Address cardHolderAddress = null;
         if (builder.hasE("cardAddress"))
@@ -75,8 +88,20 @@ public class CardDetailsSerializer
             builder.up();
         }
 
-        CardDetails result = new CardDetails(
-                cardNumber, expiryMonth, expiryYear, cardHolderName, cvc, cardHolderAddress, encryptedPAN);
+        /*
+            Only return results if we actually parsed something; tokenisation returns an empty instance, with empty date.
+            Thus we don't want to give merchants an empty object.
+         */
+
+        boolean hasDetails = (cardNumber != null || cardHolderName != null || cvc != null || encryptedPAN != null || cardHolderAddress != null);
+        hasDetails |= (expiryMonth != null && expiryYear != null);
+
+        CardDetails result = null;
+        if (hasDetails)
+        {
+            result = new CardDetails(
+                    cardNumber, expiryMonth, expiryYear, cardHolderName, cvc, cardHolderAddress, encryptedPAN);
+        }
 
         return result;
     }

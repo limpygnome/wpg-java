@@ -16,9 +16,29 @@ public class CvcResult
         this.description = description;
     }
 
+    /**
+     * @return The result; refer to XML docs
+     */
     public String getDescription()
     {
         return description;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CvcResult cvcResult = (CvcResult) o;
+
+        return description != null ? description.equals(cvcResult.description) : cvcResult.description == null;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return description != null ? description.hashCode() : 0;
     }
 
     @Override
