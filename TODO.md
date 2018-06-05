@@ -1,6 +1,7 @@
 in progress:
-- tokenisation
-- populate currency and language with more values, ensure value can fall back to string
+- update examples
+- refactor modules to be called sdk, rather than wpg
+- add locale to hpp builder
 - unit tests
 - make it so sessionctx doesnt need to be passed-in for threeds
     - store it in objects
@@ -9,9 +10,6 @@ in progress:
 - amount -> need response / domain class, since credit/debit is only on result
 
 long-term:
-- strict validation
-- full unit test coverage
-- enforce final on classes, people will otherwise try to override parts of classes with hacks
 - proxy support for connections
 - whether java 1.7 should be supported
 

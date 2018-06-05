@@ -22,6 +22,7 @@ import com.worldpay.sdk.wpg.domain.tokenisation.Token;
 public class Payment
 {
     private final PaymentMethod paymentMethod;
+    private final String paymentMethodMask;
     private final Amount amount;
     private final LastEvent lastEvent;
     private final Balance balance;
@@ -36,13 +37,14 @@ public class Payment
     private final RiskScoreResult riskScoreResult;
     private final Token token;
 
-    public Payment(PaymentMethod paymentMethod, Amount amount, LastEvent lastEvent, Balance balance,
+    public Payment(PaymentMethod paymentMethod, String paymentMethodMask, Amount amount, LastEvent lastEvent, Balance balance,
                    CardDetails cardDetails, PayoutAuthorisationResult payoutAuthorisationResult,
                    ISO8583Result iso8583Result, ThreeDSecureResult threeDSecureResult, AvsResult avsResult,
                    CvcResult cvcResult, AvvResult avvResult, RiskScoreResult riskScoreResult,
                    Token token)
     {
         this.paymentMethod = paymentMethod;
+        this.paymentMethodMask = paymentMethodMask;
         this.amount = amount;
         this.lastEvent = lastEvent;
         this.balance = balance;
@@ -58,11 +60,23 @@ public class Payment
     }
 
     /**
-     * @return Payment method used
+     * When a card child brand, e.g. VISA_CREDIT, is used, this will return VISA instead.
+     *
+     * @return Payment method used; may be null when unknown by the SDK
      */
     public PaymentMethod getPaymentMethod()
     {
         return paymentMethod;
+    }
+
+    /**
+     * This is the name of the payment method used by the gateway.
+     *
+     * @return Payment method used (raw gateway mask)
+     */
+    public String getPaymentMethodMask()
+    {
+        return paymentMethodMask;
     }
 
     /**

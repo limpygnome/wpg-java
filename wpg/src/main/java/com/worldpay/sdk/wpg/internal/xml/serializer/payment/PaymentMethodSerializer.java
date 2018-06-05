@@ -1,6 +1,7 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer.payment;
 
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
+import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTranslator;
 
 public class PaymentMethodSerializer
 {
@@ -12,30 +13,26 @@ public class PaymentMethodSerializer
             throw new NullPointerException("Payment method mask is null");
         }
 
-        PaymentMethod method = null;
+        // Attempt to find payment method
+        PaymentMethod paymentMethod = PaymentMethodTranslator.getPaymentMethod(paymentMethodMask);
 
-        switch (paymentMethodMask)
+        // Wipe out child brand if not found (cards only)
+        if (paymentMethodMask.startsWith("VISA_") ||
+                paymentMethodMask.startsWith("ECMC_") ||
+                paymentMethodMask.startsWith("AMEX_") ||
+                paymentMethodMask.startsWith("DINERS_") ||
+                paymentMethodMask.startsWith("CB_") ||
+                paymentMethodMask.startsWith("CARTEBLEUE_") ||
+                paymentMethodMask.startsWith("DANKORT_") ||
+                paymentMethodMask.startsWith("DISCOVER_") ||
+                paymentMethodMask.startsWith("JCB_") ||
+                paymentMethodMask.startsWith("TROY_"))
         {
-            case "VISA-SSL":
-                method = PaymentMethod.VISA;
-                break;
-            case "VISA_CREDIT-SSL":
-                method = PaymentMethod.VISA_CREDIT;
-                break;
-            case "ECMC-SSL":
-                method = PaymentMethod.MASTERCARD;
-                break;
-            case "PAYPAL-SSL":
-                method = PaymentMethod.PAYPAL;
-                break;
+            String parentBrandMask = paymentMethodMask.substring(0, paymentMethodMask.indexOf('_')) + "-SSL";
+            paymentMethod = PaymentMethodTranslator.getPaymentMethod(parentBrandMask);
         }
 
-        if (method == null)
-        {
-            throw new IllegalStateException("Unknown payment method mask '" + paymentMethodMask + "'");
-        }
-
-        return method;
+        return paymentMethod;
     }
 
 }

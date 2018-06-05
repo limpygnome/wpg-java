@@ -32,7 +32,7 @@ public class PaymentSerializer
 {
     public static Payment read(XmlBuilder builder) throws WpgRequestException
     {
-        // payment method
+        // payment method (can be null when unknown)
         String paymentMethodMask = builder.getCdata("paymentMethod");
         PaymentMethod paymentMethod = PaymentMethodSerializer.convert(paymentMethodMask);
 
@@ -62,7 +62,7 @@ public class PaymentSerializer
 
         // wrap it all up
         Payment payment = new Payment(
-                paymentMethod, amount, lastEvent, balance, cardDetails, payoutAuthorisationResult,
+                paymentMethod, paymentMethodMask, amount, lastEvent, balance, cardDetails, payoutAuthorisationResult,
                 iso8583Result, threeDSecureResult, avsResult, cvcResult, avvResult, riskScoreResult, token
         );
         return payment;

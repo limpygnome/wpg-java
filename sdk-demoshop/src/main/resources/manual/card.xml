@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE paymentService PUBLIC "-//WorldPay//DTD WorldPay PaymentService v1//EN"
+        "http://dtd.worldpay.com/paymentService_v1.dtd">
+<paymentService version="1.4" merchantCode="#MERCHANT_CODE#">
+    <submit>
+        <order orderCode="#ORDER_CODE#">
+            <amount currencyCode="#CURRENCY#" exponent="2" value="#AMOUNT#"/>
+            <paymentDetails>
+                <VISA-SSL>
+                    <cardNumber>#CARD_NUMBER#</cardNumber>
+                    <expiryDate>
+                        <date month="#CARD_EXPIRY_MONTH#" year="#CARD_EXPIRY_YEAR#"/>
+                    </expiryDate>
+                    <cardHolderName>#CARDHOLDER_NAME#</cardHolderName>
+                    <cvc>#CVC#</cvc>
+                </VISA-SSL>
+                <session shopperIPAddress="#SHOPPER_IP#" id="#SESSION_ID#" />
+            </paymentDetails>
+            <shopper>
+                <shopperEmailAddress>#SHOPPER_EMAIL#</shopperEmailAddress>
+                <authenticatedShopperID>#SHOPPER_ID#</authenticatedShopperID>
+                <browser>
+                    <acceptHeader>#ACCEPTS_HEADER#</acceptHeader>
+                    <userAgentHeader>#USERAGENT#</userAgentHeader>
+                </browser>
+            </shopper>
+        </order>
+    </submit>
+</paymentService>

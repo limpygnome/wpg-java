@@ -5,7 +5,6 @@ import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
-import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
@@ -101,7 +100,8 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
 
         // check payment method
         PaymentMethod paymentMethod = payment.getPaymentMethod();
-        assertEquals("Payment method should be VISA-CREDIT", PaymentMethod.VISA_CREDIT, paymentMethod);
+        assertEquals("Payment method should be VISA", PaymentMethod.VISA, paymentMethod);
+        assertEquals("Payment method mask should be VISA_CREDIT", "VISA_CREDIT-SSL", payment.getPaymentMethodMask());
 
         // check balance
         Balance balance = payment.getBalance();
@@ -157,8 +157,8 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
 
-        Address billingAddress = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
-        Address shippingAddress = new Address("987 test address", "blah", "4321", Country.GREAT_BRITAIN);
+        Address billingAddress = new Address("123 test address", "blah", "1234", "GB");
+        Address shippingAddress = new Address("987 test address", "blah", "4321", "GB");
 
         PaymentResponse response = new CardPaymentRequest()
                 .orderDetails(orderDetails)
@@ -180,7 +180,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), "shopper123");
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
-        cardDetails.setCardHolderAddress(new Address("test", "test", "123 test street", "testridge", null, "test123", "testridge", null, Country.GREAT_BRITAIN, "01234567890"));
+        cardDetails.setCardHolderAddress(new Address("test", "test", "123 test street", "testridge", null, "test123", "testridge", null, "GB", "01234567890"));
 
         final TokenScope tokenScope = TokenScope.SHOPPER;
         final String eventReference = "EVENT123";
@@ -254,7 +254,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         CardDetails cardDetails = new CardDetails("4929930199830280", 1L, 2020L, "Cardholder name");
-        cardDetails.setCardHolderAddress(new Address("test", "test", "123 test street", "testridge", null, "test123", "testridge", null, Country.GREAT_BRITAIN, "01234567890"));
+        cardDetails.setCardHolderAddress(new Address("test", "test", "123 test street", "testridge", null, "test123", "testridge", null, "GB", "01234567890"));
 
         final TokenScope tokenScope = TokenScope.MERCHANT;
         final String eventReference = "EVENT123";
@@ -327,8 +327,8 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), shopperId);
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
-        Address billingAddress = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
-        Address shippingAddress = new Address("987 test address", "blah", "4321", Country.GREAT_BRITAIN);
+        Address billingAddress = new Address("123 test address", "blah", "1234", "GB");
+        Address shippingAddress = new Address("987 test address", "blah", "4321", "GB");
 
         CreateTokenDetails tokenDetails = new CreateTokenDetails("TEST123", "test");
 

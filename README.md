@@ -8,4 +8,6 @@ Java 1.8 or above.
 - [Examples](wpg-examples)
 
 ## Documentation
+- [Getting Started](docs/getting-started.md)
 - [JavaDoc](docs/javadoc/index.html)
+- [SDK Development](docs/development.md)

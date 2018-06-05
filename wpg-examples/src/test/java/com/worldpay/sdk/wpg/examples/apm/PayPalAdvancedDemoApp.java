@@ -10,7 +10,6 @@ import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.Auth;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
@@ -36,7 +35,7 @@ public class PayPalAdvancedDemoApp
         Amount amount = new Amount(Currency.GBP, 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
 
-        Address address = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
+        Address address = new Address("123 test address", "blah", "1234", "GB");
         Shopper shopper = new Shopper("test@test.com");
 
         try

@@ -2,6 +2,7 @@ package com.worldpay.sdk.wpg.internal.xml.serializer;
 
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
+import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTranslator;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
@@ -63,24 +64,9 @@ public class PaymentMethodMaskSerializer
     {
         for (PaymentMethod paymentMethod : list)
         {
-            String mask = getLegacyPaymentMethodMask(paymentMethod);
+            String mask = PaymentMethodTranslator.getMask(paymentMethod);
             builder.e(elementName, true).a("code", mask)
                     .up();
-        }
-    }
-
-    private static String getLegacyPaymentMethodMask(PaymentMethod paymentMethod)
-    {
-        switch (paymentMethod)
-        {
-            case VISA:
-                return "VISA-SSL";
-            case MASTERCARD:
-                return "ECMC-SSL";
-            case PAYPAL:
-                return "PAYPAL-EXPRESS";
-            default:
-                throw new IllegalArgumentException("Payment method " + paymentMethod.name() + " not supported");
         }
     }
 

@@ -1,7 +1,6 @@
 package com.worldpay.sdk.wpg.integration.apm;
 
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
@@ -103,8 +102,8 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
                 .orderDetails(orderDetails)
                 .shopper(shopper)
                 .resultURL(resultURL)
-                .billingAddress(new Address("123 billing address", "billing", "1234", Country.GREAT_BRITAIN))
-                .shippingAddress(new Address("123 shipping address", "shipping", "1234", Country.GREAT_BRITAIN))
+                .billingAddress(new Address("123 billing address", "billing", "1234", "GB"))
+                .shippingAddress(new Address("123 shipping address", "shipping", "1234", "GB"))
                 .send(GATEWAY_CONTEXT);
 
         // Then

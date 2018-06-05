@@ -6,7 +6,6 @@ import com.worldpay.sdk.wpg.connection.auth.Auth;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
-import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
@@ -37,11 +36,11 @@ public class CardAdvancedDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-        Address address = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
+        Address address = new Address("123 test address", "blah", "1234", "GB");
         Shopper shopper = new Shopper("test@test.com");
 
         // build card details
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123");
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123");
 
         try
         {

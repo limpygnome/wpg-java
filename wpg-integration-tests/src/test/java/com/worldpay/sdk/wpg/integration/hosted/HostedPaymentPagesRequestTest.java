@@ -1,7 +1,5 @@
 package com.worldpay.sdk.wpg.integration.hosted;
 
-import com.worldpay.sdk.wpg.domain.Country;
-import com.worldpay.sdk.wpg.domain.Language;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
@@ -11,7 +9,6 @@ import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.integration.BaseIntegrationTest;
 import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -108,43 +105,11 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
         givenOrder();
 
         String url = redirectUrl.paymentPages()
-                .country(Country.GREAT_BRITAIN)
+                .country("GB")
                 .language("en")
                 .build();
 
         assertStatusCode(url, 200);
-    }
-
-    @Test
-    public void orderUrl_allCountries() throws IOException, WpgException
-    {
-        givenOrder();
-
-        // TODO consider making parameitised
-        for (Country country : Country.values())
-        {
-            String url = redirectUrl.paymentPages()
-                    .country(country)
-                    .build();
-
-            assertStatusCode(url, 200);
-        }
-    }
-
-    @Test
-    public void orderUrl_allLanguages() throws IOException, WpgException
-    {
-        givenOrder();
-
-        // TODO consider making parameitised
-        for (Language language : Language.values())
-        {
-            String url = redirectUrl.paymentPages()
-                    .language(language)
-                    .build();
-
-            assertStatusCode(url, 200);
-        }
     }
 
     @Test

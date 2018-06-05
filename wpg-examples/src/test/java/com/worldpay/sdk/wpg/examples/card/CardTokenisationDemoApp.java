@@ -5,7 +5,6 @@ import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
-import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
@@ -34,7 +33,7 @@ public class CardTokenisationDemoApp
         // build order details
         Amount amount = new Amount(Currency.GBP, 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
-        Address address = new Address("123 test address", "blah", "1234", Country.GREAT_BRITAIN);
+        Address address = new Address("123 test address", "blah", "1234", "GB");
 
         // provide a (unique) shopper identifier, and details for token
         ShopperBrowser browser = new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36");
@@ -42,7 +41,7 @@ public class CardTokenisationDemoApp
         CreateTokenDetails tokenDetails = new CreateTokenDetails("TOKEN_EVENT_1234", "monthly subscription");
 
         // build card details
-        CardDetails cardDetails = new CardDetails("4444333322221111", 1, 2020, "Cardholder name", "123", address);
+        CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123", address);
 
         try
         {

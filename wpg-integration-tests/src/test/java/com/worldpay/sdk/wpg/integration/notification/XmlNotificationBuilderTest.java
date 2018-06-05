@@ -64,7 +64,7 @@ public class XmlNotificationBuilderTest
 
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);
-        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA_CREDIT));
+        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA));
         assertThat(payment.getAmount().getCurrency(), is(Currency.EUR));
         assertThat(payment.getAmount().getExponent(), is(2L));
         assertThat(payment.getAmount().getValue(), is(2400L));

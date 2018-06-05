@@ -1,17 +1,15 @@
 package com.worldpay.sdk.wpg.builder;
 
-import com.worldpay.sdk.wpg.domain.Country;
-import com.worldpay.sdk.wpg.domain.Language;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTranslator;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
 
-// TODO validation on setters
-// TODO testing
+/**
+ * Appends extra parameters to a Hosted Payment Pages (HPP) redirect URL to customise the shopper's flow.
+ */
 public final class PaymentPagesRedirectBuilder
 {
     private static final String ENCODING_CHARSET = "UTF-8";
@@ -27,6 +25,11 @@ public final class PaymentPagesRedirectBuilder
     private String country;
     private String language;
 
+    /**
+     * Creates a new builder.
+     *
+     * @param orderUrl The HPP redirect URL
+     */
     public PaymentPagesRedirectBuilder(String orderUrl)
     {
         this.orderUrl = orderUrl;
@@ -60,15 +63,15 @@ public final class PaymentPagesRedirectBuilder
             }
             if (preferredPaymentMethod != null)
             {
-                builder.append("&preferredPaymentMethod=").append(URLEncoder.encode(preferredPaymentMethod, ENCODING_CHARSET));
+                builder.append("&preferredPaymentMethod=").append(URLEncoder.encode(preferredPaymentMethod.toLowerCase(), ENCODING_CHARSET));
             }
             if (country != null)
             {
-                builder.append("&country=").append(URLEncoder.encode(country, ENCODING_CHARSET));
+                builder.append("&country=").append(URLEncoder.encode(country.toLowerCase(), ENCODING_CHARSET));
             }
             if (language != null)
             {
-                builder.append("&language=").append(URLEncoder.encode(language, ENCODING_CHARSET));
+                builder.append("&language=").append(URLEncoder.encode(language.toLowerCase(), ENCODING_CHARSET));
             }
 
             String url = builder.toString();
@@ -80,42 +83,73 @@ public final class PaymentPagesRedirectBuilder
         }
     }
 
+    /**
+     * The shopper is redirected to the specified URL when the payment authorisation is successful.
+     *
+     * @param successUrl The URL
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder successUrl(String successUrl)
     {
         this.successUrl = successUrl;
         return this;
     }
 
-    public PaymentPagesRedirectBuilder successUrl(URL successUrl)
-    {
-        successUrl(successUrl.toString());
-        return this;
-    }
-
+    /**
+     * The shopper is redirected to the specified URL when the payment authorisation is pending.
+     *
+     * @param pendingUrl The URL
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder pendingUrl(String pendingUrl)
     {
         this.pendingUrl = pendingUrl;
         return this;
     }
 
+    /**
+     * The shopper is redirected to the specified URL when the payment authorisation fails.
+     *
+     * @param failureUrl The URL
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder failureUrl(String failureUrl)
     {
         this.failureUrl = failureUrl;
         return this;
     }
 
+    /**
+     * The shopper is redirected to the specified URL when an error occurs on the payment pages.
+     *
+     * @param errorUrl The URL
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder errorUrl(String errorUrl)
     {
         this.errorUrl = errorUrl;
         return this;
     }
 
+    /**
+     * The shopper is redirected to the specified URL when they cancel the payment / want to return back to the
+     * merchant's site.
+     *
+     * @param cancelUrl The URL
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder cancelUrl(String cancelUrl)
     {
         this.cancelUrl = cancelUrl;
         return this;
     }
 
+    /**
+     * The shopper is redirected to the specified URL for all flows (success, failure, pending, error and cancel).
+     *
+     * @param url The URL
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder allUrls(String url)
     {
         successUrl(url);
@@ -126,36 +160,76 @@ public final class PaymentPagesRedirectBuilder
         return this;
     }
 
+    /**
+     * The preferred payment method to be chosen when visiting the payment pages.
+     *
+     * Otherwise:
+     * = When only card payment methods are available, the cards page is shown.
+     * = When cards and APMs are available, a payment selection page is shown.
+     *
+     * @param paymentMethod The payment method
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder preferredPaymentMethod(PaymentMethod paymentMethod)
     {
         this.preferredPaymentMethod = PaymentMethodTranslator.getMask(paymentMethod);
         return this;
     }
 
-    public PaymentPagesRedirectBuilder language(Language language)
+    /**
+     * The preferred payment method to be chosen when visiting the payment pages.
+     *
+     * Otherwise:
+     * = When only card payment methods are available, the cards page is shown.
+     * = When cards and APMs are available, a payment selection page is shown.
+     *
+     * This method has been added in the event new payment methods have been added to the payment pages, but not
+     * to the SDK.
+     *
+     * @param paymentMethodMask The payment method mask, known by the gateway
+     * @return Current instance
+     */
+    public PaymentPagesRedirectBuilder preferredPaymentMethod(String paymentMethodMask)
     {
-        this.language = language.ISO639_1_2_LANGUAGE_CODE;
+        this.preferredPaymentMethod = paymentMethodMask;
         return this;
     }
 
-    public PaymentPagesRedirectBuilder language(String language)
+    /**
+     * The language in which the payment pages are shown.
+     *
+     * @param languageCode The ISO 639-1 (two character) language code
+     * @return Current instance
+     */
+    public PaymentPagesRedirectBuilder language(String languageCode)
     {
-        this.language = language;
+        this.language = languageCode;
         return this;
     }
 
-    public PaymentPagesRedirectBuilder country(Country country)
+    /**
+     * The country in which the shopper resides or/and can make their payment.
+     *
+     * This impacts the available payment methods, which may be important for legal reasons.
+     *
+     * @param countryCode ISO 3166-1 (two character) country code
+     * @return Current instance
+     */
+    public PaymentPagesRedirectBuilder country(String countryCode)
     {
-        this.country = country.ISO3166_1_ALPHA_2_COUNTRY_CODE;
+        this.country = countryCode;
         return this;
     }
 
-    public PaymentPagesRedirectBuilder country(String country)
-    {
-        this.country = country;
-        return this;
-    }
-
+    /**
+     * Sets both language and country based on locale.
+     *
+     * @see {@link #language(String)}
+     * @see {@link #country(String)}
+     *
+     * @param locale The locale
+     * @return Current instance
+     */
     public PaymentPagesRedirectBuilder languageAndCountry(Locale locale)
     {
         this.language = locale.getLanguage();

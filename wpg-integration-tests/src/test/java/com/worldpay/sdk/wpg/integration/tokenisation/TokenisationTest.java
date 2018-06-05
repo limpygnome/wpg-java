@@ -2,7 +2,6 @@ package com.worldpay.sdk.wpg.integration.tokenisation;
 
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.CardDetails;
-import com.worldpay.sdk.wpg.domain.Country;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
@@ -57,7 +56,7 @@ public class TokenisationTest extends BaseIntegrationTest
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
         OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
-        Address address = new Address("address 1", "city", "post code", Country.GREAT_BRITAIN);
+        Address address = new Address("address 1", "city", "post code", "GB");
 
         // When
         TokenisationPaymentResponse response = new TokenPaymentRequest(
@@ -102,7 +101,7 @@ public class TokenisationTest extends BaseIntegrationTest
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
         OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
-        Address address = new Address("address 1", "city", "post code", Country.GREAT_BRITAIN);
+        Address address = new Address("address 1", "city", "post code", "GB");
 
         // When
         TokenisationPaymentResponse response = new TokenPaymentRequest(
@@ -116,7 +115,7 @@ public class TokenisationTest extends BaseIntegrationTest
 
         Payment payment = response.getPaymentResponse().getPayment();
         assertNotNull(payment);
-        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA_CREDIT));
+        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA));
         assertThat(payment.getLastEvent(), is(LastEvent.AUTHORISED));
     }
 
@@ -142,7 +141,7 @@ public class TokenisationTest extends BaseIntegrationTest
 
         Payment payment = response.getPaymentResponse().getPayment();
         assertNotNull(payment);
-        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA_CREDIT));
+        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA));
         assertThat(payment.getLastEvent(), is(LastEvent.AUTHORISED));
     }
 
