@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +7,4 @@ import { Component, AfterViewChecked } from '@angular/core';
 })
 export class AppComponent
 {
-
-    ngAfterViewChecked()
-    {
-        //Prism.highlightAll();
-    }
-
 }

@@ -1,23 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { PayModule } from './pay/pay.module';
 
 import { AppComponent } from './app.component';
-import { PrismComponent } from './code/prism.component';
-import { PayByCardComponent } from './code/payByCard.component';
-
 
 @NgModule({
     declarations:
     [
-        AppComponent,
-        PrismComponent,
-        PayByCardComponent
+        AppComponent
     ],
     imports:
     [
         BrowserModule,
-        HttpClientModule
+        HttpClientModule,
+        PayModule
     ],
     providers: [],
     bootstrap: [AppComponent]

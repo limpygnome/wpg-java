@@ -1,0 +1,71 @@
+<orderDetails [orderDetailsForm]="orderDetailsForm"></orderDetails>
+
+<div class="card mt-4 mb-4">
+    <h5 class="card-header">
+        Payment Method
+    </h5>
+    <div class="card-body">
+
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">
+                    <span class="icon icon-credit-card"></span>
+                    Pay by Card
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="icon icon-credit-card"></span>
+                    Pay using Token
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="icon icon-newspaper"></span>
+                    Pay by HPP
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="icon icon-paypal"></span>
+                    Pay by PayPal
+                </a>
+            </li>
+        </ul>
+
+        <payByCard *ngIf="payType == 'card'" [orderDetailsForm]="orderDetailsForm"></payByCard>
+
+    </div>
+</div>
+
+<div class="text-center">
+    <button class="btn btn-primary mb-4" (click)="toggleCode(codeElement)" #codeElement>
+        <span class="icon icon-embed2"></span>
+        <span *ngIf="!showCode">
+            See the code
+        </span>
+        <span *ngIf="showCode">
+            Hide code
+        </span>
+    </button>
+</div>
+
+<div class="card mb-4" [ngClass]="{'d-none' : !showCode}">
+    <h5 class="card-header">
+        Code
+    </h5>
+    <div class="card-body">
+
+        <p>
+            <button class="btn" [ngClass]="{'btn-primary' : code == 'java-sdk'}" (click)="viewCode('java-sdk')">
+                Java SDK
+            </button>
+            <button class="btn" [ngClass]="{'btn-primary' : code == 'nonsdk'}" (click)="viewCode('nonsdk')">
+                Without SDK
+            </button>
+        </p>
+
+        <codePayByCard *ngIf="payType == 'card' || payType == 'card-token'" [code]="code"></codePayByCard>
+
+    </div>
+</div>

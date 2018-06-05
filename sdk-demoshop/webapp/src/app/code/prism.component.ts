@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, AfterViewChecked, ElementRef, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import 'prismjs';
@@ -12,23 +12,24 @@ declare var Prism: any;
 
 @Component({
   selector: 'prism',
-  template: '<pre class="line-numbers"><code #codeRef class="language-java" [innerHTML]="content"></code></pre>',
+  template: '<pre class="line-numbers"><code #codeRef class="language-{{language}}" [innerHTML]="content"></code></pre>',
   styles: ['pre.line-numbers { padding-left: 3.8em !important; }']
 })
 export class PrismComponent implements AfterViewInit, AfterViewChecked
 {
-    @ViewChild("codeRef") codeRef: ElementRef;
+    @Input("path") path: string;
+
+    @Input("language") language: string = "java";
+
     content: string;
 
     constructor(private elementRef: ElementRef, private http: HttpClient) { }
 
     ngAfterViewInit()
     {
-        this.http.get("/assets/code/payByCard-sdk.txt", {responseType: 'text'}).subscribe(data => {
-            //this.content = Prism.highlight(data, Prism.languages["java"]);
-            this.content = data;
-            //Prism.highlightElement(this.codeRef.nativeElement, true);
-            //Prism.highlightAll();
+        this.http.get(this.path, {responseType: 'text'}).subscribe(data => {
+            this.content = data.replace(/</g, "&lt;")
+                               .replace(/>/g, "&gt;");
         });
     }
 
