@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { PayService } from './pay.service'
 
 declare var PaymentRequest: any;
 
@@ -21,33 +21,20 @@ export class PayByCardComponent
         expiryMonth: ["12", Validators.required],
         expiryYear: ["2022", Validators.required],
         cvc: ["123", Validators.required],
-        tokenise: ["true", Validators.required]
+        tokenise: [true, Validators.required]
     });
 
     constructor(
         public fb: FormBuilder,
-        private http: HttpClient
+        private payService: PayService
     ) {}
 
     pay()
     {
         if (this.orderDetailsForm.valid && this.cardDetailsForm.valid)
         {
-            // TODO move into service
-            // Combine into one object for request
-            var orderDetailsForm = this.orderDetailsForm.value;
-            var cardDetailsForm = this.cardDetailsForm.value;
-
-            var request = {
-                orderDetails: orderDetailsForm,
-                cardDetails: cardDetailsForm
-            };
-
-            // Disable form
             this.loading.emit();
-
-            // Make request
-            this.http.post("http://localhost:8080/pay/card", request)
+            this.payService.payByCard(this.orderDetailsForm, this.cardDetailsForm)
                 .subscribe(
                     data => this.reply.emit(data),
                     error => this.reply.emit({ "error": error.message })
@@ -90,7 +77,7 @@ export class PayByCardComponent
                 expiryMonth: response.details.expiryMonth,
                 expiryYear: response.details.expiryYear
             });
-        );
+        });
     }
 
 }

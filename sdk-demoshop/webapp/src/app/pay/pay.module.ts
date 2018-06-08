@@ -9,6 +9,9 @@ import { CodeModule } from './../code/code.module';
 import { OrderDetailsComponent } from './orderDetails.component';
 import { PayComponent } from './pay.component';
 import { PayByCardComponent } from './payByCard.component';
+import { PayByTokenComponent } from './payByToken.component';
+
+import { PayService } from './pay.service'
 
 @NgModule({
     imports:
@@ -22,14 +25,16 @@ import { PayByCardComponent } from './payByCard.component';
     [
         OrderDetailsComponent,
         PayComponent,
-        PayByCardComponent
+        PayByCardComponent,
+        PayByTokenComponent
     ],
     exports:
     [
         OrderDetailsComponent,
         PayComponent,
-        PayByCardComponent
+        PayByCardComponent,
+        PayByTokenComponent
     ],
-    providers: []
+    providers: [PayService]
 })
 export class PayModule { }

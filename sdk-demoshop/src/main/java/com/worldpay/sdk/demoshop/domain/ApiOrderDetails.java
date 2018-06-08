@@ -13,6 +13,7 @@ public class ApiOrderDetails
     private String countryCode;
     private String userAgent;
     private String browserAccepts;
+    private String ipAddress;
 
     public ApiOrderDetails()
     {
@@ -127,6 +128,16 @@ public class ApiOrderDetails
     public void setBrowserAccepts(String browserAccepts)
     {
         this.browserAccepts = browserAccepts;
+    }
+
+    public String getIpAddress()
+    {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress)
+    {
+        this.ipAddress = ipAddress;
     }
 
 }

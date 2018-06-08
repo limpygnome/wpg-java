@@ -41,10 +41,22 @@ public class TokenPaymentRequest extends XmlRequest<TokenisationPaymentResponse>
     private boolean captureCvc;
 
     /**
-     * Defaults the scope to {@link TokenScope#MERCHANT}.
+     * Creates a new request.
      *
-     * @param paymentTokenId
-     * @param orderDetails
+     * Defaults the scope to {@link TokenScope#SHOPPER} and capture CVC to false.
+     */
+    public TokenPaymentRequest()
+    {
+        this(null, TokenScope.SHOPPER, null, null, null, null, false);
+    }
+
+    /**
+     * Creates a new request.
+     *
+     * Defaults the scope to {@link TokenScope#MERCHANT} and capture CVC to false.
+     *
+     * @param paymentTokenId token identifier from previous payment
+     * @param orderDetails order details
      */
     public TokenPaymentRequest(String paymentTokenId, OrderDetails orderDetails)
     {
@@ -52,22 +64,42 @@ public class TokenPaymentRequest extends XmlRequest<TokenisationPaymentResponse>
     }
 
     /**
-     * Defaults the scope to {@link TokenScope#SHOPPER}.
+     * Defaults the scope to {@link TokenScope#SHOPPER} and capture CVC to false.
      *
-     * @param paymentTokenId
-     * @param orderDetails
-     * @param shopper
+     * @param paymentTokenId token identifier from previous payment
+     * @param orderDetails order details
+     * @param shopper shopper details
      */
     public TokenPaymentRequest(String paymentTokenId, OrderDetails orderDetails, Shopper shopper)
     {
         this(paymentTokenId, TokenScope.SHOPPER, orderDetails, shopper, null, null, false);
     }
 
+    /**
+     * Creates a new request.
+     *
+     * @param paymentTokenId token identifier from previous payment
+     * @param scope scope of token
+     * @param orderDetails order details
+     * @param shopper shopper details
+     * @param captureCvc indicates whether to redirect to our Worldpay payment pages to capture CVC
+     */
     public TokenPaymentRequest(String paymentTokenId, TokenScope scope, OrderDetails orderDetails, Shopper shopper, boolean captureCvc)
     {
         this(paymentTokenId, scope, orderDetails, shopper, null, null, captureCvc);
     }
 
+    /**
+     * Creates a new request.
+     *
+     * @param paymentTokenId token identifier from previous payment
+     * @param scope scope of token
+     * @param orderDetails order details
+     * @param shopper shopper details
+     * @param billingAddress billing address
+     * @param shippingAddress shipping address
+     * @param captureCvc indicates whether to redirect to our Worldpay payment pages to capture CVC
+     */
     public TokenPaymentRequest(String paymentTokenId, TokenScope scope, OrderDetails orderDetails, Shopper shopper, Address billingAddress, Address shippingAddress, boolean captureCvc)
     {
         this.paymentTokenId = paymentTokenId;

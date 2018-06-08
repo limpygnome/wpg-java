@@ -1,0 +1,38 @@
+<form [formGroup]="tokenDetailsForm" #form="ngForm">
+
+    <div class="form-group row">
+        <label for="tokenId" class="col-sm-2 col-form-label">
+            Token ID
+        </label>
+        <div class="col-sm-10">
+            <input type="text"
+                   id="tokenId"
+                   name="tokenId"
+                   placeholder="Enter the token ID from original payment"
+                   class="form-control"
+                   formControlName="tokenId"
+                   [(ngModel)]="tokenDetailsForm.value['tokenId']"
+            />
+        </div>
+    </div>
+
+    <div class="custom-control custom-checkbox mb-3">
+        <input type="checkbox"
+               class="custom-control-input"
+               id="captureCvc"
+               name="captureCvc"
+               formControlName="captureCvc"
+               [(ngModel)]="tokenDetailsForm.value['captureCvc']"
+        />
+        <label class="custom-control-label" for="captureCvc">
+            Capture CVC (using HPP)
+        </label>
+    </div>
+
+    <p class="text-center">
+        <button class="btn btn-primary" (click)="pay()">
+            Pay
+        </button>
+    </p>
+
+</form>

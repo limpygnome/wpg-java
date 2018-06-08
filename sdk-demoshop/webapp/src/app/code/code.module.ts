@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { PrismComponent } from './prism.component';
 import { PayByCardComponent } from './payByCard.component';
+import { PayByTokenComponent } from './payByToken.component';
 
 @NgModule({
     imports:
@@ -15,12 +16,14 @@ import { PayByCardComponent } from './payByCard.component';
     declarations:
     [
         PrismComponent,
-        PayByCardComponent
+        PayByCardComponent,
+        PayByTokenComponent
     ],
     exports:
     [
         PrismComponent,
-        PayByCardComponent
+        PayByCardComponent,
+        PayByTokenComponent
     ],
     providers: []
 })

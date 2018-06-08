@@ -7,14 +7,9 @@
             <description>#DESCRIPTION#</description>
             <amount currencyCode="#CURRENCY#" exponent="2" value="#AMOUNT#"/>
             <paymentDetails>
-                <VISA-SSL>
-                    <cardNumber>#CARD_NUMBER#</cardNumber>
-                    <expiryDate>
-                        <date month="#CARD_EXPIRY_MONTH#" year="#CARD_EXPIRY_YEAR#"/>
-                    </expiryDate>
-                    <cardHolderName>#CARDHOLDER_NAME#</cardHolderName>
-                    <cvc>#CVC#</cvc>
-                </VISA-SSL>
+                <TOKEN-SSL tokenScope="#TOKEN_SCOPE#" captureCvc="#CAPTURE_CVC#">
+                    <paymentTokenID>#TOKEN_ID#</paymentTokenID>
+                </TOKEN-SSL>
                 <session shopperIPAddress="#SHOPPER_IP#" id="#SESSION_ID#" />
             </paymentDetails>
             <shopper>

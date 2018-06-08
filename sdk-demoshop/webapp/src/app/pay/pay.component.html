@@ -9,25 +9,25 @@
 
             <ul class="nav nav-tabs mb-4">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">
+                    <a class="nav-link" href="#" (click)="payType='card'" [ngClass]="{'active' : payType == 'card'}">
                         <span class="icon icon-credit-card"></span>
                         Pay by Card
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" (click)="payType='token'" [ngClass]="{'active' : payType == 'token'}">
                         <span class="icon icon-credit-card"></span>
                         Pay using Token
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" (click)="payType='hpp'" [ngClass]="{'active' : payType == 'hpp'}">
                         <span class="icon icon-newspaper"></span>
                         Pay by HPP
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" (click)="payType='paypal'" [ngClass]="{'active' : payType == 'card'}">
                         <span class="icon icon-paypal"></span>
                         Pay by PayPal
                     </a>
@@ -35,6 +35,7 @@
             </ul>
 
             <payByCard *ngIf="payType == 'card'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByCard>
+            <payByToken *ngIf="payType == 'token'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByToken>
 
         </div>
     </div>
@@ -61,6 +62,12 @@
     </p>
     <p>
         <textarea *ngIf="data != null && data.paymentResponse != null" class="form-control" cols="100" rows="100" #paymentResponse>{{ data.paymentResponse | json }}</textarea>
+    </p>
+    <p *ngIf="data != null && data.redirect != null" class="text-center">
+        <a class="btn btn-lg btn-primary" href="{{ data.redirect }}" target="_blank">
+            <span class="icon icon-new-tab"></span>
+            Continue Payment in New Window
+        </a>
     </p>
 </div>
 
@@ -91,7 +98,8 @@
             </button>
         </p>
 
-        <codePayByCard *ngIf="payType == 'card' || payType == 'card-token'" [code]="code"></codePayByCard>
+        <codePayByCard *ngIf="payType == 'card'" [code]="code"></codePayByCard>
+        <codePayByToken *ngIf="payType == 'token'" [code]="code"></codePayByToken>
 
     </div>
 </div>

@@ -2,6 +2,7 @@ package com.worldpay.sdk.demoshop.api.controller;
 
 import com.worldpay.sdk.demoshop.api.model.ApiResult;
 import com.worldpay.sdk.demoshop.api.model.PayByCardRequest;
+import com.worldpay.sdk.demoshop.api.model.PayByTokenRequest;
 import com.worldpay.sdk.demoshop.domain.ApiOrderDetails;
 import com.worldpay.sdk.demoshop.service.SdkService;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
@@ -24,26 +25,15 @@ public class PayController
     @PostMapping("/card")
     public ApiResult payByCard(HttpServletRequest servletRequest, @RequestBody PayByCardRequest request)
     {
-        ApiResult result;
-
-        populateBrowserDetails(servletRequest, request.getOrderDetails());
-
-        try
-        {
-            PaymentResponse paymentResponse = sdkService.pay(request.getOrderDetails(), request.getCardDetails());
-            result = new ApiResult(paymentResponse, null, null);
-        }
-        catch (WpgException e)
-        {
-            result = new ApiResult(null, null, e.getMessage());
-        }
-
+        ApiResult result = sdkService.pay(request.getOrderDetails(), request.getCardDetails());
         return result;
     }
 
     @PostMapping("/token")
-    public void payUsingToken()
+    public ApiResult payUsingToken(HttpServletRequest servletRequest, @RequestBody PayByTokenRequest request)
     {
+        ApiResult result = sdkService.pay(request.getOrderDetails(), request.getTokenDetails());
+        return result;
     }
 
     @PostMapping("/hpp")
@@ -59,9 +49,11 @@ public class PayController
     private void populateBrowserDetails(HttpServletRequest servletRequest, ApiOrderDetails apiOrderDetails)
     {
         String accepts = servletRequest.getHeader("Accepts");
-        apiOrderDetails.setBrowserAccepts(accepts);
         String userAgent = servletRequest.getHeader("User-Agent");
+        String ipAddress = servletRequest.getRemoteAddr();
+        apiOrderDetails.setBrowserAccepts(accepts);
         apiOrderDetails.setUserAgent(userAgent);
+        apiOrderDetails.setIpAddress(ipAddress);
     }
 
 }

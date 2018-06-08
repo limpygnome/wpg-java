@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { PayService } from './pay.service'
 
 import * as $ from 'jquery';
 
