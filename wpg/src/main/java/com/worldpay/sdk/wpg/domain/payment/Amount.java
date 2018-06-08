@@ -9,18 +9,17 @@ public class Amount
 
     public Amount(Currency currency, long exponent, long value)
     {
-        this.currency = currency.ISO4217_CURRENCY_CODE;
-        this.exponent = exponent;
-        this.value = value;
-        this.debitCreditIndicator = null;
+        this(currency.ISO4217_CURRENCY_CODE, exponent, value, null);
     }
 
     public Amount(Currency currency, long exponent, long value, DebitCreditIndicator debitCreditIndicator)
     {
-        this.currency = currency.ISO4217_CURRENCY_CODE;
-        this.exponent = exponent;
-        this.value = value;
-        this.debitCreditIndicator = debitCreditIndicator;
+        this(currency.ISO4217_CURRENCY_CODE, exponent, value, debitCreditIndicator);
+    }
+
+    public Amount(String currency, long exponent, long value)
+    {
+        this(currency, exponent, value, null);
     }
 
     public Amount(String currency, long exponent, long value, DebitCreditIndicator debitCreditIndicator)

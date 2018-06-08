@@ -20,10 +20,11 @@ public class UserPassAuth implements Auth
 
     public UserPassAuth(String user, String pass, String merchantCode, String installationId)
     {
-        this.user = user;
-        this.pass = pass;
-        this.merchantCode = merchantCode;
-        this.installationId = installationId;
+        // Installation is optional
+        if (installationId != null && installationId.isEmpty())
+        {
+            installationId = null;
+        }
 
         // Validate
         if (user == null || user.length() == 0)
@@ -38,10 +39,16 @@ public class UserPassAuth implements Auth
         {
             throw new IllegalArgumentException("Merchant code is mandatory");
         }
-        else if (installationId != null && installationId.length() == 0)
+        else if (installationId != null && !installationId.matches("^[0-9]+$"))
         {
-            throw new IllegalArgumentException("Installation (id) cannot be an empty string, it must be null or a value");
+            throw new IllegalArgumentException("Installation (id) expected to be a numeric ID / value");
         }
+
+        // Setup
+        this.user = user;
+        this.pass = pass;
+        this.merchantCode = merchantCode;
+        this.installationId = installationId;
     }
 
     public String getUser()

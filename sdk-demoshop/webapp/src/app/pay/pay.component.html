@@ -1,55 +1,81 @@
-<orderDetails [orderDetailsForm]="orderDetailsForm"></orderDetails>
+<div [ngClass]="{'d-none' : isFormDone()}">
+    <orderDetails [orderDetailsForm]="orderDetailsForm"></orderDetails>
 
-<div class="card mt-4 mb-4">
-    <h5 class="card-header">
-        Payment Method
-    </h5>
-    <div class="card-body">
+    <div class="card mt-4 mb-4">
+        <h5 class="card-header">
+            Payment Method
+        </h5>
+        <div class="card-body">
 
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">
-                    <span class="icon icon-credit-card"></span>
-                    Pay by Card
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span class="icon icon-credit-card"></span>
-                    Pay using Token
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span class="icon icon-newspaper"></span>
-                    Pay by HPP
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <span class="icon icon-paypal"></span>
-                    Pay by PayPal
-                </a>
-            </li>
-        </ul>
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <span class="icon icon-credit-card"></span>
+                        Pay by Card
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon icon-credit-card"></span>
+                        Pay using Token
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon icon-newspaper"></span>
+                        Pay by HPP
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon icon-paypal"></span>
+                        Pay by PayPal
+                    </a>
+                </li>
+            </ul>
 
-        <payByCard *ngIf="payType == 'card'" [orderDetailsForm]="orderDetailsForm"></payByCard>
+            <payByCard *ngIf="payType == 'card'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByCard>
 
+        </div>
     </div>
+
 </div>
+
+<div class="text-center" *ngIf="loading">
+    <p class="text-center">
+        <span class="icon icon-spinner9 spin"></span>
+    </p>
+    <p>
+        Making request
+    </p>
+</div>
+
+<div [ngClass]="{'d-none' : data == null}" #response>
+    <p class="text-center">
+        <button class="btn btn-primary" (click)="reset()">
+            Back
+        </button>
+    </p>
+    <p *ngIf="data != null && data.error != null" class="alert alert-danger">
+        {{ data.error }}
+    </p>
+    <p>
+        <textarea *ngIf="data != null && data.paymentResponse != null" class="form-control" cols="100" rows="100" #paymentResponse>{{ data.paymentResponse | json }}</textarea>
+    </p>
+</div>
+
 
 <div class="text-center">
     <button class="btn btn-primary mb-4" (click)="toggleCode(codeElement)" #codeElement>
         <span class="icon icon-embed2"></span>
         <span *ngIf="!showCode">
-            See the code
-        </span>
+                See the code
+            </span>
         <span *ngIf="showCode">
-            Hide code
-        </span>
+                Hide code
+            </span>
     </button>
 </div>
-
 <div class="card mb-4" [ngClass]="{'d-none' : !showCode}">
     <h5 class="card-header">
         Code

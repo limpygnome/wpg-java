@@ -1,6 +1,6 @@
 package com.worldpay.sdk.demoshop.domain;
 
-public class CardDetails
+public class ApiCardDetails
 {
     private String name;
     private String cardNumber;
@@ -9,7 +9,7 @@ public class CardDetails
     private String cvc;
     private boolean tokenise;
 
-    public CardDetails() { }
+    public ApiCardDetails() { }
 
     public String getName()
     {

@@ -71,7 +71,7 @@ public class SubmitThreeDSRequest extends XmlRequest<PaymentResponse>
                 .e("submit")
                 .e("order").a("orderCode", orderCode);
 
-        if (auth.getInstallationId() != null)
+        if (auth.getInstallationId() != null && !auth.getInstallationId().isEmpty())
         {
             builder.a("installationId", auth.getInstallationId());
         }

@@ -1,17 +1,23 @@
 package com.worldpay.sdk.demoshop.domain;
 
-public class OrderDetails
+public class ApiOrderDetails
 {
     private String orderCode;
     private String shopperId;
     private long amount;
     private String currency;
+    private String description;
     private String address;
     private String city;
     private String postalCode;
     private String countryCode;
+    private String userAgent;
+    private String browserAccepts;
 
-    public OrderDetails() { }
+    public ApiOrderDetails()
+    {
+        amount = 0L;
+    }
 
     public String getOrderCode()
     {
@@ -53,6 +59,16 @@ public class OrderDetails
         this.currency = currency;
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
     public String getAddress()
     {
         return address;
@@ -92,4 +108,25 @@ public class OrderDetails
     {
         this.countryCode = countryCode;
     }
+
+    public String getUserAgent()
+    {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent)
+    {
+        this.userAgent = userAgent;
+    }
+
+    public String getBrowserAccepts()
+    {
+        return browserAccepts;
+    }
+
+    public void setBrowserAccepts(String browserAccepts)
+    {
+        this.browserAccepts = browserAccepts;
+    }
+
 }

@@ -1,22 +1,46 @@
 <form [formGroup]="cardDetailsForm" #form="ngForm">
+
+    <p class="text-center">
+        <button class="btn btn-primary" (click)="wallet()">
+            <span class="icon icon-credit-card"></span>
+            Use Web Browser Wallet
+        </button>
+    </p>
+
     <div class="form-group row">
         <label for="cardNumber" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
-            <input type="text" id="name" name="name" placeholder="Name" value="3D" class="form-control" />
+            <input type="text"
+                   id="name"
+                   name="name"
+                   placeholder="Name"
+                   value="3D"
+                   class="form-control"
+                   formControlName="name"
+                   [(ngModel)]="cardDetailsForm.value['name']"
+            />
         </div>
     </div>
 
     <div class="form-group row">
         <label for="cardNumber" class="col-sm-2 col-form-label">Card Number</label>
         <div class="col-sm-10">
-            <input type="text" id="cardNumber" name="cardNumber" placeholder="Card Number" value="4444333322221129" class="form-control" />
+            <input type="text"
+                   id="cardNumber"
+                   name="cardNumber"
+                   placeholder="Card Number"
+                   value="4444333322221129"
+                   class="form-control"
+                   formControlName="cardNumber"
+                   [(ngModel)]="cardDetailsForm.value['cardNumber']"
+            />
         </div>
     </div>
 
     <div class="form-group row">
         <label for="cardNumber" class="col-sm-2 col-form-label">Expiry Month</label>
         <div class="col-sm-2">
-            <select class="form-control">
+            <select id="expiryMonth" name="expiryMonth" class="form-control" formControlName="expiryMonth" [(ngModel)]="cardDetailsForm.value['expiryMonth']">
                 <option>01</option>
                 <option>02</option>
                 <option>03</option>
@@ -31,14 +55,17 @@
                 <option selected>12</option>
             </select>
         </div>
-        <label for="cardNumber" class="col-sm-2 col-form-label">Expiry Year</label>
+        <label for="expiryYear" class="col-sm-2 col-form-label">Expiry Year</label>
         <div class="col-sm-2">
-            <select class="form-control">
-                <option>18</option>
-                <option>19</option>
-                <option>20</option>
-                <option>21</option>
-                <option selected>22</option>
+            <select id="expiryYear" name="expiryYear" class="form-control" formControlName="expiryYear" [(ngModel)]="cardDetailsForm.value['expiryYear']">
+                <option>2018</option>
+                <option>2019</option>
+                <option>2020</option>
+                <option>2021</option>
+                <option>2022</option>
+                <option>2023</option>
+                <option>2024</option>
+                <option>2025</option>
             </select>
         </div>
     </div>
@@ -46,19 +73,33 @@
     <div class="form-group row">
         <label for="cvc" class="col-sm-2 col-form-label">CVC</label>
         <div class="col-sm-2">
-            <input type="text" id="cvc" name="cvc" placeholder="CVC" value="123" class="form-control" />
+            <input type="text"
+                   id="cvc"
+                   name="cvc"
+                   placeholder="CVC"
+                   value="123"
+                   class="form-control"
+                   formControlName="cvc"
+                   [(ngModel)]="cardDetailsForm.value['cvc']"
+            />
         </div>
     </div>
 
     <div class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input" id="tokenise" name="tokenise" checked />
+        <input type="checkbox"
+               class="custom-control-input"
+               id="tokenise"
+               name="tokenise"
+               formControlName="tokenise"
+               [(ngModel)]="cardDetailsForm.value['tokenise']"
+        />
         <label class="custom-control-label" for="tokenise">Remember me (tokenise card)</label>
     </div>
 
-    <div class="text-center">
+    <p class="text-center">
         <button class="btn btn-primary" (click)="pay()">
             Pay
         </button>
-    </div>
+    </p>
 
 </form>

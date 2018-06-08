@@ -1,31 +1,31 @@
 package com.worldpay.sdk.demoshop.api.model;
 
-import com.worldpay.sdk.demoshop.domain.CardDetails;
-import com.worldpay.sdk.demoshop.domain.OrderDetails;
+import com.worldpay.sdk.demoshop.domain.ApiCardDetails;
+import com.worldpay.sdk.demoshop.domain.ApiOrderDetails;
 
 public class PayByCardRequest
 {
-    private CardDetails cardDetails;
-    private OrderDetails orderDetails;
+    private ApiCardDetails cardDetails;
+    private ApiOrderDetails orderDetails;
 
     public PayByCardRequest() { }
 
-    public CardDetails getCardDetails()
+    public ApiCardDetails getCardDetails()
     {
         return cardDetails;
     }
 
-    public void setCardDetails(CardDetails cardDetails)
+    public void setCardDetails(ApiCardDetails cardDetails)
     {
         this.cardDetails = cardDetails;
     }
 
-    public OrderDetails getOrderDetails()
+    public ApiOrderDetails getOrderDetails()
     {
         return orderDetails;
     }
 
-    public void setOrderDetails(OrderDetails orderDetails)
+    public void setOrderDetails(ApiOrderDetails orderDetails)
     {
         this.orderDetails = orderDetails;
     }
