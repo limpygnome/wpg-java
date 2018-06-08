@@ -2,7 +2,9 @@ package com.worldpay.sdk.demoshop.service;
 
 import com.worldpay.sdk.demoshop.api.model.ApiResult;
 import com.worldpay.sdk.demoshop.domain.ApiCardDetails;
+import com.worldpay.sdk.demoshop.domain.ApiHppDetails;
 import com.worldpay.sdk.demoshop.domain.ApiOrderDetails;
+import com.worldpay.sdk.demoshop.domain.ApiPayPalDetails;
 import com.worldpay.sdk.demoshop.domain.ApiTokenDetails;
 import com.worldpay.sdk.wpg.builder.RandomIdentifier;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
@@ -13,11 +15,14 @@ import com.worldpay.sdk.wpg.domain.Shopper;
 import com.worldpay.sdk.wpg.domain.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
+import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenisationPaymentResponse;
 import com.worldpay.sdk.wpg.exception.WpgException;
+import com.worldpay.sdk.wpg.request.apm.PayPalPaymentRequest;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
+import com.worldpay.sdk.wpg.request.hosted.HostedPaymentPagesRequest;
 import com.worldpay.sdk.wpg.request.tokenisation.TokenPaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,6 +95,79 @@ public class SdkService
             {
                 result = new ApiResult(response.getPaymentResponse(), null, null);
             }
+        }
+        catch (WpgException e)
+        {
+            result = new ApiResult(null, null, e.getMessage());
+        }
+
+        return result;
+    }
+
+    public ApiResult pay(ApiOrderDetails apiOrderDetails, ApiHppDetails apiHppDetails)
+    {
+        ApiResult result;
+
+        try
+        {
+            // Translate
+            OrderDetails orderDetails = toOrderDetails(apiOrderDetails);
+            Address address = toAddress(apiOrderDetails);
+            Shopper shopper = toShopper(apiOrderDetails);
+
+            // Make request
+            HostedPaymentPagesRequest request = new HostedPaymentPagesRequest()
+                    .orderDetails(orderDetails)
+                    .billingAddress(address)
+                    .shippingAddress(address)
+                    .shopper(shopper);
+
+            RedirectUrl response = request.send(gatewayContext);
+
+            // Manipulate
+            String url = response.paymentPages()
+                    .successUrl(apiHppDetails.getSuccessUrl())
+                    .pendingUrl(apiHppDetails.getPendingUrl())
+                    .failureUrl(apiHppDetails.getFailureUrl())
+                    .errorUrl(apiHppDetails.getErrorUrl())
+                    .cancelUrl(apiHppDetails.getCancelUrl())
+                    .preferredPaymentMethod(apiHppDetails.getPaymentMethod())
+                    .build();
+
+            result = new ApiResult(null, url, null);
+        }
+        catch (WpgException e)
+        {
+            result = new ApiResult(null, null, e.getMessage());
+        }
+
+        return result;
+    }
+
+    public ApiResult pay(ApiOrderDetails apiOrderDetails, ApiPayPalDetails apiPayPalDetails)
+    {
+        ApiResult result;
+
+        try
+        {
+            // Translate
+            OrderDetails orderDetails = toOrderDetails(apiOrderDetails);
+            Address address = toAddress(apiOrderDetails);
+            Shopper shopper = toShopper(apiOrderDetails);
+            shopper.setEmail(apiPayPalDetails.getEmail());
+
+            // Make request
+            PayPalPaymentRequest request = new PayPalPaymentRequest()
+                    .orderDetails(orderDetails)
+                    .shopper(shopper)
+                    .billingAddress(address)
+                    .shippingAddress(address)
+                    .successURL(apiPayPalDetails.getSuccessUrl())
+                    .failureURL(apiPayPalDetails.getFailureUrl())
+                    .cancelURL(apiPayPalDetails.getCancelUrl());
+
+            RedirectUrl response = request.send(gatewayContext);
+            result = new ApiResult(null, response.getUrl(), null);
         }
         catch (WpgException e)
         {

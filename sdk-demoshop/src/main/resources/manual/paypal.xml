@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE paymentService PUBLIC "-//WorldPay//DTD WorldPay PaymentService v1//EN"
+        "http://dtd.worldpay.com/paymentService_v1.dtd">
+<paymentService version="1.4" merchantCode="#MERCHANT_CODE#">
+    <submit>
+        <order orderCode="#ORDER_CODE#">
+            <description>#DESCRIPTION#</description>
+            <amount currencyCode="#CURRENCY#" exponent="2" value="#AMOUNT#"/>
+            <paymentDetails>
+                <PAYPAL-EXPRESS>
+                    <successURL>#SUCCESS_URL#</successURL>
+                    <failureURL>#FAILURE_URL#</failureURL>
+                    <cancelURL>#CANCEL_URL#</cancelURL>
+                </PAYPAL-EXPRESS>
+                <session shopperIPAddress="#SHOPPER_IP#" id="#SESSION_ID#" />
+            </paymentDetails>
+            <shopper>
+                <shopperEmailAddress>#SHOPPER_EMAIL#</shopperEmailAddress>
+                <authenticatedShopperID>#SHOPPER_ID#</authenticatedShopperID>
+                <browser>
+                    <acceptHeader>#ACCEPTS_HEADER#</acceptHeader>
+                    <userAgentHeader>#USERAGENT#</userAgentHeader>
+                </browser>
+            </shopper>
+            <shippingAddress>
+                <address>
+                    <address1>#ADDRESS_LINE1#</address1>
+                    <address2>#ADDRESS_LINE2#</address2>
+                    <address3>#ADDRESS_LINE3#</address3>
+                    <postalCode>#ADDRESS_POSTCODE#</postalCode>
+                    <city>#ADDRESS_CITY#</city>
+                    <state>#ADDRESS_STATE#</state>
+                    <countryCode>#ADDRESS_COUNTRY#</countryCode>
+                </address>
+            </shippingAddress>
+            <billingAddress>
+                <address>
+                    <address1>#ADDRESS_LINE1#</address1>
+                    <address2>#ADDRESS_LINE2#</address2>
+                    <address3>#ADDRESS_LINE3#</address3>
+                    <postalCode>#ADDRESS_POSTCODE#</postalCode>
+                    <city>#ADDRESS_CITY#</city>
+                    <state>#ADDRESS_STATE#</state>
+                    <countryCode>#ADDRESS_COUNTRY#</countryCode>
+                </address>
+            </billingAddress>
+        </order>
+    </submit>
+</paymentService>

@@ -18,7 +18,7 @@ import java.net.URLConnection;
 import java.util.Base64;
 import java.util.UUID;
 
-public class TokenPayment
+public class NonSdkTokenPayment
 {
     private static final String MERCHANT_CODE = "merchant code";
     private static final String USER = "xml user";
@@ -28,11 +28,10 @@ public class TokenPayment
     {
         try
         {
-            boolean tokenise = args.length >= 1 && args[0] != null ? Boolean.parseBoolean(args[0]) : true;
-            boolean sandbox = args.length >= 2 && args[1] != null ? Boolean.parseBoolean(args[1]) : true;
+            boolean sandbox = args.length >= 1 && args[0] != null ? Boolean.parseBoolean(args[0]) : true;
 
             // Load XML
-            String xml = read(TokenPayment.class.getResourceAsStream("/manual/token-payment.xml"));
+            String xml = read(NonSdkTokenPayment.class.getResourceAsStream("/manual/token-payment.xml"));
 
             // Insert data
             xml = xml.replaceAll("#MERCHANT_CODE#", MERCHANT_CODE)

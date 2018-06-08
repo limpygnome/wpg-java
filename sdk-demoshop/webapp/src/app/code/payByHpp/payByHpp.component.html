@@ -1,0 +1,25 @@
+<div [ngClass]="{'d-none' : code != 'java-sdk'}">
+    <h5 class="card-title">
+        HppDemoApp.java
+    </h5>
+    <prism path="/assets/code/payByHpp-sdk.txt"></prism>
+</div>
+
+<div [ngClass]="{'d-none' : code != 'nonsdk'}">
+
+    <p class="alert alert-danger">
+        <span class="icon icon-warning"></span>
+        This approach, for demo purposes only, is dangerous for inserting data into XML - do not use it!
+    </p>
+
+    <h5 class="card-title">
+        NonSdkHppPayment.java
+    </h5>
+    <prism path="/assets/code/payByHpp-non-sdk.txt"></prism>
+
+    <h5 class="card-title">
+        hpp.xml
+    </h5>
+    <prism path="/assets/code/payByHpp-non-sdk-xml.txt" language="none"></prism>
+
+</div>

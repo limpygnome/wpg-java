@@ -41,35 +41,35 @@ public final class PaymentPagesRedirectBuilder
         {
             StringBuilder builder = new StringBuilder(orderUrl);
 
-            if (successUrl != null)
+            if (successUrl != null && successUrl.length() > 0)
             {
                 builder.append("&successURL=").append(URLEncoder.encode(successUrl, ENCODING_CHARSET));
             }
-            if (pendingUrl != null)
+            if (pendingUrl != null && pendingUrl.length() > 0)
             {
                 builder.append("&pendingURL=").append(URLEncoder.encode(pendingUrl, ENCODING_CHARSET));
             }
-            if (failureUrl != null)
+            if (failureUrl != null && failureUrl.length() > 0)
             {
                 builder.append("&failureURL=").append(URLEncoder.encode(failureUrl, ENCODING_CHARSET));
             }
-            if (errorUrl != null)
+            if (errorUrl != null && errorUrl.length() > 0)
             {
                 builder.append("&errorURL=").append(URLEncoder.encode(errorUrl, ENCODING_CHARSET));
             }
-            if (cancelUrl != null)
+            if (cancelUrl != null && cancelUrl.length() > 0)
             {
                 builder.append("&cancelURL=").append(URLEncoder.encode(cancelUrl, ENCODING_CHARSET));
             }
-            if (preferredPaymentMethod != null)
+            if (preferredPaymentMethod != null && preferredPaymentMethod.length() > 0)
             {
                 builder.append("&preferredPaymentMethod=").append(URLEncoder.encode(preferredPaymentMethod.toLowerCase(), ENCODING_CHARSET));
             }
-            if (country != null)
+            if (country != null && country.length() > 0)
             {
                 builder.append("&country=").append(URLEncoder.encode(country.toLowerCase(), ENCODING_CHARSET));
             }
-            if (language != null)
+            if (language != null && language.length() > 0)
             {
                 builder.append("&language=").append(URLEncoder.encode(language.toLowerCase(), ENCODING_CHARSET));
             }

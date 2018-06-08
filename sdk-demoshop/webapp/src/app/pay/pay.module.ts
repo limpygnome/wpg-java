@@ -8,8 +8,10 @@ import { CodeModule } from './../code/code.module';
 
 import { OrderDetailsComponent } from './orderDetails.component';
 import { PayComponent } from './pay.component';
-import { PayByCardComponent } from './payByCard.component';
-import { PayByTokenComponent } from './payByToken.component';
+import { PayByCardComponent } from './payByCard/payByCard.component';
+import { PayByTokenComponent } from './payByToken/payByToken.component';
+import { PayByHppComponent } from './payByHpp/payByHpp.component';
+import { PayByPayPalComponent } from './payByPayPal/payByPayPal.component';
 
 import { PayService } from './pay.service'
 
@@ -26,14 +28,18 @@ import { PayService } from './pay.service'
         OrderDetailsComponent,
         PayComponent,
         PayByCardComponent,
-        PayByTokenComponent
+        PayByTokenComponent,
+        PayByHppComponent,
+        PayByPayPalComponent
     ],
     exports:
     [
         OrderDetailsComponent,
         PayComponent,
         PayByCardComponent,
-        PayByTokenComponent
+        PayByTokenComponent,
+        PayByHppComponent,
+        PayByPayPalComponent
     ],
     providers: [PayService]
 })

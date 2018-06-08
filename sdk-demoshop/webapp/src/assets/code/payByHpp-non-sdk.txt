@@ -18,7 +18,7 @@ import java.net.URLConnection;
 import java.util.Base64;
 import java.util.UUID;
 
-public class NonSdkTokenPayment
+public class NonSdkHppPayment
 {
     private static final String MERCHANT_CODE = "merchant code";
     private static final String USER = "xml user";
@@ -31,7 +31,7 @@ public class NonSdkTokenPayment
             boolean sandbox = args.length >= 1 && args[0] != null ? Boolean.parseBoolean(args[0]) : true;
 
             // Load XML
-            String xml = read(NonSdkTokenPayment.class.getResourceAsStream("/manual/token-payment.xml"));
+            String xml = read(NonSdkHppPayment.class.getResourceAsStream("/manual/hpp.xml"));
 
             // Insert data
             xml = xml.replaceAll("#MERCHANT_CODE#", MERCHANT_CODE)
@@ -39,9 +39,6 @@ public class NonSdkTokenPayment
                     .replace("#DESCRIPTION#", "test order")
                     .replace("#CURRENCY#", "GBP")
                     .replace("#AMOUNT#", "1300")
-                    .replace("#TOKEN_ID#", "1234567890356789")
-                    .replace("#TOKEN_SCOPE#", "shopper")
-                    .replace("#CAPTURE_CVC#", "true")
                     .replace("#SHOPPER_IP#", "123.123.123.123")
                     .replace("#SESSION_ID#", "session123")
                     .replace("#SHOPPER_EMAIL#", "shopper@worldpay.com")
@@ -89,26 +86,13 @@ public class NonSdkTokenPayment
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(response)));
 
-            NodeList paymentNodes = doc.getElementsByTagName("payment");
             NodeList referenceNodes = doc.getElementsByTagName("reference");
 
             // Handle response
-            if (paymentNodes.getLength() > 0)
-            {
-                NodeList lastEventNodes = doc.getElementsByTagName("lastEvent");
-                if (lastEventNodes.getLength() > 0)
-                {
-                    System.out.println("payment happened - event: " + lastEventNodes.item(0).getTextContent());
-                }
-                else
-                {
-                    System.err.println("payment response without event");
-                }
-            }
-            else if (referenceNodes.getLength() > 0)
+            if (referenceNodes.getLength() > 0)
             {
                 String url = referenceNodes.item(0).getTextContent();
-                System.out.println("capture cvc page: " + url);
+                System.out.println("hpp url: " + url);
             }
             else
             {

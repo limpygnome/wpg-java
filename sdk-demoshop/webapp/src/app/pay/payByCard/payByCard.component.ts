@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { PayService } from './pay.service'
+import { PayService } from './../pay.service'
 
 declare var PaymentRequest: any;
 

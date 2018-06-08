@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" (click)="payType='paypal'" [ngClass]="{'active' : payType == 'card'}">
+                    <a class="nav-link" href="#" (click)="payType='paypal'" [ngClass]="{'active' : payType == 'paypal'}">
                         <span class="icon icon-paypal"></span>
                         Pay by PayPal
                     </a>
@@ -36,6 +36,8 @@
 
             <payByCard *ngIf="payType == 'card'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByCard>
             <payByToken *ngIf="payType == 'token'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByToken>
+            <payByHpp *ngIf="payType == 'hpp'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByHpp>
+            <payByPayPal *ngIf="payType == 'paypal'" [orderDetailsForm]="orderDetailsForm" (loading)="showLoading()" (reply)="handleResponse($event)"></payByPayPal>
 
         </div>
     </div>
@@ -100,6 +102,8 @@
 
         <codePayByCard *ngIf="payType == 'card'" [code]="code"></codePayByCard>
         <codePayByToken *ngIf="payType == 'token'" [code]="code"></codePayByToken>
+        <codePayByHpp *ngIf="payType == 'hpp'" [code]="code"></codePayByHpp>
+        <codePayByPayPal *ngIf="payType == 'paypal'" [code]="code"></codePayByPayPal>
 
     </div>
 </div>

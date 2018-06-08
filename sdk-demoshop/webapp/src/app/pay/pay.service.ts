@@ -10,12 +10,9 @@ export class PayService {
 
     payByCard(orderDetailsForm, cardDetailsForm)
     {
-        var orderDetailsForm = orderDetailsForm.value;
-        var cardDetailsForm = cardDetailsForm.value;
-
         var request = {
-            orderDetails: orderDetailsForm,
-            cardDetails: cardDetailsForm
+            orderDetails: orderDetailsForm.value,
+            cardDetails: cardDetailsForm.value
         };
 
         return this.http.post("http://localhost:8080/pay/card", request);
@@ -23,15 +20,32 @@ export class PayService {
 
     payByToken(orderDetailsForm, tokenDetailsForm)
     {
-        var orderDetailsForm = orderDetailsForm.value;
-        var tokenDetailsForm = tokenDetailsForm.value;
-
         var request = {
-            orderDetails: orderDetailsForm,
-            tokenDetails: tokenDetailsForm
+            orderDetails: orderDetailsForm.value,
+            tokenDetails: tokenDetailsForm.value
         };
 
         return this.http.post("http://localhost:8080/pay/token", request);
+    }
+
+    payByHpp(orderDetailsForm, hppDetailsForm)
+    {
+        var request = {
+            orderDetails: orderDetailsForm.value,
+            hppDetails: hppDetailsForm.value
+        };
+
+        return this.http.post("http://localhost:8080/pay/hpp", request);
+    }
+
+    payByPayPal(orderDetailsForm, payPalDetailsForm)
+    {
+        var request = {
+            orderDetails: orderDetailsForm.value,
+            payPalDetails: payPalDetailsForm.value
+        };
+
+        return this.http.post("http://localhost:8080/pay/paypal", request);
     }
 
 }

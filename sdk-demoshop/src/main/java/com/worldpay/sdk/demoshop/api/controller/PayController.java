@@ -2,6 +2,8 @@ package com.worldpay.sdk.demoshop.api.controller;
 
 import com.worldpay.sdk.demoshop.api.model.ApiResult;
 import com.worldpay.sdk.demoshop.api.model.PayByCardRequest;
+import com.worldpay.sdk.demoshop.api.model.PayByHppRequest;
+import com.worldpay.sdk.demoshop.api.model.PayByPayPalRequest;
 import com.worldpay.sdk.demoshop.api.model.PayByTokenRequest;
 import com.worldpay.sdk.demoshop.domain.ApiOrderDetails;
 import com.worldpay.sdk.demoshop.service.SdkService;
@@ -37,13 +39,17 @@ public class PayController
     }
 
     @PostMapping("/hpp")
-    public void payByHpp()
+    public ApiResult payByHpp(HttpServletRequest servletRequest, @RequestBody PayByHppRequest request)
     {
+        ApiResult result = sdkService.pay(request.getOrderDetails(), request.getHppDetails());
+        return result;
     }
 
     @PostMapping("/paypal")
-    public void payByPayPal()
+    public ApiResult payByPayPal(HttpServletRequest servletRequest, @RequestBody PayByPayPalRequest request)
     {
+        ApiResult result = sdkService.pay(request.getOrderDetails(), request.getPayPalDetails());
+        return result;
     }
 
     private void populateBrowserDetails(HttpServletRequest servletRequest, ApiOrderDetails apiOrderDetails)
