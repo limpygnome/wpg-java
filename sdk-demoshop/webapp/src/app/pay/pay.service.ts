@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment'
 
 @Injectable()
 export class PayService {
@@ -15,7 +16,7 @@ export class PayService {
             cardDetails: cardDetailsForm.value
         };
 
-        return this.http.post("http://localhost:8080/pay/card", request);
+        return this.http.post(environment.baseUrl + "/pay/card", request);
     }
 
     payByToken(orderDetailsForm, tokenDetailsForm)
@@ -25,7 +26,7 @@ export class PayService {
             tokenDetails: tokenDetailsForm.value
         };
 
-        return this.http.post("http://localhost:8080/pay/token", request);
+        return this.http.post(environment.baseUrl + "/pay/token", request);
     }
 
     payByHpp(orderDetailsForm, hppDetailsForm)
@@ -35,7 +36,7 @@ export class PayService {
             hppDetails: hppDetailsForm.value
         };
 
-        return this.http.post("http://localhost:8080/pay/hpp", request);
+        return this.http.post(environment.baseUrl + "/pay/hpp", request);
     }
 
     payByPayPal(orderDetailsForm, payPalDetailsForm)
@@ -45,7 +46,7 @@ export class PayService {
             payPalDetails: payPalDetailsForm.value
         };
 
-        return this.http.post("http://localhost:8080/pay/paypal", request);
+        return this.http.post(environment.baseUrl + "/pay/paypal", request);
     }
 
 }

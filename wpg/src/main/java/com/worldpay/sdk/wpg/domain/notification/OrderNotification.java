@@ -7,13 +7,23 @@ import java.util.List;
 
 public class OrderNotification
 {
+    private String orderCode;
     private final List<Payment> payments;
     private final Journal journal;
 
-    public OrderNotification(List<Payment> payments, Journal journal)
+    public OrderNotification(String orderCode, List<Payment> payments, Journal journal)
     {
+        this.orderCode = orderCode;
         this.payments = payments;
         this.journal = journal;
+    }
+
+    /**
+     * @return The order code associated with this notification
+     */
+    public String getOrderCode()
+    {
+        return orderCode;
     }
 
     /**
@@ -40,6 +50,7 @@ public class OrderNotification
 
         OrderNotification that = (OrderNotification) o;
 
+        if (orderCode != null ? !orderCode.equals(that.orderCode) : that.orderCode != null) return false;
         if (payments != null ? !payments.equals(that.payments) : that.payments != null) return false;
         return journal != null ? journal.equals(that.journal) : that.journal == null;
     }
@@ -47,7 +58,8 @@ public class OrderNotification
     @Override
     public int hashCode()
     {
-        int result = payments != null ? payments.hashCode() : 0;
+        int result = orderCode != null ? orderCode.hashCode() : 0;
+        result = 31 * result + (payments != null ? payments.hashCode() : 0);
         result = 31 * result + (journal != null ? journal.hashCode() : 0);
         return result;
     }
@@ -56,7 +68,8 @@ public class OrderNotification
     public String toString()
     {
         return "OrderNotification{" +
-                "payments=" + payments +
+                "orderCode='" + orderCode + '\'' +
+                ", payments=" + payments +
                 ", journal=" + journal +
                 '}';
     }

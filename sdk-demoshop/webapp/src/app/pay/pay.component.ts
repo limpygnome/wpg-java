@@ -16,8 +16,6 @@ export class PayComponent
 
     loading: boolean = false;
     payType: string = "card";
-    showCode: boolean = false;
-    code: string = "java-sdk";
     data = null;
 
     public orderDetailsForm = this.fb.group({
@@ -35,21 +33,6 @@ export class PayComponent
     constructor(
         public fb: FormBuilder
     ) {}
-
-    toggleCode(codeElement)
-    {
-        console.log(codeElement);
-        // Toggle state and scroll to code
-        this.showCode = !this.showCode;
-        $('html, body').animate({
-            scrollTop: $(codeElement).offset().top
-        }, 1000);
-    }
-
-    viewCode(code)
-    {
-        this.code = code;
-    }
 
     showLoading()
     {

@@ -19,6 +19,8 @@ public class OrderNotificationXmlAdapter
     {
         if (builder.hasE("notify") && builder.hasE("orderStatusEvent"))
         {
+            String orderCode = builder.a("orderCode");
+
             // read payments
             List<XmlBuilder> children = builder.childTags("payment");
             List<Payment> payments = new ArrayList<>(children.size());
@@ -32,7 +34,7 @@ public class OrderNotificationXmlAdapter
             Journal journal = JournalSerializer.read(builder);
 
             // give back result
-            OrderNotification orderNotification = new OrderNotification(payments, journal);
+            OrderNotification orderNotification = new OrderNotification(orderCode, payments, journal);
             return orderNotification;
         }
         else

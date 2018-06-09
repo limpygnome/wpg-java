@@ -4,9 +4,14 @@
         Worldpay SDK Demo
     </div>
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link" href="#">
+        <li class="nav-item">
+            <a class="nav-link" href="#" routerLink="/pay" routerLinkActive="active">
                 Payment
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/notifications" routerLinkActive="active">
+                Notifications
             </a>
         </li>
         <!--
@@ -37,7 +42,7 @@
 <main>
     <div class="container">
 
-        <pay></pay>
+        <router-outlet></router-outlet>
 
     </div>
 </main>

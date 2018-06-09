@@ -25,9 +25,12 @@ public class Program
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
+                        .allowedMethods("HEAD", "POST", "GET", "OPTION", "DELETE", "PUT")
                         .allowedOrigins("*");
             }
         };
     }
+
+
 
 }

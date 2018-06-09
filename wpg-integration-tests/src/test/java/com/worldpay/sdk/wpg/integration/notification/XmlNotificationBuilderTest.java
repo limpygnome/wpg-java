@@ -48,6 +48,7 @@ public class XmlNotificationBuilderTest
 
         // Then
         assertNotNull(orderNotification);
+        assertThat(orderNotification.getOrderCode(), is("Your_order_code"));
         assertThat(orderNotification.getPayments().size(), is(1));
 
         // -- Journal
@@ -101,6 +102,7 @@ public class XmlNotificationBuilderTest
 
         // Then
         assertNotNull(orderNotification);
+        assertThat(orderNotification.getOrderCode(), is("ExampleOrder1"));
 
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);
@@ -127,6 +129,7 @@ public class XmlNotificationBuilderTest
 
         // Then
         assertNotNull(orderNotification);
+        assertThat(orderNotification.getOrderCode(), is("ExampleOrder1"));
 
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);
@@ -171,6 +174,7 @@ public class XmlNotificationBuilderTest
 
         // Then
         assertNotNull(orderNotification);
+        assertThat(orderNotification.getOrderCode(), is("ExampleOrder1"));
 
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);
@@ -193,6 +197,7 @@ public class XmlNotificationBuilderTest
 
         // Then
         assertNotNull(orderNotification);
+        assertThat(orderNotification.getOrderCode(), is("ExampleOrder1"));
 
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);

@@ -1,0 +1,31 @@
+package com.worldpay.sdk.wpg.examples.notification;
+
+import com.worldpay.sdk.wpg.builder.XmlNotificationBuilder;
+import com.worldpay.sdk.wpg.domain.notification.OrderNotification;
+import com.worldpay.sdk.wpg.domain.payment.Payment;
+import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+
+/**
+ * This demo prints out examples of received order notifications.
+ */
+public class XmlNotificationDemoApp
+{
+
+    public static void main(String[] args)
+    {
+        try
+        {
+            OrderNotification notification = new XmlNotificationBuilder().read("xml here");
+
+            for (Payment payment : notification.getPayments())
+            {
+                System.out.println(payment.getLastEvent());
+            }
+        }
+        catch (WpgMalformedXmlException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+}

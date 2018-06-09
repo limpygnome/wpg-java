@@ -4,10 +4,7 @@ import com.worldpay.sdk.wpg.builder.XmlNotificationBuilder;
 import com.worldpay.sdk.wpg.domain.notification.OrderNotification;
 import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 
 /**
  * This demo prints out examples of received order notifications.

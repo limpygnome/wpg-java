@@ -7,8 +7,6 @@ import com.worldpay.sdk.demoshop.api.model.PayByPayPalRequest;
 import com.worldpay.sdk.demoshop.api.model.PayByTokenRequest;
 import com.worldpay.sdk.demoshop.domain.ApiOrderDetails;
 import com.worldpay.sdk.demoshop.service.SdkService;
-import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
-import com.worldpay.sdk.wpg.exception.WpgException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +25,7 @@ public class PayController
     @PostMapping("/card")
     public ApiResult payByCard(HttpServletRequest servletRequest, @RequestBody PayByCardRequest request)
     {
+        populateBrowserDetails(servletRequest, request.getOrderDetails());
         ApiResult result = sdkService.pay(request.getOrderDetails(), request.getCardDetails());
         return result;
     }
@@ -34,6 +33,7 @@ public class PayController
     @PostMapping("/token")
     public ApiResult payUsingToken(HttpServletRequest servletRequest, @RequestBody PayByTokenRequest request)
     {
+        populateBrowserDetails(servletRequest, request.getOrderDetails());
         ApiResult result = sdkService.pay(request.getOrderDetails(), request.getTokenDetails());
         return result;
     }
@@ -41,6 +41,7 @@ public class PayController
     @PostMapping("/hpp")
     public ApiResult payByHpp(HttpServletRequest servletRequest, @RequestBody PayByHppRequest request)
     {
+        populateBrowserDetails(servletRequest, request.getOrderDetails());
         ApiResult result = sdkService.pay(request.getOrderDetails(), request.getHppDetails());
         return result;
     }
@@ -48,6 +49,7 @@ public class PayController
     @PostMapping("/paypal")
     public ApiResult payByPayPal(HttpServletRequest servletRequest, @RequestBody PayByPayPalRequest request)
     {
+        populateBrowserDetails(servletRequest, request.getOrderDetails());
         ApiResult result = sdkService.pay(request.getOrderDetails(), request.getPayPalDetails());
         return result;
     }
