@@ -1,27 +1,27 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer;
 
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
-import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTranslator;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodTypeFilter;
+import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTypeTranslator;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
 import java.util.List;
 
-public class PaymentMethodMaskSerializer
+public class PaymentMethodTypeMaskSerializer
 {
-    public static void decorate(XmlBuildParams params, PaymentMethodFilter paymentMethodFilter)
+    public static void decorate(XmlBuildParams params, PaymentMethodTypeFilter paymentMethodTypeFilter)
     {
         XmlBuilder builder = params.xmlBuilder();
 
         // fetch lists; filter can be null
-        List<PaymentMethod> included;
-        List<PaymentMethod> excluded;
+        List<PaymentMethodType> included;
+        List<PaymentMethodType> excluded;
 
-        if (paymentMethodFilter != null)
+        if (paymentMethodTypeFilter != null)
         {
-            included = paymentMethodFilter.getIncluded();
-            excluded = paymentMethodFilter.getExcluded();
+            included = paymentMethodTypeFilter.getIncluded();
+            excluded = paymentMethodTypeFilter.getExcluded();
         }
         else
         {
@@ -32,7 +32,7 @@ public class PaymentMethodMaskSerializer
         // Move to correct element
         builder.e("paymentMethodMask");
 
-        if (paymentMethodFilter == null || (included.isEmpty() && excluded.isEmpty()))
+        if (paymentMethodTypeFilter == null || (included.isEmpty() && excluded.isEmpty()))
         {
             builder.e("include")
                     .a("code","ALL")
@@ -60,11 +60,11 @@ public class PaymentMethodMaskSerializer
         builder.up();
     }
 
-    private static void appendList(XmlBuilder builder, String elementName, List<PaymentMethod> list)
+    private static void appendList(XmlBuilder builder, String elementName, List<PaymentMethodType> list)
     {
-        for (PaymentMethod paymentMethod : list)
+        for (PaymentMethodType paymentMethodType : list)
         {
-            String mask = PaymentMethodTranslator.getMask(paymentMethod);
+            String mask = PaymentMethodTypeTranslator.getMask(paymentMethodType);
             builder.e(elementName, true).a("code", mask)
                     .up();
         }

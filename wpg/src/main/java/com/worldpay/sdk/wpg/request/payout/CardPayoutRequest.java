@@ -1,10 +1,10 @@
 package com.worldpay.sdk.wpg.request.payout;
 
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payout.CardPayout;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
@@ -44,7 +44,7 @@ public class CardPayoutRequest extends XmlRequest<CardPayout> implements BatchOr
     }
 
     @Override
-    protected CardPayout adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected CardPayout adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         CardPayoutAdapter adapter = new CardPayoutAdapter();
         CardPayout payout = adapter.read(response);

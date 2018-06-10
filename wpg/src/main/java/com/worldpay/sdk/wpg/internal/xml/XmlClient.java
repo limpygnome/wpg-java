@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.internal.xml;
 
+import com.worldpay.sdk.wpg.Constants;
 import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.SessionContext;
@@ -8,7 +9,7 @@ import com.worldpay.sdk.wpg.connection.factory.ConnectionFactory;
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.logging.SanitisedLogger;
 
@@ -45,7 +46,7 @@ public class XmlClient
         try
         {
             Environment environment = gatewayContext.getEnvironment();
-            URL url = params.getService().getUrl(environment);
+            URL url = params.getEndpoint().getUrl(environment);
 
             // build request
             byte[] request = buildRequest(url, gatewayContext, sessionContext, builder);
@@ -118,6 +119,7 @@ public class XmlClient
             buff.append("Host: ").append(url.getHost()).append("\r\n");
             buff.append("Content-Type: text/xml; charset=utf-8\r\n");
             buff.append("Authorization: Basic " + authHeaderValue).append("\r\n");
+            buff.append(Constants.STATS_HEADER_KEY).append(": ").append(Constants.STATS_HEADER_VALUE).append("\n");
 
             // append headers
             for (Map.Entry<String, String> header : sessionContext.getHeaders().entrySet())
@@ -200,15 +202,15 @@ public class XmlClient
             // check not empty or page response
             if (body == null || body.length() == 0)
             {
-                throw new WpgMalformedXmlException("Empty response from server");
+                throw new WpgMalformedException("Empty response from server", httpResponse);
             }
 
             // attempt to parse
-            XmlBuilder builder = XmlBuilder.parse(params.getService(), body);
+            XmlBuilder builder = XmlBuilder.parse(params.getEndpoint(), body);
             XmlResponse response = new XmlResponse(httpResponse, builder);
             return response;
         }
-        catch (WpgMalformedXmlException e)
+        catch (WpgMalformedException e)
         {
             if (body != null)
             {

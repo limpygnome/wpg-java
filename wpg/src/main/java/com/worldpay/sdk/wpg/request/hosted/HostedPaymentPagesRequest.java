@@ -2,11 +2,11 @@ package com.worldpay.sdk.wpg.request.hosted;
 
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethodFilter;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodTypeFilter;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -15,7 +15,7 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.adapter.RedirectUrlXmlAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.AddressSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
-import com.worldpay.sdk.wpg.internal.xml.serializer.PaymentMethodMaskSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.PaymentMethodTypeMaskSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 
 /**
@@ -35,7 +35,7 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
     private Shopper shopper;
     private Address billingAddress;
     private Address shippingAddress;
-    private PaymentMethodFilter paymentMethodFilter;
+    private PaymentMethodTypeFilter paymentMethodTypeFilter;
 
     public HostedPaymentPagesRequest()
     {
@@ -52,13 +52,13 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
         this.shopper = shopper;
     }
 
-    public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper, Address billingAddress, Address shippingAddress, PaymentMethodFilter paymentMethodFilter)
+    public HostedPaymentPagesRequest(OrderDetails orderDetails, Shopper shopper, Address billingAddress, Address shippingAddress, PaymentMethodTypeFilter paymentMethodTypeFilter)
     {
         this.orderDetails = orderDetails;
         this.shopper = shopper;
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
-        this.paymentMethodFilter = paymentMethodFilter;
+        this.paymentMethodTypeFilter = paymentMethodTypeFilter;
     }
 
     @Override
@@ -71,14 +71,14 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
     protected void build(XmlBuildParams params)
     {
         OrderDetailsSerializer.decorateAndStartOrder(params, orderDetails);
-        PaymentMethodMaskSerializer.decorate(params, paymentMethodFilter);
+        PaymentMethodTypeMaskSerializer.decorate(params, paymentMethodTypeFilter);
         ShopperSerializer.decorateOrder(params, shopper);
         AddressSerializer.decorateOrder(params, billingAddress, shippingAddress);
         OrderDetailsSerializer.decorateFinishOrder(params);
     }
 
     @Override
-    protected RedirectUrl adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected RedirectUrl adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         RedirectUrlXmlAdapter adapter = new RedirectUrlXmlAdapter();
         RedirectUrl redirectUrl = adapter.read(response);
@@ -109,9 +109,9 @@ public class HostedPaymentPagesRequest extends XmlRequest<RedirectUrl>
         return this;
     }
 
-    public HostedPaymentPagesRequest filter(PaymentMethodFilter paymentMethodFilter)
+    public HostedPaymentPagesRequest filter(PaymentMethodTypeFilter paymentMethodTypeFilter)
     {
-        this.paymentMethodFilter = paymentMethodFilter;
+        this.paymentMethodTypeFilter = paymentMethodTypeFilter;
         return this;
     }
 

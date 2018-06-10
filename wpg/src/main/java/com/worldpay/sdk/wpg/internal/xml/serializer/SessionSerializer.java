@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer;
 
-import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 

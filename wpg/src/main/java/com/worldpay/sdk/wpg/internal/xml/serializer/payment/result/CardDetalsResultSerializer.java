@@ -1,14 +1,14 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer.payment.result;
 
-import com.worldpay.sdk.wpg.domain.CardType;
-import com.worldpay.sdk.wpg.domain.payment.result.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardType;
+import com.worldpay.sdk.wpg.domain.payment.result.CardDetailsResultResult;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 
-public class CardResultSerializer
+public class CardDetalsResultSerializer
 {
 
-    public static CardDetails read(XmlBuilder builder) throws WpgRequestException
+    public static CardDetailsResultResult read(XmlBuilder builder) throws WpgRequestException
     {
         String maskedCardNumber = null;
         String hashedCardNumber = null;
@@ -35,6 +35,21 @@ public class CardResultSerializer
                     }
                     builder.up();
                 }
+
+                String rawType = builder.a("type");
+                if (rawType != null)
+                {
+                    switch (rawType)
+                    {
+                        case "creditcard":
+                            type = CardType.CREDIT;
+                            break;
+                        case "debitcard":
+                            type = CardType.DEBIT;
+                            break;
+                    }
+                }
+
                 builder.up();
             }
             builder.up();
@@ -46,13 +61,13 @@ public class CardResultSerializer
         String cardHolderName = builder.getCdata("cardHolderName");
 
         // Check whether anything was found, otherwise return no result at all
-        CardDetails result;
+        CardDetailsResultResult result;
 
         if (maskedCardNumber != null || hashedCardNumber != null || expiryMonth != null || expiryYear != null
                 || issuerCountryCode != null || issuerName != null || cardHolderName != null
                 || type != null)
         {
-            result = new CardDetails(maskedCardNumber, hashedCardNumber, expiryMonth, expiryYear,
+            result = new CardDetailsResultResult(maskedCardNumber, hashedCardNumber, expiryMonth, expiryYear,
                     issuerCountryCode, issuerName, cardHolderName, type);
         }
         else

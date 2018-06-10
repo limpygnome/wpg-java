@@ -2,7 +2,7 @@ package com.worldpay.sdk.wpg.examples.notification;
 
 import com.worldpay.sdk.wpg.builder.XmlNotificationBuilder;
 import com.worldpay.sdk.wpg.domain.notification.OrderNotification;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 
 import java.io.InputStream;
 
@@ -33,7 +33,7 @@ public class XmlNotificationDemoApp
                 System.out.println(notification.toString());
             }
         }
-        catch (WpgMalformedXmlException e)
+        catch (WpgMalformedException e)
         {
             e.printStackTrace();
         }

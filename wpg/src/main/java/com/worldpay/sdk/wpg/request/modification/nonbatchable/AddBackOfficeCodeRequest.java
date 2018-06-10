@@ -1,12 +1,11 @@
 package com.worldpay.sdk.wpg.request.modification.nonbatchable;
 
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
-import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.modification.OrderModificationSerializer;
 
 /**
@@ -38,7 +37,7 @@ public class AddBackOfficeCodeRequest extends XmlRequest<Void>
     }
 
     @Override
-    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         return null;
     }

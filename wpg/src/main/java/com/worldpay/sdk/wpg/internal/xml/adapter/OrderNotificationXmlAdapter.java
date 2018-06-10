@@ -3,7 +3,7 @@ package com.worldpay.sdk.wpg.internal.xml.adapter;
 import com.worldpay.sdk.wpg.domain.journal.Journal;
 import com.worldpay.sdk.wpg.domain.notification.OrderNotification;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.serializer.JournalSerializer;
@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderNotificationXmlAdapter
 {
 
-    public static OrderNotification orderNotification(XmlBuilder builder) throws WpgMalformedXmlException, WpgRequestException
+    public static OrderNotification orderNotification(XmlBuilder builder) throws WpgMalformedException, WpgRequestException
     {
         if (builder.hasE("notify") && builder.hasE("orderStatusEvent"))
         {
@@ -39,7 +39,7 @@ public class OrderNotificationXmlAdapter
         }
         else
         {
-            throw new WpgMalformedXmlException("Not recognized as order status event");
+            throw new WpgMalformedException("Not recognized as order status event", null);
         }
     }
 

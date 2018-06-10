@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.domain.tokenisation;
 
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 
 /**
  * Card details which have been tokenised / stored on our gateway for future payments.

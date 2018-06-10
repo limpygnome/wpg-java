@@ -2,8 +2,7 @@ package com.worldpay.sdk.wpg.internal.xml.adapter;
 
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payout.CardPayout;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -12,7 +11,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.PaymentSerializer;
 public class CardPayoutAdapter
 {
 
-    public CardPayout read(XmlResponse response) throws WpgRequestException, WpgMalformedXmlException
+    public CardPayout read(XmlResponse response) throws WpgRequestException, WpgMalformedException
     {
         CardPayout result = null;
 
@@ -34,7 +33,7 @@ public class CardPayoutAdapter
 
         if (result == null)
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         return result;

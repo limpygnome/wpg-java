@@ -4,7 +4,7 @@ import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.SessionContext;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.adapter.ErrorCodeAdapter;
 
@@ -14,20 +14,20 @@ public abstract class XmlRequest<T>
 
     protected abstract void build(XmlBuildParams params);
 
-    protected abstract T adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException;
+    protected abstract T adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException;
 
     public T send(GatewayContext gatewayContext) throws WpgRequestException,
-            WpgConnectionException, WpgErrorResponseException, WpgMalformedXmlException
+            WpgConnectionException, WpgErrorResponseException, WpgMalformedException
     {
         return send(gatewayContext, new SessionContext());
     }
 
     public T send(GatewayContext gatewayContext, SessionContext sessionContext) throws WpgRequestException,
-            WpgConnectionException, WpgErrorResponseException, WpgMalformedXmlException
+            WpgConnectionException, WpgErrorResponseException, WpgMalformedException
     {
-        XmlService service = getService();
-        XmlBuilder builder = new XmlBuilder(service);
-        XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder, service, isBatch());
+        XmlEndpoint endpoint = getEndpoint();
+        XmlBuilder builder = new XmlBuilder(endpoint);
+        XmlBuildParams params = new XmlBuildParams(gatewayContext, sessionContext, builder, endpoint, isBatch());
 
         // validate and build request
         validate(params);
@@ -60,9 +60,9 @@ public abstract class XmlRequest<T>
         return false;
     }
 
-    protected XmlService getService()
+    protected XmlEndpoint getEndpoint()
     {
-        return XmlService.PAYMENT;
+        return XmlEndpoint.PAYMENTS;
     }
 
 }

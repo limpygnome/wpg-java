@@ -3,7 +3,7 @@ package com.worldpay.sdk.wpg.request.tokenisation;
 import com.worldpay.sdk.wpg.domain.tokenisation.Token;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -60,7 +60,7 @@ public class FetchTokenRequest extends XmlRequest<Token>
     }
 
     @Override
-    protected Token adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected Token adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         XmlBuilder builder = response.getBuilder();
         Token token = TokenSerializer.read(builder);

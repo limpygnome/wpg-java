@@ -2,12 +2,12 @@ package com.worldpay.sdk.wpg.request.apm;
 
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -113,7 +113,7 @@ public class PayPalPaymentRequest extends XmlRequest<RedirectUrl>
     }
 
     @Override
-    protected RedirectUrl adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected RedirectUrl adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         RedirectUrlXmlAdapter adapter = new RedirectUrlXmlAdapter();
         RedirectUrl redirectUrl = adapter.read(response);

@@ -2,20 +2,19 @@ package com.worldpay.sdk.wpg.internal.xml.adapter;
 
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
-import com.worldpay.sdk.wpg.internal.xml.XmlService;
+import com.worldpay.sdk.wpg.internal.xml.XmlEndpoint;
 
 public class RedirectUrlXmlAdapter
 {
 
-    public RedirectUrl read(XmlResponse response) throws WpgMalformedXmlException
+    public RedirectUrl read(XmlResponse response) throws WpgMalformedException
     {
         HttpResponse httpResponse = response.getResponse();
         String xml = httpResponse.getBody();
-        XmlBuilder builder = XmlBuilder.parse(XmlService.PAYMENT, xml);
+        XmlBuilder builder = XmlBuilder.parse(XmlEndpoint.PAYMENTS, xml);
 
         if (builder.hasE("reply") && builder.hasE("orderStatus") && builder.hasE("reference"))
         {
@@ -25,7 +24,7 @@ public class RedirectUrlXmlAdapter
         }
         else
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
     }
 

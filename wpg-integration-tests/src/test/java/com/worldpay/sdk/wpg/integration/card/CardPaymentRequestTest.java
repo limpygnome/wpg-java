@@ -4,16 +4,16 @@ import com.worldpay.sdk.wpg.connection.Environment;
 import com.worldpay.sdk.wpg.connection.GatewayContext;
 import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.ShopperBrowser;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.DebitCreditIndicator;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
 import com.worldpay.sdk.wpg.domain.payment.result.Balance;
@@ -99,8 +99,8 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         assertEquals("Last event should be authorised", LastEvent.AUTHORISED, payment.getLastEvent());
 
         // check payment method
-        PaymentMethod paymentMethod = payment.getPaymentMethod();
-        assertEquals("Payment method should be VISA", PaymentMethod.VISA, paymentMethod);
+        PaymentMethodType paymentMethodType = payment.getPaymentMethodType();
+        assertEquals("Payment method should be VISA", PaymentMethodType.VISA, paymentMethodType);
         assertEquals("Payment method mask should be VISA_CREDIT", "VISA_CREDIT-SSL", payment.getPaymentMethodMask());
 
         // check balance

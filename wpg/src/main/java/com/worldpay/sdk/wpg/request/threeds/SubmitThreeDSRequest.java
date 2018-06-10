@@ -7,7 +7,7 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -84,7 +84,7 @@ public class SubmitThreeDSRequest extends XmlRequest<PaymentResponse>
     }
 
     @Override
-    protected PaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected PaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         PaymentResponseXmlAdapter adapter = new PaymentResponseXmlAdapter();
         PaymentResponse result = adapter.read(response);
@@ -102,10 +102,10 @@ public class SubmitThreeDSRequest extends XmlRequest<PaymentResponse>
      * @throws WpgRequestException
      * @throws WpgConnectionException
      * @throws WpgErrorResponseException
-     * @throws WpgMalformedXmlException
+     * @throws WpgMalformedException
      */
     @Override
-    public PaymentResponse send(GatewayContext gatewayContext) throws WpgRequestException, WpgConnectionException, WpgErrorResponseException, WpgMalformedXmlException
+    public PaymentResponse send(GatewayContext gatewayContext) throws WpgRequestException, WpgConnectionException, WpgErrorResponseException, WpgMalformedException
     {
         throw new IllegalStateException("Method not supported, use send(gatewayContext, sessionContext) - you need to pass session context");
     }

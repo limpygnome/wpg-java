@@ -1,8 +1,7 @@
 package com.worldpay.sdk.wpg.request.batch;
 
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -33,14 +32,14 @@ public class CancelBatchOrderRequest extends XmlRequest<Void>
     }
 
     @Override
-    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         // Check we have the expected response
         XmlBuilder builder = response.getBuilder();
 
         if (!builder.hasE("modify") || !builder.hasE("batchModification") || !id.equals(builder.a("merchantBatchCode")) || !builder.hasE("cancel"))
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         return null;

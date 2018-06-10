@@ -6,7 +6,7 @@ package com.worldpay.sdk.wpg.domain.payment;
  * Note: when adding new payment methods, ensure {@link com.worldpay.sdk.wpg.internal.xml.serializer.payment.PaymentMethodSerializer}
  * is updated.
  */
-public enum PaymentMethod
+public enum PaymentMethodType
 {
     CARD,
     VISA,

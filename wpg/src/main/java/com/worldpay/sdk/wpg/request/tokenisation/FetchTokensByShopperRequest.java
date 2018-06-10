@@ -2,7 +2,7 @@ package com.worldpay.sdk.wpg.request.tokenisation;
 
 import com.worldpay.sdk.wpg.domain.tokenisation.Token;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -40,7 +40,7 @@ public class FetchTokensByShopperRequest extends XmlRequest<List<Token>>
     }
 
     @Override
-    protected List<Token> adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected List<Token> adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         List<Token> result = TokenInquiryAdapter.readShopperTokens(response);
         return result;

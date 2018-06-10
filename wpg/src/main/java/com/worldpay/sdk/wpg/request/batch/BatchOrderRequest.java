@@ -2,8 +2,7 @@ package com.worldpay.sdk.wpg.request.batch;
 
 import com.worldpay.sdk.wpg.builder.RandomIdentifier;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -12,11 +11,9 @@ import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
 
-import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Allows multiple order modifications to be sent together as a batch.
@@ -87,14 +84,14 @@ public class BatchOrderRequest extends XmlRequest<Void>
     }
 
     @Override
-    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         // Just check we have the expected response
         XmlBuilder builder = response.getBuilder();
 
         if (!builder.hasE("reply") || !builder.hasE("batchStatus") || builder.a("status") == null)
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         return null;

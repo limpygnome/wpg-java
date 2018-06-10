@@ -1,7 +1,7 @@
 package com.worldpay.sdk.wpg.builder;
 
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
-import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTranslator;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
+import com.worldpay.sdk.wpg.internal.xml.PaymentMethodTypeTranslator;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -167,12 +167,12 @@ public final class PaymentPagesRedirectBuilder
      * = When only card payment methods are available, the cards page is shown.
      * = When cards and APMs are available, a payment selection page is shown.
      *
-     * @param paymentMethod The payment method
+     * @param paymentMethodType The payment method
      * @return Current instance
      */
-    public PaymentPagesRedirectBuilder preferredPaymentMethod(PaymentMethod paymentMethod)
+    public PaymentPagesRedirectBuilder preferredPaymentMethod(PaymentMethodType paymentMethodType)
     {
-        this.preferredPaymentMethod = PaymentMethodTranslator.getMask(paymentMethod);
+        this.preferredPaymentMethod = PaymentMethodTypeTranslator.getMask(paymentMethodType);
         return this;
     }
 

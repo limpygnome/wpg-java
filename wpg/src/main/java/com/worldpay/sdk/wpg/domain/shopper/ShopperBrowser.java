@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.domain;
+package com.worldpay.sdk.wpg.domain.shopper;
 
 public class ShopperBrowser
 {

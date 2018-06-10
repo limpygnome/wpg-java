@@ -1,9 +1,9 @@
 package com.worldpay.sdk.wpg.request.card;
 
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;

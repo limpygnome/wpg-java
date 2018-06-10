@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation;
 
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenCardDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenInstrument;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;

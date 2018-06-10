@@ -1,4 +1,4 @@
-package com.worldpay.sdk.wpg.domain;
+package com.worldpay.sdk.wpg.domain.card;
 
 /**
  * Type of card used.

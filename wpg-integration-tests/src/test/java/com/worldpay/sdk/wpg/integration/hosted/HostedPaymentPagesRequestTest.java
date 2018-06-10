@@ -1,10 +1,10 @@
 package com.worldpay.sdk.wpg.integration.hosted;
 
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.integration.BaseIntegrationTest;
@@ -68,7 +68,7 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
         givenOrder();
 
         String url = redirectUrl.paymentPages()
-                .preferredPaymentMethod(PaymentMethod.VISA)
+                .preferredPaymentMethod(PaymentMethodType.VISA)
                 .build();
 
         assertStatusCode(url, 200);
@@ -123,7 +123,7 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
                 .errorUrl("https://error.worldpay.com")
                 .failureUrl("https://failure.worldpay.com")
                 .pendingUrl("https://pending.worldpay.com")
-                .preferredPaymentMethod(PaymentMethod.VISA)
+                .preferredPaymentMethod(PaymentMethodType.VISA)
                 .languageAndCountry(Locale.CANADA_FRENCH)
                 .build();
 

@@ -1,15 +1,15 @@
 package com.worldpay.sdk.wpg.request.card;
 
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.ShopperBrowser;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -100,7 +100,7 @@ public class CardPaymentRequest extends XmlRequest<PaymentResponse> implements B
     }
 
     @Override
-    protected PaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected PaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         PaymentResponseXmlAdapter adapter = new PaymentResponseXmlAdapter();
         PaymentResponse result = adapter.read(response);

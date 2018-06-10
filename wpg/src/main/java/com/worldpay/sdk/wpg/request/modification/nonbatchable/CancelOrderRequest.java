@@ -1,8 +1,7 @@
 package com.worldpay.sdk.wpg.request.modification.nonbatchable;
 
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
@@ -41,13 +40,13 @@ public class CancelOrderRequest extends XmlRequest<Void>
     }
 
     @Override
-    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected Void adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         // Check expected response received
         XmlBuilder builder = response.getBuilder();
         if (!builder.hasE("reply") || !builder.hasE("ok") || !builder.hasE("cancelReceived") || !orderCode.equals(builder.a("orderCode")))
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
         return null;
     }

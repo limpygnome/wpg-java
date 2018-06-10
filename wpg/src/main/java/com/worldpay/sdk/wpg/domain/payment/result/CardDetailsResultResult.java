@@ -1,8 +1,8 @@
 package com.worldpay.sdk.wpg.domain.payment.result;
 
-import com.worldpay.sdk.wpg.domain.CardType;
+import com.worldpay.sdk.wpg.domain.card.CardType;
 
-public class CardDetails
+public class CardDetailsResultResult
 {
     private final String maskedCardNumber;
     private final String hashedCardNumber;
@@ -13,7 +13,7 @@ public class CardDetails
     private final String cardHolderName;
     private final CardType type;
 
-    public CardDetails(String maskedCardNumber, String hashedCardNumber, Long expiryMonth, Long expiryYear, String issuerCountryCode, String issuerName, String cardHolderName, CardType type)
+    public CardDetailsResultResult(String maskedCardNumber, String hashedCardNumber, Long expiryMonth, Long expiryYear, String issuerCountryCode, String issuerName, String cardHolderName, CardType type)
     {
         this.maskedCardNumber = maskedCardNumber;
         this.hashedCardNumber = hashedCardNumber;
@@ -95,7 +95,7 @@ public class CardDetails
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CardDetails that = (CardDetails) o;
+        CardDetailsResultResult that = (CardDetailsResultResult) o;
 
         if (maskedCardNumber != null ? !maskedCardNumber.equals(that.maskedCardNumber) : that.maskedCardNumber != null)
             return false;

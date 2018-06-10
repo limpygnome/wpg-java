@@ -8,13 +8,13 @@ import java.net.URL;
 /**
  * THE XML service / end-point to be used.
  */
-public enum XmlService
+public enum XmlEndpoint
 {
 
     /**
      * Payment service.
      */
-    PAYMENT(
+    PAYMENTS(
             "paymentService",
             "-//Worldpay//DTD Worldpay PaymentService v1//EN",
             "http://dtd.worldpay.com/paymentService_v1.dtd",
@@ -42,7 +42,7 @@ public enum XmlService
     public URL SANDBOX_URL;
     public URL LIVE_URL;
 
-    XmlService(String XML_ROOT_ELEMENT, String XML_DOCTYPE_PUBLIC_ID, String XML_DOCTYPE_SYSTEM_ID, String VERSION, String sandboxLive, String liveUrl)
+    XmlEndpoint(String XML_ROOT_ELEMENT, String XML_DOCTYPE_PUBLIC_ID, String XML_DOCTYPE_SYSTEM_ID, String VERSION, String sandboxLive, String liveUrl)
     {
         try
         {

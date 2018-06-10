@@ -4,8 +4,7 @@ import com.worldpay.sdk.wpg.domain.notification.BatchError;
 import com.worldpay.sdk.wpg.domain.notification.BatchInquiry;
 import com.worldpay.sdk.wpg.domain.notification.BatchStatus;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -16,13 +15,13 @@ import java.util.List;
 public class BatchInquiryAdapter
 {
 
-    public static BatchInquiry read(XmlResponse response) throws WpgErrorResponseException, WpgRequestException, WpgMalformedXmlException
+    public static BatchInquiry read(XmlResponse response) throws WpgErrorResponseException, WpgRequestException, WpgMalformedException
     {
         XmlBuilder builder = response.getBuilder();
 
         if (!builder.hasE("reply") || !builder.hasE("batchStatus"))
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         BatchStatus status = readStatus(builder);

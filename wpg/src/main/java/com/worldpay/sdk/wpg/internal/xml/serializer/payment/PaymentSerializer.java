@@ -2,11 +2,11 @@ package com.worldpay.sdk.wpg.internal.xml.serializer.payment;
 
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
 import com.worldpay.sdk.wpg.domain.payment.result.AvsResult;
 import com.worldpay.sdk.wpg.domain.payment.result.AvvResult;
 import com.worldpay.sdk.wpg.domain.payment.result.Balance;
-import com.worldpay.sdk.wpg.domain.payment.result.CardDetails;
+import com.worldpay.sdk.wpg.domain.payment.result.CardDetailsResultResult;
 import com.worldpay.sdk.wpg.domain.payment.result.CvcResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
@@ -20,7 +20,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.AmountSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.AvsResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.AvvResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.BalanceSerializer;
-import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.CardResultSerializer;
+import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.CardDetalsResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.CvcResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.ISO8583ResultSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.result.PayoutAuthorisationResultSerializer;
@@ -34,7 +34,7 @@ public class PaymentSerializer
     {
         // payment method (can be null when unknown)
         String paymentMethodMask = builder.getCdata("paymentMethod");
-        PaymentMethod paymentMethod = PaymentMethodSerializer.convert(paymentMethodMask);
+        PaymentMethodType paymentMethodType = PaymentMethodSerializer.convert(paymentMethodMask);
 
         // amount
         builder.e("amount");
@@ -46,7 +46,7 @@ public class PaymentSerializer
         LastEvent lastEvent = LastEvent.valueOf(lastEventRaw);
 
         // read results
-        CardDetails cardDetails = CardResultSerializer.read(builder);
+        CardDetailsResultResult cardDetailsResultResult = CardDetalsResultSerializer.read(builder);
         PayoutAuthorisationResult payoutAuthorisationResult = PayoutAuthorisationResultSerializer.read(builder);
         ISO8583Result iso8583Result = ISO8583ResultSerializer.read(builder);
         ThreeDSecureResult threeDSecureResult = ThreeDSecureResultSerializer.read(builder);
@@ -62,7 +62,7 @@ public class PaymentSerializer
 
         // wrap it all up
         Payment payment = new Payment(
-                paymentMethod, paymentMethodMask, amount, lastEvent, balance, cardDetails, payoutAuthorisationResult,
+                paymentMethodType, paymentMethodMask, amount, lastEvent, balance, cardDetailsResultResult, payoutAuthorisationResult,
                 iso8583Result, threeDSecureResult, avsResult, cvcResult, avvResult, riskScoreResult, token
         );
         return payment;

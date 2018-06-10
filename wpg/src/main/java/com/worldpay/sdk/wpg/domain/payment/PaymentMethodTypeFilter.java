@@ -9,41 +9,41 @@ import java.util.List;
  *
  * Payment methods can either be included or excluded, you cannot add payment methods to both.
  */
-public class PaymentMethodFilter
+public class PaymentMethodTypeFilter
 {
-    private List<PaymentMethod> included;
-    private List<PaymentMethod> excluded;
+    private List<PaymentMethodType> included;
+    private List<PaymentMethodType> excluded;
 
-    public PaymentMethodFilter()
+    public PaymentMethodTypeFilter()
     {
         included = new LinkedList<>();
         excluded = new LinkedList<>();
     }
 
     /**
-     * @param paymentMethod Payment method to be included
+     * @param paymentMethodType Payment method to be included
      * @return Current instance
      */
-    public PaymentMethodFilter include(PaymentMethod... paymentMethod)
+    public PaymentMethodTypeFilter include(PaymentMethodType... paymentMethodType)
     {
-        included.addAll(Arrays.asList(paymentMethod));
+        included.addAll(Arrays.asList(paymentMethodType));
         return this;
     }
 
     /**
-     * @param paymentMethod Payment method to be excluded
+     * @param paymentMethodType Payment method to be excluded
      * @return Current instance
      */
-    public PaymentMethodFilter exclude(PaymentMethod... paymentMethod)
+    public PaymentMethodTypeFilter exclude(PaymentMethodType... paymentMethodType)
     {
-        excluded.addAll(Arrays.asList(paymentMethod));
+        excluded.addAll(Arrays.asList(paymentMethodType));
         return this;
     }
 
     /**
      * @return Payment methods to be included
      */
-    public List<PaymentMethod> getIncluded()
+    public List<PaymentMethodType> getIncluded()
     {
         return included;
     }
@@ -51,7 +51,7 @@ public class PaymentMethodFilter
     /**
      * @param included Payment methods to be included
      */
-    public void setIncluded(List<PaymentMethod> included)
+    public void setIncluded(List<PaymentMethodType> included)
     {
         this.included = included;
     }
@@ -59,7 +59,7 @@ public class PaymentMethodFilter
     /**
      * @return Payment methods to be excluded
      */
-    public List<PaymentMethod> getExcluded()
+    public List<PaymentMethodType> getExcluded()
     {
         return excluded;
     }
@@ -67,7 +67,7 @@ public class PaymentMethodFilter
     /**
      * @param excluded Payment methods to be excluded
      */
-    public void setExcluded(List<PaymentMethod> excluded)
+    public void setExcluded(List<PaymentMethodType> excluded)
     {
         this.excluded = excluded;
     }
@@ -78,7 +78,7 @@ public class PaymentMethodFilter
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PaymentMethodFilter that = (PaymentMethodFilter) o;
+        PaymentMethodTypeFilter that = (PaymentMethodTypeFilter) o;
 
         if (included != null ? !included.equals(that.included) : that.included != null) return false;
         return excluded != null ? excluded.equals(that.excluded) : that.excluded == null;

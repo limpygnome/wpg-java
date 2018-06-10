@@ -1,6 +1,6 @@
 package com.worldpay.sdk.wpg.internal.xml;
 
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMImplementation;
@@ -30,28 +30,28 @@ import java.util.List;
 
 public class XmlBuilder
 {
-    private XmlService service;
+    private XmlEndpoint endpoint;
     private Document document;
     private Element current;
 
-    private XmlBuilder(XmlService service, Document document, Element current)
+    private XmlBuilder(XmlEndpoint endpoint, Document document, Element current)
     {
-        this.service = service;
+        this.endpoint = endpoint;
         this.document = document;
         this.current = current;
     }
 
-    public XmlBuilder(XmlService service)
+    public XmlBuilder(XmlEndpoint endpoint)
     {
         try
         {
-            this.service = service;
+            this.endpoint = endpoint;
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             document = builder.newDocument();
-            current = document.createElement(service.XML_ROOT_ELEMENT);
-            current.setAttribute("version", service.VERSION);
+            current = document.createElement(endpoint.XML_ROOT_ELEMENT);
+            current.setAttribute("version", endpoint.VERSION);
             document.appendChild(current);
         }
         catch (ParserConfigurationException e)
@@ -265,7 +265,7 @@ public class XmlBuilder
         for (int i = 0; i < len; i++)
         {
             Node node = list.item(i);
-            XmlBuilder clone = new XmlBuilder(service, document, (Element) node);
+            XmlBuilder clone = new XmlBuilder(endpoint, document, (Element) node);
             result.add(clone);
         }
         return result;
@@ -284,7 +284,7 @@ public class XmlBuilder
         if (list.getLength() > 0)
         {
             Node node = list.item(0);
-            result = new XmlBuilder(service, document, (Element) node);
+            result = new XmlBuilder(endpoint, document, (Element) node);
         }
 
         return result;
@@ -300,7 +300,7 @@ public class XmlBuilder
 
             DOMImplementation domImplementation = document.getImplementation();
             DocumentType docType = domImplementation.createDocumentType(
-                    "doctype", service.XML_DOCTYPE_PUBLIC_ID, service.XML_DOCTYPE_SYSTEM_ID
+                    "doctype", endpoint.XML_DOCTYPE_PUBLIC_ID, endpoint.XML_DOCTYPE_SYSTEM_ID
             );
 
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
@@ -320,7 +320,7 @@ public class XmlBuilder
         }
     }
 
-    public static XmlBuilder parse(XmlService service, String text) throws WpgMalformedXmlException
+    public static XmlBuilder parse(XmlEndpoint service, String text) throws WpgMalformedException
     {
         try
         {
@@ -348,14 +348,14 @@ public class XmlBuilder
             Element root = xmlBuilder.current;
             if ("html".equals(root.getTagName()))
             {
-                throw new WpgMalformedXmlException("Received web page instead of XML");
+                throw new WpgMalformedException("Data has HTML rather than expected XML", null);
             }
 
             return xmlBuilder;
         }
         catch (ParserConfigurationException | SAXException | IOException e)
         {
-            throw new WpgMalformedXmlException("Failed to parse response XML", e);
+            throw new WpgMalformedException("Unable to parse data as XML", null);
         }
     }
 

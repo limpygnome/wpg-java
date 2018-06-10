@@ -5,8 +5,7 @@ import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsDetails;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -16,7 +15,7 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.payment.threeds.ThreeDsSeria
 public class PaymentResponseXmlAdapter
 {
 
-    public PaymentResponse read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    public PaymentResponse read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         HttpResponse httpResponse = response.getResponse();
         XmlBuilder builder =  response.getBuilder();
@@ -33,7 +32,7 @@ public class PaymentResponseXmlAdapter
 
         if (result == null)
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         return result;

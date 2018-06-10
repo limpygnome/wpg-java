@@ -1,8 +1,7 @@
 package com.worldpay.sdk.wpg.internal.xml.adapter;
 
 import com.worldpay.sdk.wpg.domain.tokenisation.Token;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class TokenInquiryAdapter
 {
-    public static Token readToken(XmlResponse response) throws WpgRequestException, WpgMalformedXmlException
+    public static Token readToken(XmlResponse response) throws WpgRequestException, WpgMalformedException
     {
         Token token = null;
         XmlBuilder builder = response.getBuilder();
@@ -25,13 +24,13 @@ public class TokenInquiryAdapter
 
         if (token == null)
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         return token;
     }
 
-    public static List<Token> readShopperTokens(XmlResponse response) throws WpgRequestException, WpgMalformedXmlException
+    public static List<Token> readShopperTokens(XmlResponse response) throws WpgRequestException, WpgMalformedException
     {
         XmlBuilder builder = response.getBuilder();
         builder.e("reply");
@@ -41,14 +40,14 @@ public class TokenInquiryAdapter
         // Check no other elements i.e. not malformed / unexpectd response
         if (elements.isEmpty() && builder.hasChildNodes())
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         // Read each token
         List<Token> tokens = new ArrayList<>(elements.size());
         for (XmlBuilder element : elements)
         {
-            Token token = TokenSerializer.read(builder);
+            Token token = TokenSerializer.read(element);
             tokens.add(token);
         }
 

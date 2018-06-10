@@ -1,9 +1,9 @@
 package com.worldpay.sdk.wpg.integration.inquiry;
 
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.ShopperBrowser;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
@@ -45,7 +45,7 @@ public class OrderInquiryRequestTest extends BaseIntegrationTest
         Payment payment = new OrderInquiryRequest(orderDetails).send(GATEWAY_CONTEXT);
         assertNotNull("Should have returned payment (replication delay/)", payment);
         assertEquals("Should have AUTHORISED as last event", LastEvent.AUTHORISED, payment.getLastEvent());
-        assertNotNull("Should have card details", payment.getCardDetails());
+        assertNotNull("Should have card details", payment.getCardDetailsResultResult());
     }
 
 }

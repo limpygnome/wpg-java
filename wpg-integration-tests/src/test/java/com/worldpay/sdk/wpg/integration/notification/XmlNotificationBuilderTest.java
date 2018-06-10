@@ -10,8 +10,8 @@ import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.DebitCreditIndicator;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -29,15 +29,15 @@ import static org.junit.Assert.assertThat;
 public class XmlNotificationBuilderTest
 {
 
-    @Test(expected = WpgMalformedXmlException.class)
-    public void malformedThrows() throws WpgMalformedXmlException
+    @Test(expected = WpgMalformedException.class)
+    public void malformedThrows() throws WpgMalformedException
     {
         XmlNotificationBuilder builder = new XmlNotificationBuilder();
         builder.read("qwertyuiop");
     }
 
     @Test
-    public void authorised_asExpected() throws WpgMalformedXmlException
+    public void authorised_asExpected() throws WpgMalformedException
     {
         // Given
         InputStream inputStream = XmlNotificationBuilderTest.class.getResourceAsStream("/order-notification/authorised.txt");
@@ -65,16 +65,16 @@ public class XmlNotificationBuilderTest
 
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);
-        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA));
+        assertThat(payment.getPaymentMethodType(), is(PaymentMethodType.VISA));
         assertThat(payment.getAmount().getCurrency(), is(Currency.EUR));
         assertThat(payment.getAmount().getExponent(), is(2L));
         assertThat(payment.getAmount().getValue(), is(2400L));
         assertThat(payment.getAmount().getDebitCreditIndicator(), is(DebitCreditIndicator.CREDIT));
-        assertThat(payment.getCardDetails().getMaskedCardNumber(), is("444433******1111"));
-        assertThat(payment.getCardDetails().getExpiryMonth(), is(1L));
-        assertThat(payment.getCardDetails().getExpiryYear(), is(2020L));
-        assertThat(payment.getCardDetails().getIssuerCountryCode(), is("N/A"));
-        assertThat(payment.getCardDetails().getCardHolderName(), is("***"));
+        assertThat(payment.getCardDetailsResultResult().getMaskedCardNumber(), is("444433******1111"));
+        assertThat(payment.getCardDetailsResultResult().getExpiryMonth(), is(1L));
+        assertThat(payment.getCardDetailsResultResult().getExpiryYear(), is(2020L));
+        assertThat(payment.getCardDetailsResultResult().getIssuerCountryCode(), is("N/A"));
+        assertThat(payment.getCardDetailsResultResult().getCardHolderName(), is("***"));
         assertThat(payment.getPayoutAuthorisationResult().getAuthorisationId(), is("622206"));
         assertThat(payment.getThreeDSecureResult().getDescription(), is("Cardholder authenticated"));
         assertThat(payment.getThreeDSecureResult().getEci(), is("05"));
@@ -91,7 +91,7 @@ public class XmlNotificationBuilderTest
     }
 
     @Test
-    public void cancelled_asExpected() throws WpgMalformedXmlException
+    public void cancelled_asExpected() throws WpgMalformedException
     {
         // Given
         InputStream inputStream = XmlNotificationBuilderTest.class.getResourceAsStream("/order-notification/cancelled.txt");
@@ -118,7 +118,7 @@ public class XmlNotificationBuilderTest
     }
 
     @Test
-    public void captured_asExpected() throws WpgMalformedXmlException
+    public void captured_asExpected() throws WpgMalformedException
     {
         // Given
         InputStream inputStream = XmlNotificationBuilderTest.class.getResourceAsStream("/order-notification/captured.txt");
@@ -163,7 +163,7 @@ public class XmlNotificationBuilderTest
     }
 
     @Test
-    public void refund_asExpected() throws WpgMalformedXmlException
+    public void refund_asExpected() throws WpgMalformedException
     {
         // Given
         InputStream inputStream = XmlNotificationBuilderTest.class.getResourceAsStream("/order-notification/refund.txt");
@@ -186,7 +186,7 @@ public class XmlNotificationBuilderTest
     }
 
     @Test
-    public void refused_asExpected() throws WpgMalformedXmlException
+    public void refused_asExpected() throws WpgMalformedException
     {
         // Given
         InputStream inputStream = XmlNotificationBuilderTest.class.getResourceAsStream("/order-notification/refused.txt");

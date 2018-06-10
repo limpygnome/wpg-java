@@ -2,18 +2,16 @@ package com.worldpay.sdk.wpg.request.tokenisation;
 
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenisationPaymentResponse;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
-import com.worldpay.sdk.wpg.internal.xml.adapter.PaymentResponseXmlAdapter;
 import com.worldpay.sdk.wpg.internal.xml.adapter.TokenisationPaymentResponseXmlAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.AddressSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
@@ -137,7 +135,7 @@ public class TokenPaymentRequest extends XmlRequest<TokenisationPaymentResponse>
     }
 
     @Override
-    protected TokenisationPaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    protected TokenisationPaymentResponse adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         TokenisationPaymentResponseXmlAdapter adapter = new TokenisationPaymentResponseXmlAdapter();
         TokenisationPaymentResponse paymentResponse = adapter.read(response);

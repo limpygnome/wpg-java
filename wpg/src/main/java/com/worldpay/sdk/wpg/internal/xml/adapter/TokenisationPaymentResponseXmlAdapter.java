@@ -4,8 +4,7 @@ import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenisationPaymentResponse;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedResponseException;
-import com.worldpay.sdk.wpg.exception.WpgMalformedXmlException;
+import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -13,7 +12,7 @@ import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
 public class TokenisationPaymentResponseXmlAdapter
 {
 
-    public TokenisationPaymentResponse read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedXmlException
+    public TokenisationPaymentResponse read(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
         XmlBuilder builder = response.getBuilder();
 
@@ -36,7 +35,7 @@ public class TokenisationPaymentResponseXmlAdapter
 
         if (captureCvc == null && paymentResponse == null)
         {
-            throw new WpgMalformedResponseException(response);
+            throw new WpgMalformedException(response.getResponse());
         }
 
         TokenisationPaymentResponse result = new TokenisationPaymentResponse(paymentResponse, captureCvc);

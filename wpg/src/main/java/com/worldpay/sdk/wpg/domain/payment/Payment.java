@@ -3,7 +3,7 @@ package com.worldpay.sdk.wpg.domain.payment;
 import com.worldpay.sdk.wpg.domain.payment.result.AvsResult;
 import com.worldpay.sdk.wpg.domain.payment.result.AvvResult;
 import com.worldpay.sdk.wpg.domain.payment.result.Balance;
-import com.worldpay.sdk.wpg.domain.payment.result.CardDetails;
+import com.worldpay.sdk.wpg.domain.payment.result.CardDetailsResultResult;
 import com.worldpay.sdk.wpg.domain.payment.result.CvcResult;
 import com.worldpay.sdk.wpg.domain.payment.result.ISO8583Result;
 import com.worldpay.sdk.wpg.domain.payment.result.PayoutAuthorisationResult;
@@ -21,13 +21,13 @@ import com.worldpay.sdk.wpg.domain.tokenisation.Token;
  */
 public class Payment
 {
-    private final PaymentMethod paymentMethod;
+    private final PaymentMethodType paymentMethodType;
     private final String paymentMethodMask;
     private final Amount amount;
     private final LastEvent lastEvent;
     private final Balance balance;
 
-    private final CardDetails cardDetails;
+    private final CardDetailsResultResult cardDetailsResultResult;
     private final PayoutAuthorisationResult payoutAuthorisationResult;
     private final ISO8583Result iso8583Result;
     private final ThreeDSecureResult threeDSecureResult;
@@ -37,18 +37,18 @@ public class Payment
     private final RiskScoreResult riskScoreResult;
     private final Token token;
 
-    public Payment(PaymentMethod paymentMethod, String paymentMethodMask, Amount amount, LastEvent lastEvent, Balance balance,
-                   CardDetails cardDetails, PayoutAuthorisationResult payoutAuthorisationResult,
+    public Payment(PaymentMethodType paymentMethodType, String paymentMethodMask, Amount amount, LastEvent lastEvent, Balance balance,
+                   CardDetailsResultResult cardDetailsResultResult, PayoutAuthorisationResult payoutAuthorisationResult,
                    ISO8583Result iso8583Result, ThreeDSecureResult threeDSecureResult, AvsResult avsResult,
                    CvcResult cvcResult, AvvResult avvResult, RiskScoreResult riskScoreResult,
                    Token token)
     {
-        this.paymentMethod = paymentMethod;
+        this.paymentMethodType = paymentMethodType;
         this.paymentMethodMask = paymentMethodMask;
         this.amount = amount;
         this.lastEvent = lastEvent;
         this.balance = balance;
-        this.cardDetails = cardDetails;
+        this.cardDetailsResultResult = cardDetailsResultResult;
         this.payoutAuthorisationResult = payoutAuthorisationResult;
         this.iso8583Result = iso8583Result;
         this.threeDSecureResult = threeDSecureResult;
@@ -64,9 +64,9 @@ public class Payment
      *
      * @return Payment method used; may be null when unknown by the SDK
      */
-    public PaymentMethod getPaymentMethod()
+    public PaymentMethodType getPaymentMethodType()
     {
-        return paymentMethod;
+        return paymentMethodType;
     }
 
     /**
@@ -99,9 +99,9 @@ public class Payment
     /**
      * @return Details relating to the card used for a payment, for card payments (may not always be present)
      */
-    public CardDetails getCardDetails()
+    public CardDetailsResultResult getCardDetailsResultResult()
     {
-        return cardDetails;
+        return cardDetailsResultResult;
     }
 
     /**
@@ -184,11 +184,11 @@ public class Payment
 
         Payment payment = (Payment) o;
 
-        if (paymentMethod != payment.paymentMethod) return false;
+        if (paymentMethodType != payment.paymentMethodType) return false;
         if (amount != null ? !amount.equals(payment.amount) : payment.amount != null) return false;
         if (lastEvent != payment.lastEvent) return false;
         if (balance != null ? !balance.equals(payment.balance) : payment.balance != null) return false;
-        if (cardDetails != null ? !cardDetails.equals(payment.cardDetails) : payment.cardDetails != null) return false;
+        if (cardDetailsResultResult != null ? !cardDetailsResultResult.equals(payment.cardDetailsResultResult) : payment.cardDetailsResultResult != null) return false;
         if (payoutAuthorisationResult != null ? !payoutAuthorisationResult.equals(payment.payoutAuthorisationResult) : payment.payoutAuthorisationResult != null)
             return false;
         if (iso8583Result != null ? !iso8583Result.equals(payment.iso8583Result) : payment.iso8583Result != null)
@@ -206,11 +206,11 @@ public class Payment
     @Override
     public int hashCode()
     {
-        int result = paymentMethod != null ? paymentMethod.hashCode() : 0;
+        int result = paymentMethodType != null ? paymentMethodType.hashCode() : 0;
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (lastEvent != null ? lastEvent.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
-        result = 31 * result + (cardDetails != null ? cardDetails.hashCode() : 0);
+        result = 31 * result + (cardDetailsResultResult != null ? cardDetailsResultResult.hashCode() : 0);
         result = 31 * result + (payoutAuthorisationResult != null ? payoutAuthorisationResult.hashCode() : 0);
         result = 31 * result + (iso8583Result != null ? iso8583Result.hashCode() : 0);
         result = 31 * result + (threeDSecureResult != null ? threeDSecureResult.hashCode() : 0);
@@ -226,11 +226,11 @@ public class Payment
     public String toString()
     {
         return "Payment{" +
-                "paymentMethod=" + paymentMethod +
+                "paymentMethod=" + paymentMethodType +
                 ", amount=" + amount +
                 ", lastEvent=" + lastEvent +
                 ", balance=" + balance +
-                ", cardDetails=" + cardDetails +
+                ", cardDetails=" + cardDetailsResultResult +
                 ", payoutAuthorisationResult=" + payoutAuthorisationResult +
                 ", iso8583Result=" + iso8583Result +
                 ", threeDSecureResult=" + threeDSecureResult +

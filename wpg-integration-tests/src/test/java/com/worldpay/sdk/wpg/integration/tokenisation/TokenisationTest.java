@@ -1,15 +1,15 @@
 package com.worldpay.sdk.wpg.integration.tokenisation;
 
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
-import com.worldpay.sdk.wpg.domain.Shopper;
-import com.worldpay.sdk.wpg.domain.ShopperBrowser;
+import com.worldpay.sdk.wpg.domain.shopper.Shopper;
+import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
 import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
-import com.worldpay.sdk.wpg.domain.payment.PaymentMethod;
+import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.PaymentStatus;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
@@ -115,7 +115,7 @@ public class TokenisationTest extends BaseIntegrationTest
 
         Payment payment = response.getPaymentResponse().getPayment();
         assertNotNull(payment);
-        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA));
+        assertThat(payment.getPaymentMethodType(), is(PaymentMethodType.VISA));
         assertThat(payment.getLastEvent(), is(LastEvent.AUTHORISED));
     }
 
@@ -141,7 +141,7 @@ public class TokenisationTest extends BaseIntegrationTest
 
         Payment payment = response.getPaymentResponse().getPayment();
         assertNotNull(payment);
-        assertThat(payment.getPaymentMethod(), is(PaymentMethod.VISA));
+        assertThat(payment.getPaymentMethodType(), is(PaymentMethodType.VISA));
         assertThat(payment.getLastEvent(), is(LastEvent.AUTHORISED));
     }
 

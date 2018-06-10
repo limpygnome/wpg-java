@@ -1,12 +1,10 @@
 package com.worldpay.sdk.wpg.internal.xml.serializer;
 
 import com.worldpay.sdk.wpg.domain.Address;
-import com.worldpay.sdk.wpg.domain.CardDetails;
+import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
-
-import java.time.LocalDateTime;
 
 public class CardDetailsSerializer
 {
@@ -37,7 +35,7 @@ public class CardDetailsSerializer
 
             // cvc
             String cvc = cardDetails.getCvc();
-            if (cardDetails.getCvc() != null && cvc.length() > 0)
+            if (cvc != null && cvc.length() > 0)
             {
                 builder.e("cvc").cdata(cvc).up();
             }
