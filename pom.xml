@@ -13,7 +13,6 @@
         <module>wpg</module>
         <module>wpg-integration-tests</module>
         <module>wpg-examples</module>
-        <module>sdk-demoshop</module>
     </modules>
 
     <build>

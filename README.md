@@ -35,7 +35,7 @@ Upcoming:
 - Recurring
 
 ## Examples
-- [Examples](wpg-examples)
+- [Examples](wpg-examples/src/test/java/com/worldpay/sdk/wpg/examples)
 
 ## Getting Started
 Download the jar from the [releases](../../releases) page, or use Maven.
