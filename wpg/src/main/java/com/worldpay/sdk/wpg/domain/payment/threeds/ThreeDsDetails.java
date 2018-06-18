@@ -1,6 +1,7 @@
 package com.worldpay.sdk.wpg.domain.payment.threeds;
 
 import com.worldpay.sdk.wpg.builder.ThreeDsRedirectBuilder;
+import com.worldpay.sdk.wpg.connection.SessionContext;
 
 /**
  * Present on a {@link com.worldpay.sdk.wpg.domain.payment.PaymentResponse} when threeds (3ds) authentication
@@ -16,13 +17,23 @@ import com.worldpay.sdk.wpg.builder.ThreeDsRedirectBuilder;
  */
 public class ThreeDsDetails
 {
+    private final SessionContext sessionContext;
     private final String issuerURL;
     private final String paRequest;
 
-    public ThreeDsDetails(String issuerURL, String paRequest)
+    public ThreeDsDetails(SessionContext sessionContext, String issuerURL, String paRequest)
     {
+        this.sessionContext = sessionContext;
         this.issuerURL = issuerURL;
         this.paRequest = paRequest;
+    }
+
+    /**
+     * @return session context from initial card payment
+     */
+    public SessionContext getSessionContext()
+    {
+        return sessionContext;
     }
 
     /**
@@ -57,6 +68,8 @@ public class ThreeDsDetails
 
         ThreeDsDetails that = (ThreeDsDetails) o;
 
+        if (sessionContext != null ? !sessionContext.equals(that.sessionContext) : that.sessionContext != null)
+            return false;
         if (issuerURL != null ? !issuerURL.equals(that.issuerURL) : that.issuerURL != null) return false;
         return paRequest != null ? paRequest.equals(that.paRequest) : that.paRequest == null;
     }
@@ -64,7 +77,8 @@ public class ThreeDsDetails
     @Override
     public int hashCode()
     {
-        int result = issuerURL != null ? issuerURL.hashCode() : 0;
+        int result = sessionContext != null ? sessionContext.hashCode() : 0;
+        result = 31 * result + (issuerURL != null ? issuerURL.hashCode() : 0);
         result = 31 * result + (paRequest != null ? paRequest.hashCode() : 0);
         return result;
     }
@@ -73,7 +87,8 @@ public class ThreeDsDetails
     public String toString()
     {
         return "ThreeDsDetails{" +
-                "issuerURL='" + issuerURL + '\'' +
+                "sessionContext=" + sessionContext +
+                ", issuerURL='" + issuerURL + '\'' +
                 ", paRequest='" + paRequest + '\'' +
                 '}';
     }

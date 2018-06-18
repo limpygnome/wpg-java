@@ -34,7 +34,7 @@ public class PaymentSerializer
     {
         // payment method (can be null when unknown)
         String paymentMethodMask = builder.getCdata("paymentMethod");
-        PaymentMethodType paymentMethodType = PaymentMethodSerializer.convert(paymentMethodMask);
+        PaymentMethodType paymentMethodType = PaymentMethodTypeSerializer.convert(paymentMethodMask);
 
         // amount
         builder.e("amount");

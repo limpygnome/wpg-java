@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.internal.xml.adapter;
 
+import com.worldpay.sdk.wpg.connection.SessionContext;
 import com.worldpay.sdk.wpg.connection.http.HttpResponse;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
@@ -26,7 +27,7 @@ public class PaymentResponseXmlAdapter
         {
             if (builder.hasE("reply") && builder.hasE("orderStatus"))
             {
-                result = readOrderStatus(httpResponse, builder);
+                result = readOrderStatus(response.getSessionContext(), httpResponse, builder);
             }
         }
 
@@ -38,7 +39,7 @@ public class PaymentResponseXmlAdapter
         return result;
     }
 
-    private PaymentResponse readOrderStatus(HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
+    private PaymentResponse readOrderStatus(SessionContext sessionContext, HttpResponse httpResponse, XmlBuilder builder) throws WpgRequestException, WpgErrorResponseException
     {
         PaymentResponse result = null;
 
@@ -46,7 +47,7 @@ public class PaymentResponseXmlAdapter
         {
             if (builder.hasE("request3DSecure"))
             {
-                ThreeDsDetails threeDsDetails = ThreeDsSerializer.read(builder);
+                ThreeDsDetails threeDsDetails = ThreeDsSerializer.read(sessionContext, builder);
                 result = new PaymentResponse(threeDsDetails);
             }
         }

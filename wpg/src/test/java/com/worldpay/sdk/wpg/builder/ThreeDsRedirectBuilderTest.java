@@ -1,10 +1,12 @@
 package com.worldpay.sdk.wpg.builder;
 
+import com.worldpay.sdk.wpg.connection.SessionContext;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsDetails;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.net.URL;
+
+import static org.junit.Assert.assertEquals;
 
 public class ThreeDsRedirectBuilderTest
 {
@@ -13,7 +15,7 @@ public class ThreeDsRedirectBuilderTest
     public void build_noTermUrl_illegalStateException()
     {
         // given
-        ThreeDsDetails threeDsDetails = new ThreeDsDetails("issuer URL", "pa req");
+        ThreeDsDetails threeDsDetails = new ThreeDsDetails(new SessionContext(), "issuer URL", "pa req");
 
         // when
         ThreeDsRedirectBuilder builder = new ThreeDsRedirectBuilder(threeDsDetails);
@@ -24,7 +26,7 @@ public class ThreeDsRedirectBuilderTest
     public void build_asExpected()
     {
         // given
-        ThreeDsDetails threeDsDetails = new ThreeDsDetails("issuer URL", "pa req");
+        ThreeDsDetails threeDsDetails = new ThreeDsDetails(new SessionContext(), "issuer URL", "pa req");
         String termUrl = "term url";
 
         // when
@@ -42,7 +44,7 @@ public class ThreeDsRedirectBuilderTest
     public void build_withMerchantData()
     {
         // given
-        ThreeDsDetails threeDsDetails = new ThreeDsDetails("issuer URL", "pa req");
+        ThreeDsDetails threeDsDetails = new ThreeDsDetails(new SessionContext(), "issuer URL", "pa req");
         String termUrl = "term url";
 
         // when
@@ -61,7 +63,7 @@ public class ThreeDsRedirectBuilderTest
     public void build_termUrl() throws Exception
     {
         // given
-        ThreeDsDetails threeDsDetails = new ThreeDsDetails("issuer URL", "pa req");
+        ThreeDsDetails threeDsDetails = new ThreeDsDetails(new SessionContext(), "issuer URL", "pa req");
 
         // when
         ThreeDsRedirectBuilder builder = new ThreeDsRedirectBuilder(threeDsDetails);

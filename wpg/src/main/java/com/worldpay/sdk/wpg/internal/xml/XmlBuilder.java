@@ -75,7 +75,7 @@ public class XmlBuilder
     public String a(String key)
     {
         String value = current.getAttribute(key);
-        if (value.length() == 0)
+        if (value != null && value.length() == 0)
         {
             value = null;
         }

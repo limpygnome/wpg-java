@@ -15,11 +15,11 @@
 
 ## Features
 - Payments
-  - Cards
+  - Cards __(includes tokenisation)__
   - Tokenised cards
   - ThreeDS authentication
   - Hosted Payment Pages
-  - PayPal
+  - PayPal __(includes tokenisation)__
   - Client-side Encryption (CSE)
 - Order inquiries
 - Order notifications

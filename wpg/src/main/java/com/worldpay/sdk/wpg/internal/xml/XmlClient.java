@@ -119,7 +119,7 @@ public class XmlClient
             buff.append("Host: ").append(url.getHost()).append("\r\n");
             buff.append("Content-Type: text/xml; charset=utf-8\r\n");
             buff.append("Authorization: Basic " + authHeaderValue).append("\r\n");
-            buff.append(Constants.STATS_HEADER_KEY).append(": ").append(Constants.STATS_HEADER_VALUE).append("\n");
+            buff.append(Constants.STATS_HEADER_KEY).append(": ").append(Constants.STATS_HEADER_VALUE).append("\r\n");
 
             // append headers
             for (Map.Entry<String, String> header : sessionContext.getHeaders().entrySet())
@@ -207,7 +207,7 @@ public class XmlClient
 
             // attempt to parse
             XmlBuilder builder = XmlBuilder.parse(params.getEndpoint(), body);
-            XmlResponse response = new XmlResponse(httpResponse, builder);
+            XmlResponse response = new XmlResponse(params.sessionContext(), httpResponse, builder);
             return response;
         }
         catch (WpgMalformedException e)

@@ -1,9 +1,11 @@
 package com.worldpay.sdk.wpg.domain.payment;
 
+import com.worldpay.sdk.wpg.internal.xml.serializer.payment.PaymentMethodTypeSerializer;
+
 /**
  * The payment method mask.
  *
- * Note: when adding new payment methods, ensure {@link com.worldpay.sdk.wpg.internal.xml.serializer.payment.PaymentMethodSerializer}
+ * Note: when adding new payment methods, ensure {@link PaymentMethodTypeSerializer}
  * is updated.
  */
 public enum PaymentMethodType

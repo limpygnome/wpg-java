@@ -25,20 +25,27 @@ public class UserPassAuthTest
         new UserPassAuth("user", "pass", null, "installation id");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void constructor_blankInstallationId()
     {
-        new UserPassAuth("user", "pass", "merchant code", "");
+        UserPassAuth auth = new UserPassAuth("user", "pass", "merchant code", "");
+        assertNull(auth.getInstallationId());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_invalidFormat()
+    {
+        new UserPassAuth("user", "pass", "merchant code", "not numeric");
     }
 
     @Test
     public void constructor_asExpected()
     {
-        UserPassAuth auth = new UserPassAuth("user", "pass", "merchant code", "installation id");
+        UserPassAuth auth = new UserPassAuth("user", "pass", "merchant code", "12345");
         assertEquals("user", auth.getUser());
         assertEquals("pass", auth.getPass());
         assertEquals("merchant code", auth.getMerchantCode());
-        assertEquals("installation id", auth.getInstallationId());
+        assertEquals("12345", auth.getInstallationId());
     }
 
     @Test
