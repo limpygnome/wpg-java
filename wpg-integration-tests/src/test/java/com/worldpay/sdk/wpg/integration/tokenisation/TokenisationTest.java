@@ -6,7 +6,6 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
@@ -55,7 +54,7 @@ public class TokenisationTest extends BaseIntegrationTest
         Shopper shopper = new Shopper("email@email.com", "1.2.3.4",  browser, "shopper123");
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
-        OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test", new Amount("EUR", 2L, 1234L));
         Address address = new Address("address 1", "city", "post code", "GB");
 
         // When
@@ -78,7 +77,7 @@ public class TokenisationTest extends BaseIntegrationTest
         Shopper shopper = new Shopper(null, null, browser, "shopper123");
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
-        OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test", new Amount("EUR", 2L, 1234L));
 
         // When
         TokenisationPaymentResponse response = new TokenPaymentRequest(
@@ -100,7 +99,7 @@ public class TokenisationTest extends BaseIntegrationTest
         Shopper shopper = new Shopper(null, null, browser, "shopper123");
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
-        OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test", new Amount("EUR", 2L, 1234L));
         Address address = new Address("address 1", "city", "post code", "GB");
 
         // When
@@ -127,7 +126,7 @@ public class TokenisationTest extends BaseIntegrationTest
         Shopper shopper = new Shopper(null, null, browser, "shopper123");
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
-        OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test", new Amount("EUR", 2L, 1234L));
 
         // When
         TokenisationPaymentResponse response = new TokenPaymentRequest(
@@ -225,7 +224,7 @@ public class TokenisationTest extends BaseIntegrationTest
 
     private Token setupOrder(CreateTokenDetails createTokenDetails, Shopper shopper) throws Exception
     {
-        OrderDetails orderDetails = new OrderDetails("threeds test order", new Amount(Currency.GBP, 2L, 1000L));
+        OrderDetails orderDetails = new OrderDetails("threeds test order", new Amount("GBP", 2L, 1000L));
         CardDetails cardDetails = new CardDetails("4444333322221129", 1L, 2030L, "test");
         CardPaymentRequest request = new CardPaymentRequest(orderDetails, cardDetails, shopper);
         request.tokeniseForReoccurringPayments(createTokenDetails);

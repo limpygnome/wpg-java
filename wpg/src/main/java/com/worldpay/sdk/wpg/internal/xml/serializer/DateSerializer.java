@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class DateSerializer
 {
 
-    public static LocalDate read(XmlBuilder builder) throws WpgRequestException
+    public static LocalDate readDate(XmlBuilder builder) throws WpgRequestException
     {
         int dayOfMonth = builder.aToInt("dayOfMonth");
         int month = builder.aToInt("month");

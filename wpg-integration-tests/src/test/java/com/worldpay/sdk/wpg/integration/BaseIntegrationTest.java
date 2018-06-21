@@ -8,7 +8,6 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
@@ -125,7 +124,7 @@ public class BaseIntegrationTest
 
     protected OrderDetails createGenericOrder() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("threeds test order", new Amount(Currency.GBP, 2L, 1000L));
+        OrderDetails orderDetails = new OrderDetails("threeds test order", new Amount("GBP", 2L, 1000L));
 
         CardDetails cardDetails = new CardDetails("4444333322221129", 1L, 2030L, "test");
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("accepts", "user agent"));

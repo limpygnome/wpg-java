@@ -13,9 +13,9 @@ public class SanitisedLogger
 {
     private static final Pattern CARD_NUMBER = Pattern.compile("[0-9]{10,19}", Pattern.MULTILINE);
     private static final Pattern ELEMENTS_CARD_NUMBER = Pattern.compile("<cardNumber>(.{6})?.+(.{4})</cardNumber>", Pattern.MULTILINE);
-    private static final Pattern ELEMENTS_CARD_DETAILS = Pattern.compile("<(cardHolderName)>(.{6})?.+(.{4})</(\\1)>", Pattern.MULTILINE);
-    private static final Pattern ELEMENTS_CARD_CVC = Pattern.compile("<cvc>(.+)</cvc>", Pattern.MULTILINE);
-    private static final Pattern ELEMENTS_ADDRESS = Pattern.compile("<(firstName|lastName|street|houseName|houseNumber|houseNumberExtension|address1|address2|address3|postalCode|city|state|countryCode|telephoneNumber|shopperEmailAddress)>(.+)</(\\1)>", Pattern.MULTILINE);
+    private static final Pattern ELEMENTS_CARD_DETAILS = Pattern.compile("<(cardHolderName)>([^<]+)</(\\1)>", Pattern.MULTILINE);
+    private static final Pattern ELEMENTS_CARD_CVC = Pattern.compile("<cvc>([^<]+)</cvc>", Pattern.MULTILINE);
+    private static final Pattern ELEMENTS_ADDRESS = Pattern.compile("<(firstName|lastName|street|houseName|houseNumber|houseNumberExtension|address1|address2|address3|postalCode|city|state|countryCode|telephoneNumber|shopperEmailAddress)>([^<]+)</(\\1)>", Pattern.MULTILINE);
 
     /**
      * Invokes logger with message sanitised.

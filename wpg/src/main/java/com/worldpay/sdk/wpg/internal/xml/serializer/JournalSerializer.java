@@ -42,7 +42,7 @@ public class JournalSerializer
     private static LocalDate readBookingDate(XmlBuilder builder) throws WpgRequestException
     {
         builder.e("bookingDate").e("date");
-        LocalDate result = DateSerializer.read(builder);
+        LocalDate result = DateSerializer.readDate(builder);
         builder.up().up();
         return result;
     }

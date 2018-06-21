@@ -7,7 +7,6 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenScope;
 import com.worldpay.sdk.wpg.domain.tokenisation.TokenisationPaymentResponse;
 import com.worldpay.sdk.wpg.exception.WpgException;
@@ -30,7 +29,7 @@ public class TokenPaymentApp
         {
             ShopperBrowser browser = new ShopperBrowser("accepts", "user agent");
             Shopper shopper = new Shopper("test@test.com", "123.123.123.123", browser, "shopper id");
-            OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
+            OrderDetails orderDetails = new OrderDetails("test", new Amount("EUR", 2L, 1234L));
 
             // When
             TokenisationPaymentResponse response = new TokenPaymentRequest()

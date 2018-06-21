@@ -175,8 +175,12 @@ public class XmlBuilder
 
     public XmlBuilder cdata(String value)
     {
-        Text text = document.createTextNode(value);
-        current.appendChild(text);
+        // Some versions of Java will throw NPE when serializing blank text nodes
+        if (value != null && value.length() > 0)
+        {
+            Text text = document.createTextNode(value);
+            current.appendChild(text);
+        }
         return this;
     }
 
@@ -348,14 +352,14 @@ public class XmlBuilder
             Element root = xmlBuilder.current;
             if ("html".equals(root.getTagName()))
             {
-                throw new WpgMalformedException("Data has HTML rather than expected XML", null);
+                throw new WpgMalformedException("Data has HTML rather than expected XML");
             }
 
             return xmlBuilder;
         }
         catch (ParserConfigurationException | SAXException | IOException e)
         {
-            throw new WpgMalformedException("Unable to parse data as XML", null);
+            throw new WpgMalformedException("Unable to parse data as XML");
         }
     }
 

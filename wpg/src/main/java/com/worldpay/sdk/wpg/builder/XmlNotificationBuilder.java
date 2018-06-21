@@ -49,7 +49,7 @@ public class XmlNotificationBuilder
         }
         catch (WpgRequestException e)
         {
-            throw new WpgMalformedException(null);
+            throw new WpgMalformedException("Malformed order notification XML", xml);
         }
     }
 

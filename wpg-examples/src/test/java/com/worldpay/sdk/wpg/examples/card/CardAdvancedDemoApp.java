@@ -9,7 +9,6 @@ import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
 import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.payment.threeds.ThreeDsDetails;
@@ -34,7 +33,7 @@ public class CardAdvancedDemoApp
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
 
         // build order details
-        Amount amount = new Amount(Currency.GBP, 2L, 1234L);
+        Amount amount = new Amount("GBP", 2L, 1234L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
         Address address = new Address("123 test address", "blah", "1234", "GB");
         Shopper shopper = new Shopper("test@test.com");

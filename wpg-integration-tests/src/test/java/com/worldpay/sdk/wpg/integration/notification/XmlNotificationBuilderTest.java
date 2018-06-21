@@ -6,7 +6,6 @@ import com.worldpay.sdk.wpg.domain.journal.JournalReference;
 import com.worldpay.sdk.wpg.domain.journal.JournalTransaction;
 import com.worldpay.sdk.wpg.domain.journal.JournalTransactionType;
 import com.worldpay.sdk.wpg.domain.notification.OrderNotification;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.DebitCreditIndicator;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
@@ -58,7 +57,7 @@ public class XmlNotificationBuilderTest
         JournalTransaction tx = journal.getTransactions().get(0);
         assertThat(tx.getBatchId(), is("30"));
         assertThat(tx.getType(), is(JournalTransactionType.IN_PROCESS_AUTHORISED));
-        assertThat(tx.getAmount().getCurrency(), is(Currency.EUR));
+        assertThat(tx.getAmount().getCurrencyCode(), is("EUR"));
         assertThat(tx.getAmount().getExponent(), is(2L));
         assertThat(tx.getAmount().getValue(), is(2400L));
         assertThat(tx.getAmount().getDebitCreditIndicator(), is(DebitCreditIndicator.CREDIT));
@@ -66,7 +65,7 @@ public class XmlNotificationBuilderTest
         // -- Payment
         Payment payment = orderNotification.getPayments().get(0);
         assertThat(payment.getPaymentMethodType(), is(PaymentMethodType.VISA));
-        assertThat(payment.getAmount().getCurrency(), is(Currency.EUR));
+        assertThat(payment.getAmount().getCurrencyCode(), is("EUR"));
         assertThat(payment.getAmount().getExponent(), is(2L));
         assertThat(payment.getAmount().getValue(), is(2400L));
         assertThat(payment.getAmount().getDebitCreditIndicator(), is(DebitCreditIndicator.CREDIT));
@@ -147,7 +146,7 @@ public class XmlNotificationBuilderTest
         assertThat(tx1.getAmount().getDebitCreditIndicator(), is(DebitCreditIndicator.CREDIT));
         assertThat(tx1.getAmount().getValue(), is(1000L));
         assertThat(tx1.getAmount().getExponent(), is(2L));
-        assertThat(tx1.getAmount().getCurrency(), is(Currency.EUR));
+        assertThat(tx1.getAmount().getCurrencyCode(), is("EUR"));
 
         JournalTransaction tx2 = journal.getTransactions().get(1);
         assertThat(tx2.getBatchId(), is("30"));
@@ -155,7 +154,7 @@ public class XmlNotificationBuilderTest
         assertThat(tx2.getAmount().getDebitCreditIndicator(), is(DebitCreditIndicator.DEBIT));
         assertThat(tx2.getAmount().getValue(), is(1000L));
         assertThat(tx2.getAmount().getExponent(), is(2L));
-        assertThat(tx2.getAmount().getCurrency(), is(Currency.EUR));
+        assertThat(tx2.getAmount().getCurrencyCode(), is("EUR"));
 
         JournalReference ref = journal.getReferences().get(0);
         assertThat(ref.getType(), is("capture"));

@@ -10,7 +10,6 @@ import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.DebitCreditIndicator;
 import com.worldpay.sdk.wpg.domain.payment.LastEvent;
 import com.worldpay.sdk.wpg.domain.payment.Payment;
@@ -52,7 +51,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
             // given
             GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth("fake", "fake", "fake", "1234"));
 
-            OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
+            OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2L, 1234L));
             Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
             CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123");
@@ -76,7 +75,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123");
@@ -94,7 +93,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         // check payment
         Payment payment = response.getPayment();
         assertNotNull("Payment result should be present", payment);
-        Amount expectedAmount = new Amount(Currency.GBP, 2, 1234L, DebitCreditIndicator.CREDIT);
+        Amount expectedAmount = new Amount("GBP", 2, 1234L, DebitCreditIndicator.CREDIT);
         assertEquals("Amount should be similar, but with credit indicator", expectedAmount, payment.getAmount());
         assertEquals("Last event should be authorised", LastEvent.AUTHORISED, payment.getLastEvent());
 
@@ -129,7 +128,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_withoutCvc() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
@@ -152,7 +151,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_withAddresses() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
@@ -176,7 +175,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_createShopperToken_shopperFullDetails() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), "shopper123");
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
@@ -248,7 +247,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     @Test
     public void send_createMerchanrToken_fullDetails() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("test order 2", new Amount(Currency.GBP, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order 2", new Amount("GBP", 2L, 1234L));
 
         // No shopper ID present as not needed; other details only needed for 3ds
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"));
@@ -323,7 +322,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
     public void send_tokeniseWithAddresses() throws WpgException
     {
         final String shopperId = "shopper1234";
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2L, 1234L));
         Shopper shopper = new Shopper("test@test.com", "123.123.123.123", new ShopperBrowser("text/html", "Mozilla/5.0 Chrome/62.0.3202.94 Safari/537.36"), shopperId);
 
         CardDetails cardDetails = new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name");
