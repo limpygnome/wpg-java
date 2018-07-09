@@ -84,8 +84,14 @@ public class AddressSerializer
             builder.e("telephoneNumber").cdata(address.getTelephoneNumber()).up();
         }
 
-        builder.up()
-                .up();
+        // reset to above address element
+        builder.up();
+
+        // go another level up if we created a wrapper above address
+        if (elementName != null)
+        {
+            builder.up();
+        }
     }
 
     public static Address read(XmlBuilder builder)

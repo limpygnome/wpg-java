@@ -18,6 +18,8 @@ public class JournalSerializer
 
     public static Journal read(XmlBuilder builder) throws WpgRequestException
     {
+        builder.e("journal");
+
         // Read booking date
         LocalDate bookingDate = readBookingDate(builder);
 
@@ -33,6 +35,9 @@ public class JournalSerializer
         // Read attribs
         String type = builder.a("journalType");
         String sent = builder.a("sent");
+
+        // Reset
+        builder.up();
 
         // Give back result
         Journal journal = new Journal(type, sent, bookingDate, transactions, references, typeDetails);

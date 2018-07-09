@@ -111,7 +111,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
         // check results expected
         CvcResult cvcResult = payment.getCvcResult();
         assertNotNull("CVC result should be present", cvcResult);
-        assertEquals("Description should state CVC was not provided", "NOT SENT TO ACQUIRER", cvcResult.getDescription());
+        assertEquals("Description should state CVC was not provided", "C", cvcResult.getDescription());
 
         // check risk
         RiskScoreResult riskScoreResult = payment.getRiskScoreResult();
@@ -146,7 +146,7 @@ public class CardPaymentRequestTest extends BaseIntegrationTest
 
         CvcResult cvcResult = payment.getCvcResult();
         assertNotNull("CVC result should be present", cvcResult);
-        assertEquals("Description should state CVC was not provided", "NOT SUPPLIED BY SHOPPER", cvcResult.getDescription());
+        assertEquals("Description should state CVC was not provided", "B", cvcResult.getDescription());
     }
 
     @Test
