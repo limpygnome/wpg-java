@@ -10,6 +10,7 @@ import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuilder;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
+import com.worldpay.sdk.wpg.internal.xml.adapter.TokenInquiryAdapter;
 import com.worldpay.sdk.wpg.internal.xml.serializer.payment.tokenisation.TokenSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.tokenisation.FetchTokenSerializer;
 
@@ -62,8 +63,7 @@ public class FetchTokenRequest extends XmlRequest<Token>
     @Override
     protected Token adapt(XmlResponse response) throws WpgRequestException, WpgErrorResponseException, WpgMalformedException
     {
-        XmlBuilder builder = response.getBuilder();
-        Token token = TokenSerializer.read(builder);
+        Token token = TokenInquiryAdapter.readToken(response);
         return token;
     }
 

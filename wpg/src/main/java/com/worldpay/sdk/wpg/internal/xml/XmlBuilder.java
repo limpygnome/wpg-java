@@ -139,9 +139,9 @@ public class XmlBuilder
     public XmlBuilder e(String name, boolean addNew)
     {
         // Create if doesn't exist
-        NodeList list;
+        Element first;
 
-        if (addNew || (list = current.getElementsByTagName(name)).getLength() == 0)
+        if (addNew || ((first = findFirst(current, name)) == null))
         {
             Element element = document.createElement(name);
             current.appendChild(element);
@@ -149,10 +149,30 @@ public class XmlBuilder
         }
         else
         {
-            current = (Element) list.item(0);
+            current = first;
         }
 
         return this;
+    }
+
+    /*
+        Retrieves child elements by name, which are immediate children of the provided node/parent.
+     */
+    private Element findFirst(Element parent, String tagName)
+    {
+        Element result = null;
+
+        NodeList list = current.getElementsByTagName(tagName);
+        Node item;
+        for (int i = 0; result == null && i < list.getLength(); i++)
+        {
+            item = list.item(i);
+            if (item instanceof Element && parent.equals(item.getParentNode()))
+            {
+                result = (Element) item;
+            }
+        }
+        return result;
     }
 
     public boolean isCurrentTag(String tagName)

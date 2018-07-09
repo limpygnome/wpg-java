@@ -1,5 +1,6 @@
 package com.worldpay.sdk.wpg.integration.tokenisation;
 
+import com.worldpay.sdk.wpg.builder.RandomIdentifier;
 import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
@@ -37,22 +38,21 @@ import static org.junit.Assert.fail;
 
 public class TokenisationTest extends BaseIntegrationTest
 {
-    /**
-     * Maximum times to poll a token to check whether it has been deleted.
-     */
+    // Maximum times to poll a token to check whether it has been deleted.
     private static final int MAX_ATTEMPTS_POLL_TOKEN_DELETION = 10;
 
-    /**
-     * Delay between polls, for when checking a token has been deletedd, in milliseconds.
-     */
+    // Delay between polls, for when checking a token has been deletedd, in milliseconds.
     private static final long POLL_TOKEN_DELETION_DELAY = 2000L;
+
+    // Unique identifier for test shopper.
+    private static final String SHOPPER_ID = "shopper-java-sdk";
 
     @Test
     public void captureCvc() throws Exception
     {
         // Given
         ShopperBrowser browser = new ShopperBrowser("accepts", "user agent");
-        Shopper shopper = new Shopper("email@email.com", "1.2.3.4",  browser, "shopper123");
+        Shopper shopper = new Shopper("email@email.com", "1.2.3.4",  browser, getShopperId());
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
         OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
@@ -75,7 +75,7 @@ public class TokenisationTest extends BaseIntegrationTest
     {
         // Given
         ShopperBrowser browser = new ShopperBrowser("accepts", "user agent");
-        Shopper shopper = new Shopper(null, null, browser, "shopper123");
+        Shopper shopper = new Shopper(null, null, browser, getShopperId());
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
         OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
@@ -97,7 +97,7 @@ public class TokenisationTest extends BaseIntegrationTest
     {
         // Given
         ShopperBrowser browser = new ShopperBrowser("accepts", "user agent");
-        Shopper shopper = new Shopper(null, null, browser, "shopper123");
+        Shopper shopper = new Shopper(null, null, browser, getShopperId());
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
         OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
@@ -124,7 +124,7 @@ public class TokenisationTest extends BaseIntegrationTest
     {
         // Given
         ShopperBrowser browser = new ShopperBrowser("accepts", "user agent");
-        Shopper shopper = new Shopper(null, null, browser, "shopper123");
+        Shopper shopper = new Shopper(null, null, browser, getShopperId());
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
 
         OrderDetails orderDetails = new OrderDetails("test", new Amount(Currency.EUR, 2L, 1234L));
@@ -149,7 +149,7 @@ public class TokenisationTest extends BaseIntegrationTest
     public void endToEnd_createShopperToken() throws Exception
     {
         ShopperBrowser browser = new ShopperBrowser("accepts", "user agent");
-        Shopper shopper = new Shopper("email@email.com", "1.2.3.4", browser, "shopper123");
+        Shopper shopper = new Shopper("email@email.com", "1.2.3.4", browser, getShopperId());
 
         // Create token
         Token token = setupOrder(new CreateTokenDetails(TokenScope.SHOPPER, "event_ref", "reason"), shopper);
@@ -279,6 +279,11 @@ public class TokenisationTest extends BaseIntegrationTest
         {
             fail("Exception should have been thrown, stating token no longer exists");
         }
+    }
+
+    private String getShopperId()
+    {
+        return SHOPPER_ID + "_" + RandomIdentifier.generate(8);
     }
 
 }

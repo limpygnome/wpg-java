@@ -12,12 +12,13 @@ import java.util.List;
 
 public class TokenInquiryAdapter
 {
+
     public static Token readToken(XmlResponse response) throws WpgRequestException, WpgMalformedException
     {
         Token token = null;
         XmlBuilder builder = response.getBuilder();
 
-        if (builder.hasE("reply"))
+        if (builder.hasE("reply") && builder.hasE("token"))
         {
             token = TokenSerializer.read(builder);
         }
@@ -37,7 +38,7 @@ public class TokenInquiryAdapter
 
         List<XmlBuilder> elements = builder.childTags("token");
 
-        // Check no other elements i.e. not malformed / unexpectd response
+        // Check no other elements i.e. not malformed / unexpected response
         if (elements.isEmpty() && builder.hasChildNodes())
         {
             throw new WpgMalformedException(response.getResponse());
