@@ -13,6 +13,11 @@ public class WpgMalformedException extends WpgException
         this.response = response;
     }
 
+    public WpgMalformedException(String message)
+    {
+        super(message);
+    }
+
     public WpgMalformedException(String message, HttpResponse response)
     {
         super(message);
@@ -22,6 +27,7 @@ public class WpgMalformedException extends WpgException
     public WpgMalformedException(String message, String content, Exception cause)
     {
         super(message, cause);
+        this.content = content;
     }
 
     /**

@@ -35,7 +35,7 @@ public class BatchError
     /**
      * @return Error message
      */
-    public String getText()
+    public String getMessage()
     {
         return text;
     }
@@ -68,7 +68,7 @@ public class BatchError
         return "BatchError{" +
                 "orderCode='" + orderCode + '\'' +
                 ", code=" + code +
-                ", text='" + text + '\'' +
+                ", message='" + text + '\'' +
                 '}';
     }
 

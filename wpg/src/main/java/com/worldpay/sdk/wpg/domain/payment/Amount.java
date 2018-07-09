@@ -2,29 +2,19 @@ package com.worldpay.sdk.wpg.domain.payment;
 
 public class Amount
 {
-    private final String currency;
+    private final String currencyCode;
     private final long exponent;
     private final long value;
     private final DebitCreditIndicator debitCreditIndicator;
 
-    public Amount(Currency currency, long exponent, long value)
+    public Amount(String currencyCode, long exponent, long value)
     {
-        this(currency.ISO4217_CURRENCY_CODE, exponent, value, null);
+        this(currencyCode, exponent, value, null);
     }
 
-    public Amount(Currency currency, long exponent, long value, DebitCreditIndicator debitCreditIndicator)
+    public Amount(String currencyCode, long exponent, long value, DebitCreditIndicator debitCreditIndicator)
     {
-        this(currency.ISO4217_CURRENCY_CODE, exponent, value, debitCreditIndicator);
-    }
-
-    public Amount(String currency, long exponent, long value)
-    {
-        this(currency, exponent, value, null);
-    }
-
-    public Amount(String currency, long exponent, long value, DebitCreditIndicator debitCreditIndicator)
-    {
-        this.currency = currency;
+        this.currencyCode = currencyCode;
         this.exponent = exponent;
         this.value = value;
         this.debitCreditIndicator = debitCreditIndicator;
@@ -33,9 +23,9 @@ public class Amount
     /**
      * @return Currency
      */
-    public Currency getCurrency()
+    public String getCurrencyCode()
     {
-        return Currency.valueOf(currency);
+        return currencyCode;
     }
 
     /**
@@ -72,14 +62,15 @@ public class Amount
 
         if (exponent != amount.exponent) return false;
         if (value != amount.value) return false;
-        if (currency != amount.currency) return false;
+        if (currencyCode != null ? !currencyCode.equals(amount.currencyCode) : amount.currencyCode != null)
+            return false;
         return debitCreditIndicator == amount.debitCreditIndicator;
     }
 
     @Override
     public int hashCode()
     {
-        int result = currency != null ? currency.hashCode() : 0;
+        int result = currencyCode != null ? currencyCode.hashCode() : 0;
         result = 31 * result + (int) (exponent ^ (exponent >>> 32));
         result = 31 * result + (int) (value ^ (value >>> 32));
         result = 31 * result + (debitCreditIndicator != null ? debitCreditIndicator.hashCode() : 0);
@@ -90,7 +81,7 @@ public class Amount
     public String toString()
     {
         return "Amount{" +
-                "currency=" + currency +
+                "currencyCode=" + currencyCode +
                 ", exponent=" + exponent +
                 ", value=" + value +
                 ", debitCreditIndicator=" + debitCreditIndicator +

@@ -5,7 +5,6 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgException;
@@ -22,7 +21,7 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
     public void orderUrl() throws WpgException, IOException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("GBP", 2L, 1234L));
         Shopper shopper = new Shopper("test@worldpay.com");
         String resultURL = "https://result.worldpay.com";
 
@@ -38,7 +37,7 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
     public void languageCode() throws WpgException, IOException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("EUR", 2L, 1234L));
         Shopper shopper = new Shopper("test@worldpay.com");
         String resultURL = "https://result.worldpay.com";
 
@@ -55,7 +54,7 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
     public void resultUrl() throws WpgException, IOException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("EUR", 2L, 1234L));
         Shopper shopper = new Shopper("test@worldpay.com");
 
         // When
@@ -73,7 +72,7 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
     public void resultUrls() throws WpgException, IOException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("EUR", 2L, 1234L));
         Shopper shopper = new Shopper("test@worldpay.com");
 
         // When
@@ -93,7 +92,7 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
     public void billingAndShippingAddress() throws WpgException, IOException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("EUR", 2L, 1234L));
         Shopper shopper = new Shopper("test@worldpay.com");
         String resultURL = "https://result.worldpay.com";
 
@@ -114,7 +113,7 @@ public class PayPalPaymentRequestTest extends BaseIntegrationTest
     public void tokenise() throws WpgException, IOException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("EUR", 2L, 1234L));
         Shopper shopper = new Shopper("test@worldpay.com", "shopperId");
         String resultURL = "https://result.worldpay.com";
 

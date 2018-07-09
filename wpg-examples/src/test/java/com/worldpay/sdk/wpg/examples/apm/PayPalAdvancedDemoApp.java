@@ -14,7 +14,6 @@ import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.apm.PayPalLanguage;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgConnectionException;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
@@ -32,7 +31,7 @@ public class PayPalAdvancedDemoApp
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, auth);
 
         // build order details
-        Amount amount = new Amount(Currency.GBP, 2L, 1000L);
+        Amount amount = new Amount("GBP", 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
 
         Address address = new Address("123 test address", "blah", "1234", "GB");

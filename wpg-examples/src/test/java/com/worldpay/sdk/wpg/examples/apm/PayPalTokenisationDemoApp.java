@@ -7,7 +7,6 @@ import com.worldpay.sdk.wpg.domain.Address;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.domain.tokenisation.CreateTokenDetails;
 import com.worldpay.sdk.wpg.exception.WpgException;
@@ -27,7 +26,7 @@ public class PayPalTokenisationDemoApp
         GatewayContext gatewayContext = new GatewayContext(Environment.SANDBOX, new UserPassAuth(USER, PASS, MERCHANT_CODE, INSTALLATION_ID));
 
         // build order details
-        Amount amount = new Amount(Currency.GBP, 2L, 1000L);
+        Amount amount = new Amount("GBP", 2L, 1000L);
         OrderDetails orderDetails = new OrderDetails("test order", amount);
         Address address = new Address("123 test address", "blah", "1234", "GB");
 

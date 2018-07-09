@@ -39,7 +39,7 @@ public class OrderNotificationXmlAdapter
         }
         else
         {
-            throw new WpgMalformedException("Not recognized as order status event", null);
+            throw new WpgMalformedException("Not recognized as order status event");
         }
     }
 

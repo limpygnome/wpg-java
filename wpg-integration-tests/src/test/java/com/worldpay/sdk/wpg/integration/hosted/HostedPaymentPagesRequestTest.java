@@ -3,7 +3,6 @@ package com.worldpay.sdk.wpg.integration.hosted;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.domain.payment.PaymentMethodType;
 import com.worldpay.sdk.wpg.domain.redirect.RedirectUrl;
 import com.worldpay.sdk.wpg.exception.WpgException;
@@ -22,7 +21,7 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
     public void basicOrder() throws IOException, WpgException
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2, 1234L));
 
         // When
         HostedPaymentPagesRequest request = new HostedPaymentPagesRequest(orderDetails);
@@ -132,7 +131,7 @@ public class HostedPaymentPagesRequestTest extends BaseIntegrationTest
 
     private void givenOrder() throws WpgException
     {
-        OrderDetails orderDetails = new OrderDetails("test order", new Amount(Currency.GBP, 2, 1234L));
+        OrderDetails orderDetails = new OrderDetails("test order", new Amount("GBP", 2, 1234L));
         HostedPaymentPagesRequest request = new HostedPaymentPagesRequest(orderDetails, new Shopper("test@worldpay.com"));
         redirectUrl = request.send(GATEWAY_CONTEXT);
     }

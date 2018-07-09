@@ -6,7 +6,6 @@ import com.worldpay.sdk.wpg.connection.auth.UserPassAuth;
 import com.worldpay.sdk.wpg.domain.card.CardDetails;
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.request.batch.BatchOrderRequest;
 import com.worldpay.sdk.wpg.request.card.CardPaymentRequest;
@@ -47,7 +46,7 @@ public class BatchOrderDemoApp
         for (int i = 0; i < TOTAL_ORDERS; i++)
         {
             CardPaymentRequest order = new CardPaymentRequest()
-                    .orderDetails(new OrderDetails("test order", new Amount(Currency.GBP, 2L, 1234L)))
+                    .orderDetails(new OrderDetails("test order", new Amount("GBP", 2L, 1234L)))
                     .cardDetails(new CardDetails("4444333322221111", 1L, 2020L, "Cardholder name", "123"));
 
             request.add(order);

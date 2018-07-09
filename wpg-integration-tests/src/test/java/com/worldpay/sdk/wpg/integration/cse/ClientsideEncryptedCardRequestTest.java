@@ -2,7 +2,6 @@ package com.worldpay.sdk.wpg.integration.cse;
 
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.Currency;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgException;
 import com.worldpay.sdk.wpg.integration.BaseIntegrationTest;
@@ -23,7 +22,7 @@ public class ClientsideEncryptedCardRequestTest extends BaseIntegrationTest
     public void invalidData()
     {
         // Given
-        OrderDetails orderDetails = new OrderDetails("description", new Amount(Currency.EUR, 2L, 1234L));
+        OrderDetails orderDetails = new OrderDetails("description", new Amount("EUR", 2L, 1234L));
 
         // When
         try

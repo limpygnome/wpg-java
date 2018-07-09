@@ -36,7 +36,8 @@ public class SanitisedLoggerTest
                 {"<countryCode>test</countryCode>", "<countryCode>***</countryCode>"},
                 {"<telephoneNumber>test</telephoneNumber>", "<telephoneNumber>***</telephoneNumber>"},
                 {"<shopperEmailAddress>test@test.com</shopperEmailAddress>", "<shopperEmailAddress>***</shopperEmailAddress>"},
-                {"<cardHolderName>John Doe</cardHolderName>", "<cardHolderName>***</cardHolderName>"}
+                {"<cardHolderName>John Doe</cardHolderName>", "<cardHolderName>***</cardHolderName>"},
+                {"<shippingAddress><firstName>test</firstName></shippingAddress><bilingAddress><firstName>test</firstName></bilingAddress>", "<shippingAddress><firstName>***</firstName></shippingAddress><bilingAddress><firstName>***</firstName></bilingAddress>"}
         });
     }
 
