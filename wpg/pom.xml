@@ -14,8 +14,12 @@
     <artifactId>wpg</artifactId>
     <packaging>jar</packaging>
 
-    <!-- only test dependencies -->
+    <!--
+        do not add a dependency unless it provides a lot of value
+    -->
     <dependencies>
+
+        <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

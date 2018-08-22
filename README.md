@@ -29,6 +29,8 @@
     - Cancel or refund
     - Capture
     - Refund
+- Wallets
+    - Apple Pay
 
 Upcoming:
 - Payouts
