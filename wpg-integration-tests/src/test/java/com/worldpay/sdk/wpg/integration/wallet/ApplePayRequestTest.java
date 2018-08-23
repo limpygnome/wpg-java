@@ -2,19 +2,17 @@ package com.worldpay.sdk.wpg.integration.wallet;
 
 import com.worldpay.sdk.wpg.domain.OrderDetails;
 import com.worldpay.sdk.wpg.domain.payment.Amount;
-import com.worldpay.sdk.wpg.domain.payment.PaymentResponse;
 import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.domain.shopper.ShopperBrowser;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.integration.BaseIntegrationTest;
 import com.worldpay.sdk.wpg.request.wallet.ApplePayRequest;
-import static org.junit.Assert.assertThat;
+import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import org.junit.Test;
 
 public class ApplePayRequestTest extends BaseIntegrationTest
 {

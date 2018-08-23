@@ -7,6 +7,7 @@ import com.worldpay.sdk.wpg.domain.shopper.Shopper;
 import com.worldpay.sdk.wpg.exception.WpgErrorResponseException;
 import com.worldpay.sdk.wpg.exception.WpgMalformedException;
 import com.worldpay.sdk.wpg.exception.WpgRequestException;
+import com.worldpay.sdk.wpg.internal.validation.Assert;
 import com.worldpay.sdk.wpg.internal.xml.XmlBuildParams;
 import com.worldpay.sdk.wpg.internal.xml.XmlRequest;
 import com.worldpay.sdk.wpg.internal.xml.XmlResponse;
@@ -16,16 +17,17 @@ import com.worldpay.sdk.wpg.internal.xml.serializer.OrderDetailsSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.ShopperSerializer;
 import com.worldpay.sdk.wpg.internal.xml.serializer.wallet.ApplePaySerializer;
 
+/**
+ * A request to make a payment using an Apple Pay payment token.
+ *
+ * Useful resources:
+ * - https://webkit.org/blog/8182/introducing-the-payment-request-api-for-apple-pay/
+ * - https://www.w3.org/TR/payment-request/#paymentresponse-interface
+ * - https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypayment
+ * - https://developer.apple.com/library/archive/documentation/PassKit/Reference/PaymentTokenJSON/PaymentTokenJSON.html
+ */
 public class ApplePayRequest extends XmlRequest<PaymentResponse>
 {
-    /*
-        Useful resources:
-        - https://webkit.org/blog/8182/introducing-the-payment-request-api-for-apple-pay/
-        - https://www.w3.org/TR/payment-request/#paymentresponse-interface
-        - https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypayment
-        - https://developer.apple.com/library/archive/documentation/PassKit/Reference/PaymentTokenJSON/PaymentTokenJSON.html
-     */
-
     private OrderDetails orderDetails;
 
     // -- Optional
@@ -68,7 +70,13 @@ public class ApplePayRequest extends XmlRequest<PaymentResponse>
     @Override
     protected void validate(XmlBuildParams params)
     {
-        // TODO add validation
+        Assert.notNull(orderDetails, "Order details are mandatory");
+        Assert.notNull(ephemeralPublicKey, "Ephemeral public key (from payment token header) is mandatory");
+        Assert.notNull(publicKeyHash, "Public key hash (from payment token header) is mandatory");
+        Assert.notNull(transactionId, "Transaction ID (from payment token header) is mandatory");
+        Assert.notNull(signature, "Signature (from payment token) is mandatory");
+        Assert.notNull(version, "Version (from payment token) is mandatory");
+        Assert.notNull(data, "Data (from payment token) is mandatory");
     }
 
     @Override
